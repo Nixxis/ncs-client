@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="Nixxis.Client.Agent.PausePanelControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+             xmlns:local="clr-namespace:Nixxis.Client.Agent"
+             xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+             xmlns:clientLink="clr-namespace:Nixxis.Client;assembly=NixxisClientLink"
+             mc:Ignorable="d" 
+             Unloaded="MySelf_Unloaded"
+             d:DesignHeight="300" d:DesignWidth="300" 
+             Name="MySelf">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisPanel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisTabControl.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisDataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <local:DebugConverter x:Key="myDebugConverter"></local:DebugConverter>
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+            <crs:TranslationContext x:Key="tcx" Context="PausePanelControl"></crs:TranslationContext>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Background="{StaticResource BackgroundBrush}">
+        <!--WebBrowser x:Name="Browser" Margin="0,0,0,0" Cursor="Arrow" Loaded="Browser_Loaded"/-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Image Grid.ColumnSpan="3" Grid.RowSpan="4" Source="..\Images\AgentPause_Image.png" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="480" Height="486" Margin="0,0,20,20" Stretch="UniformToFill" />
+        <Label Grid.Row="1" Grid.Column="1" FontSize="30" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='You are currently in pause'}" HorizontalAlignment="Center" FontWeight="Bold">
+            <Label.Effect>
+                <DropShadowEffect/>
+            </Label.Effect>
+        </Label>
+        <Label Grid.Row="2" Grid.Column="1" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Click on ready to start working'}" HorizontalAlignment="Center" FontSize="18">
+            <Label.Effect>
+                <DropShadowEffect/>
+            </Label.Effect>
+        </Label>        
+    </Grid>
+</UserControl>

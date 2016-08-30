@@ -1,0 +1,174 @@
+﻿<UserControl x:Class="Nixxis.Client.Agent.MailPanelControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+             xmlns:n="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControlsCommon"
+             xmlns:ne="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControlsEditor"
+             xmlns:local="clr-namespace:Nixxis.Client.Agent"
+             xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+             xmlns:clientLink="clr-namespace:Nixxis.Client;assembly=NixxisClientLink"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             Unloaded="MySelf_Unloaded"
+             Name="MySelf">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="TextBrushInline" Color="#dfdfdf" />
+
+            <n:ReverseBoolConverter x:Key="reverseBoolConverter"></n:ReverseBoolConverter>
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+            <crs:TranslationContext x:Key="tcx" Context="MailPanelControl"></crs:TranslationContext>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="60*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <local:WebScriptControl 
+            Grid.Row="0"
+            x:Name="webscript"
+            ClientLink="{Binding ElementName=MySelf, Path=ClientLink}" 
+            Contact="{Binding ElementName=MySelf, Path=Contact}"
+            VerticalAlignment="Stretch"
+            HorizontalAlignment="Stretch">
+        </local:WebScriptControl>
+
+        <nixxis:NixxisSimpleGridSplitter Grid.Row="1" Name="ContentSplitterHor" HorizontalAlignment="Stretch"></nixxis:NixxisSimpleGridSplitter>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40*"></ColumnDefinition>
+                <ColumnDefinition Width="4"></ColumnDefinition>
+                <ColumnDefinition Width="60*"></ColumnDefinition>
+                <ColumnDefinition Width="250"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Grid.Column="0" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='E-Mail'}">
+                <Grid x:Name="OriginalMailLayoutRoot">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Column="0" Grid.Row="0" FontWeight="Bold" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='From:'}" Margin="0,0,5,0" ></Label>
+                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding ElementName=MySelf, Path=MailMessage.From}" Foreground="{StaticResource TextBrushInline}"></TextBlock>
+
+                    <Label Grid.Column="0" Grid.Row="1" FontWeight="Bold" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='To:'}" Margin="0,0,5,0" ></Label>
+                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding ElementName=MySelf, Path=MailMessage.To}" Foreground="{StaticResource TextBrushInline}"></TextBlock>
+
+                    <Label Grid.Column="0" Grid.Row="2" FontWeight="Bold" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Subject:'}" Margin="0,0,5,0" ></Label>
+                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding ElementName=MySelf, Path=MailMessage.Subject}" Foreground="{StaticResource TextBrushInline}"></TextBlock>
+
+                    <Label Grid.Column="0" Grid.Row="3" FontWeight="Bold" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Date:'}" Margin="0,0,5,0" ></Label>
+                    <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding ElementName=MySelf, Path=MailMessage.MailCreationTime}" Foreground="{StaticResource TextBrushInline}"></TextBlock>
+
+                    <Label Grid.Column="0" Grid.Row="4" FontWeight="Bold" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Attchment(s):'}" Margin="0,0,5,0" ></Label>
+                    <ListBox 
+                        x:Name="lstOriginalAttachments"
+                        Grid.Column="1" Grid.Row="4"
+                        ItemsSource="{Binding ElementName=MySelf, Path=MailMessage.InfosAttachments}"
+                        DisplayMemberPath="FileName"
+                        MaxHeight="100"
+                        MouseDoubleClick="ListBox_MouseDoubleClick">
+                        <!--<ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel>
+                                </WrapPanel>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>-->
+                    </ListBox>
+
+                    <!--<n:NixxisWebBrowser 
+                        x:Name="wbOriginalMsg"
+                        Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2"
+                        Loaded="WebBrowser_Loaded"
+                        Navigated="wbOriginalMsg_Navigated">
+                    </n:NixxisWebBrowser>-->
+                    <WebBrowser 
+                        
+                        x:Name="wbOriginalMsg"
+                        Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2"
+                        Loaded="WebBrowser_Loaded"
+                        Navigated="wbOriginalMsg_Navigated"
+                        Navigating="Browser_Navigating"></WebBrowser>
+                </Grid>
+            </GroupBox>
+
+            <GridSplitter Grid.Column="1" ResizeDirection="Columns" Height="2" VerticalAlignment="Stretch" Background="#0e0e0e"></GridSplitter>
+
+            <GroupBox Grid.Column="2" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='E-Mail reply'}">
+                <Grid x:Name="ReplyMailLayoutRoot">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Column="0" Grid.Row="0" FontWeight="Bold" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='From:'}"></Label>
+                    <TextBox Grid.Column="1" Grid.Row="0" 
+                             Text="{Binding ElementName=MySelf, Path=MailMessage.ReplyFrom}"
+                             IsReadOnly="{Binding ElementName=MySelf, Path=CanEditReplyFrom, Converter={StaticResource reverseBoolConverter}}"></TextBox>
+
+                    <Label Grid.Column="0" Grid.Row="1" FontWeight="Bold" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='To:'}"></Label>
+                    <TextBox Grid.Column="1" Grid.Row="1" 
+                             Text="{Binding ElementName=MySelf, Path=MailMessage.ReplyTo}"
+                             IsReadOnly="{Binding ElementName=MySelf, Path=CanEditReplyTo, Converter={StaticResource reverseBoolConverter}}"></TextBox>
+
+                    <Label Grid.Column="0" Grid.Row="2" FontWeight="Bold" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Subject:'}"></Label>
+                    <TextBox Grid.Column="1" Grid.Row="2" 
+                             Text="{Binding ElementName=MySelf, Path=MailMessage.ReplySubject}"
+                             IsReadOnly="{Binding ElementName=MySelf, Path=CanEditReplySubject, Converter={StaticResource reverseBoolConverter}}"></TextBox>
+
+                    <ne:NixxisEditor 
+                        x:Name="htmlEditor"
+                        Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        HtmlText="{Binding ElementName=MySelf, Path=MailMessage.MailToStartReplyText}">
+                    </ne:NixxisEditor>
+                </Grid>
+            </GroupBox>
+
+            <Grid Grid.Column="3" x:Name="InfoLayoutRoot">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="70*"></RowDefinition>
+                    <RowDefinition Height="30*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <GroupBox Grid.Row="0" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Predefined text'}">
+                    <local:PredefinedTextControl 
+                        x:Name="predefCrtl" 
+                        ItemSource="{Binding ElementName=MySelf, Path=MailMessage.PredefinedTexts}">
+                    </local:PredefinedTextControl>
+                </GroupBox>
+
+                <local:AttachmentControl 
+                    x:Name="attchCrtl" Grid.Row="1" 
+                    ItemSource="{Binding ElementName=MySelf, Path=Attachments}"
+                    CanAddLocalAttachments="{Binding ElementName=MySelf, Path=CanAddLocalAttachments}">
+                </local:AttachmentControl>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

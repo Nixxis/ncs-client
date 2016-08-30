@@ -1,0 +1,194 @@
+﻿<Window x:Class="Nixxis.LauncherWindow"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:l="clr-namespace:Nixxis"
+        xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms" 
+        Height="427" Width="643" 
+        Icon="/NixxisClientDesktop;component/Resources/16x16_AppIcon.ico" 
+        ResizeMode="NoResize" 
+        Topmost="True" 
+        WindowStartupLocation="CenterScreen" 
+        UseLayoutRounding="True" 
+        VerticalAlignment="Center" 
+        VerticalContentAlignment="Center" 
+        WindowStyle="None"
+        MouseLeftButtonDown="MySelf_MouseDown"
+        Title="Nixxis Client"
+        Name="ThisWindow"
+        SizeToContent="Manual">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisClientDesktop;component/ExpressionDark.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <l:TranslationConverter x:Key="tcv"></l:TranslationConverter>
+            <l:TranslationContext x:Key="tcx" Context="ApplicationHost"></l:TranslationContext>
+
+            <l:NotEmptyOrNullConverter x:Key="notEmptyOrNullConverter"></l:NotEmptyOrNullConverter>
+            
+            <Style x:Key="FadeIn" TargetType="{x:Type Image}">
+                <Style.Resources>
+                    <Storyboard x:Key="HourGlassAnimation">
+                        <DoubleAnimation Duration="0:0:2" To="1.0" Storyboard.TargetProperty="Opacity"></DoubleAnimation>
+                    </Storyboard>
+                </Style.Resources>
+
+                <Style.Triggers>
+                    <Trigger Property="IsVisible" Value="True">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard x:Name="HourGlassStoryboard" Storyboard="{StaticResource HourGlassAnimation}" />
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <RemoveStoryboard BeginStoryboardName="HourGlassStoryboard" />
+                        </Trigger.ExitActions>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Border>
+        <!--Border.Background>
+            <ImageBrush ImageSource="/NixxisClientDesktop;component/Resources/00_LoginPageLogo.jpg" />
+        </Border.Background-->
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="20" />
+            </Grid.RowDefinitions>
+
+            <Image Grid.RowSpan="3" Name="ImgSplash"  >
+                <Image.Source>
+                    <BitmapImage  UriSource="/NixxisClientDesktop;component/Resources/00_LoginPageLogo.jpg">
+                    </BitmapImage>
+                </Image.Source>
+            </Image>
+
+            <!--Image Name="Img1" Visibility="Collapsed" Style="{StaticResource FadeIn}" Opacity="0">
+                <Image.Source>
+                    <BitmapImage UriSource="/Images/1.jpg"></BitmapImage>
+                </Image.Source>
+            </Image>
+
+            <Image Name="Img2" Visibility="Collapsed" Style="{StaticResource FadeIn}" Opacity="0">
+                <Image.Source>
+                    <BitmapImage UriSource="/Images/2.jpg"></BitmapImage>
+                </Image.Source>
+            </Image-->
+
+            <Label Grid.RowSpan="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="200,0,20,80" FontSize="30" FontFamily="Microsoft Yi Baiti" >
+                <Label.Content>                    
+                    <l:FormatStringExtension FormatString="NIXXIS CONTACT SUITE {0}&#x2122;" TranslationContext="{StaticResource tcx}">
+                        <l:FormatStringExtension.BindTo>
+                            <Binding Source="{x:Static l:LauncherWindow.Services}" Path="Version"></Binding>
+                        </l:FormatStringExtension.BindTo>
+                    </l:FormatStringExtension>
+                </Label.Content>
+                
+            </Label>
+
+            <Label Grid.RowSpan="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="200,60,20,80" FontSize="30" FontFamily="Microsoft Yi Baiti" >
+                <TextBlock Text="{Binding Source={x:Static l:LauncherWindow.Services}, Path=DomainName}"></TextBlock>
+            </Label>
+
+            <Label Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom" Margin="20,0,5,5" FontSize="10" FontFamily="Microsoft Yi Baiti">
+                <TextBlock Text="{Binding Source={x:Static l:LauncherWindow.Services}, Path=DetailedVersion}"></TextBlock>
+            </Label>
+
+            <Label Visibility="{Binding  Source={x:Static l:LauncherWindow.Services}, Path=Edition, Converter={StaticResource notEmptyOrNullConverter} }" Grid.Row="2" HorizontalContentAlignment="Left" VerticalContentAlignment="Bottom" Margin="5,0,5,5" FontSize="10" FontFamily="Microsoft Yi Baiti">
+                <TextBlock>
+                    <TextBlock.Text>
+                        <l:FormatStringExtension FormatString="{}{0}, {1} lic ({2:dd/MM/yyy})" TranslationContext="{StaticResource tcx}">
+                            <l:FormatStringExtension.BindTo>
+                                <MultiBinding>
+                                    <Binding Source="{x:Static l:LauncherWindow.Services}" Path="Edition"></Binding>
+                                    <Binding Source="{x:Static l:LauncherWindow.Services}" Path="AgentsLicenses"></Binding>
+                                    <Binding Source="{x:Static l:LauncherWindow.Services}" Path="Validity"></Binding>
+                                </MultiBinding>
+                            </l:FormatStringExtension.BindTo>
+                        </l:FormatStringExtension>
+                    </TextBlock.Text>
+                </TextBlock>
+            </Label>
+
+
+            <Button Name="Close" Click="Close_Click" Margin="590,10,15,0">
+            </Button>
+            
+            <!--ProgressBar Grid.Row="1" Height="10" HorizontalAlignment="Left" Margin="42,0,0,76" Name="Progress" VerticalAlignment="Bottom" Width="150" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Foreground="#FFACCE22" IsEnabled="True" IsHitTestVisible="False" IsTabStop="False" Visibility="Hidden" /-->
+
+            <Label Name="lblProgress" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center"></Label>
+            <ProgressBar Grid.Row="2" Height="10" HorizontalAlignment="Center" Margin="40,0,40,0" Name="Progress" Width="400" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Foreground="#FFACCE22" IsEnabled="True" IsHitTestVisible="False" IsTabStop="False" Visibility="Hidden" />
+
+            <Border Name="LoginDialog" Grid.Row="1" Margin="220,170,0,0" Visibility="Hidden">
+                <Grid Margin="30,50,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="101"></ColumnDefinition>
+                        <ColumnDefinition Width="142*"></ColumnDefinition>
+                        <ColumnDefinition Width="15"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Label Name="lblService" Grid.Column="0" Grid.Row="0" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Service:'}" FontFamily="Century Gothic" Margin="10"></Label>
+                    <ComboBox Name="cboService"
+                     Grid.Column="1" 
+                     Grid.ColumnSpan="2" 
+                     Grid.Row="0" 
+                     IsEditable="True"
+                     Text="{Binding ElementName=MySelf, Path=Service, Mode=TwoWay}" 
+                     Margin="5"
+                     KeyDown="Event_KeyUp"></ComboBox>
+                    <!--TextBox Name="txtService" 
+                     Grid.Column="1" 
+                     Grid.ColumnSpan="2" 
+                     Grid.Row="0" 
+                     Text="{Binding ElementName=MySelf, Path=Service, Mode=TwoWay}" 
+                     Margin="5"
+                     KeyUp="Event_KeyUp"></TextBox-->
+
+                    <Label Name="lblAccount" Grid.Column="0" Grid.Row="1" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Account:'}" FontFamily="Century Gothic" Margin="10"></Label>
+                    <TextBox Name="txtAccount" 
+                     Grid.Column="1" 
+                     Grid.Row="1" 
+                     Text="{Binding ElementName=MySelf, Path=Account, Mode=TwoWay}" 
+                     Margin="5"
+                     KeyDown="Event_KeyUp"></TextBox>
+
+                    <Label Name="lblPassword" Grid.Column="0" Grid.Row="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Password:'}" FontFamily="Century Gothic" Margin="10"></Label>
+                    <PasswordBox Grid.Column="1" 
+                         Grid.Row="2" 
+                         Name="passwordBox" 
+                         PasswordChar="*"  
+                         Margin="5"
+                         KeyDown="Event_KeyUp"></PasswordBox>
+
+                    <Label Name="lblExtension" Grid.Column="0" Grid.Row="3" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Extension:'}" FontFamily="Century Gothic" Margin="10"></Label>
+                    <TextBox Name="txtExtension" 
+                     Grid.Column="1" 
+                     Grid.Row="3" 
+                     Text="{Binding ElementName=MySelf, Path=Extension, Mode=TwoWay}" 
+                     Margin="5"
+                     KeyDown="Event_KeyUp"></TextBox>
+
+                    <StackPanel Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                        <Button Margin="3" Padding="3" MinWidth="70" x:Name="btnOk" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='OK'}" Click="btnOk_Click"></Button>
+                        <Button Margin="3" Padding="3" MinWidth="70" x:Name="btnCancel" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Cancel'}" Click="btnCancel_Click"></Button>
+                    </StackPanel>
+
+
+                </Grid>
+            </Border>
+            
+            <WebBrowser Name="Browser" Grid.Row="1" Margin="5,5,5,0" Visibility="Collapsed" Loaded="Browser_Loaded" Navigated="Browser_Navigated" />
+        </Grid>
+    </Border>
+</Window>

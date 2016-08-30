@@ -1,0 +1,72 @@
+﻿<UserControl x:Class="Nixxis.Client.Admin.PromptHelper"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+             xmlns:adminlink="clr-namespace:Nixxis.Client.Admin;assembly=AdminLink"
+             xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+             xmlns:local="clr-namespace:Nixxis.Client.Admin"
+             mc:Ignorable="d" 
+             Name="MySelf"
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="QualifHelpers.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisTreeView.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+
+            <crs:TranslationContext x:Key="tcx" Context="Prompt"></crs:TranslationContext>
+
+
+            <local:ComboListConverter x:Key="cboConverter" />
+
+            <local:AtivityPromptsToPromptsConverter x:Key="AtivityPromptsToPromptsConverter"></local:AtivityPromptsToPromptsConverter>
+            
+        </ResourceDictionary>
+        
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+    
+        
+        <ComboBox             
+            Name="cboMessage" 
+            ItemsSource="{Binding AllPrompts, Converter={StaticResource AtivityPromptsToPromptsConverter}}" 
+            SelectedValuePath="Id" 
+            DisplayMemberPath="DisplayText"
+            SelectedValue="{Binding ElementName=MySelf, Path=MessageId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Text="{Binding ElementName=MySelf, Path=MessageDisplayText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            >
+            <ComboBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Visibility="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsEnabled, Converter={StaticResource VisWithCollapseConverter}}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Go to definition'}" Command="local:AdminFrameSet.ShowObject" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"></MenuItem>
+                </ContextMenu>
+            </ComboBox.ContextMenu>
+
+        </ComboBox>
+        <nixxis:NixxisPlayback Grid.Column="1" Path="{Binding ElementName=cboMessage, Path=SelectedItem.PathUri}"></nixxis:NixxisPlayback>
+        <Button Click="AddPromptToOverflowPrompt" Grid.Column="2">
+            <Border Height="20" Width="20">
+                <Path HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{x:Null}" Data="M0.5,0.5 L5.5,3 0.5,5.5" Stroke="{DynamicResource GlyphBrush}" Margin="6,0,6,0" Height="11" StrokeThickness="2" Stretch="Fill" />
+            </Border>
+        </Button>
+
+    </Grid>
+    
+
+
+</UserControl>

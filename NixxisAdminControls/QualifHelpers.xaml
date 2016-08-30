@@ -1,0 +1,389 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:adminlink="clr-namespace:Nixxis.Client.Admin;assembly=AdminLink"
+                    xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+                    xmlns:local="clr-namespace:Nixxis.Client.Admin"
+                    xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+                    xmlns:crsc="clr-namespace:ContactRoute;assembly=CRShared"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+
+    <crs:TranslationContext x:Key="tcxy" Context="QualifHelpers"></crs:TranslationContext>
+
+    <local:RightsConverter x:Key="rightsConverter"></local:RightsConverter><local:InvertedRightsConverter x:Key="invertedRightsConverter"></local:InvertedRightsConverter>
+
+    <local:ComboListConverter x:Key="cboConverter" />
+    <adminlink:QualificationActionHelper x:Key="qualificationActionHelper"></adminlink:QualificationActionHelper>
+    <adminlink:QualificationActionHelperBase x:Key="qualificationActionHelperRestricted"></adminlink:QualificationActionHelperBase>
+
+    <DataTemplate x:Key="LeafQualification" DataType="{x:Type adminlink:Qualification}">
+        
+        <Grid>
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
+            <!--Positive-->
+            <GroupBox Margin="0,5,0,0" >
+
+                <GroupBox.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{nixxis:FormatString TranslationContext={StaticResource tcxy},FormatString='Value ({0})',BindTo={Binding Positive}}"></TextBlock>
+                        <ToggleButton Margin="20,0,0,0" Grid.Column="1"  Name="QualifValueIsExpert" Visibility="{Binding Source={x:Static local:AdminFrameSet.Settings}, Path=IsFullVersion, Converter={StaticResource VisWithCollapseConverter}}" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.IsExpert}">
+
+
+                            <ToggleButton.Effect>
+                                <DropShadowEffect></DropShadowEffect>
+                            </ToggleButton.Effect>
+                            <ToggleButton.Style>
+                                <Style TargetType="{x:Type ToggleButton}" BasedOn="{x:Null}" >
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Foreground" Value="{StaticResource CheckedGreenBackgroundBrush}"/>
+                                        </Trigger>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="Foreground" Value="{StaticResource CheckedGreenBackgroundBrush}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+
+                                </Style>
+                            </ToggleButton.Style>
+
+                            <ToggleButton.Template>
+                                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                    <Grid >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <ContentPresenter Name="cp" Content="{TemplateBinding Content}"></ContentPresenter>
+                                        <Path Margin="3,0,0,0" Grid.Column="1" Visibility="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsChecked, Converter={StaticResource visConverter}, ConverterParameter=false }" HorizontalAlignment="Center" Name="Up_Arrow" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M 0 0 L 4 4 L 8 0 Z" />
+                                        <Path Margin="3,0,0,0" Grid.Column="1" Visibility="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsChecked, Converter={StaticResource visConverter} }" HorizontalAlignment="Center" Name="Down_Arrow" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M 0 4 L 4 0 L 8 4 Z" />
+                                    </Grid>
+                                </ControlTemplate>
+                            </ToggleButton.Template>
+                            Expert...
+                        </ToggleButton>
+                    </Grid>
+                </GroupBox.Header>
+
+                <Grid>
+                    <StackPanel Visibility="{Binding ElementName=QualifValueIsExpert, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}, ConverterParameter=false}">
+                        <StackPanel.IsEnabled>
+                            <MultiBinding Converter="{StaticResource BoolMultiOrConverter}" TargetNullValue="false">
+                                <Binding  ElementName="MySelf" Path="SelectedItem" Converter="{StaticResource rightsConverter}" ConverterParameter="Qualification.IsExpert"></Binding>
+                                <Binding Path="IsStdPositive"></Binding>
+                                <Binding Path="IsStdNeutral"></Binding>
+                                <Binding Path="IsStdNegative"></Binding>
+                            </MultiBinding>
+                        </StackPanel.IsEnabled>
+
+
+                        <RadioButton local:RightsManagement.Rights="Qualification.IsPositive" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.IsPositive}" Name="RadioPositive" IsChecked="{Binding IsStdPositive}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Postive'}"></RadioButton>
+                        <RadioButton local:RightsManagement.Rights="Qualification.IsNeutral" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.IsNeutral}" Name="RadioNeutral" IsChecked="{Binding IsStdNeutral}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Neutral'}"></RadioButton>
+                        <RadioButton local:RightsManagement.Rights="Qualification.IsNegative" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.IsNegative}" Name="RadioNegative" IsChecked="{Binding IsStdNegative}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Negative'}"></RadioButton>
+
+                    </StackPanel>
+                    <Grid Visibility="{Binding ElementName=QualifValueIsExpert, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <Label VerticalAlignment="Center" Margin="2" Grid.Column="0" Grid.Row="0" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Value:'}"></Label>
+                        <TextBox local:RightsManagement.Rights="Qualification.PositiveValue" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.PositiveValue}" VerticalAlignment="Center" Margin="2" Grid.Column="1" Grid.Row="0" Text="{Binding Positive}"></TextBox>
+
+                        <CheckBox local:RightsManagement.Rights="Qualification.ValueUpdatedByAgent" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.ValueUpdatedByAgent}" VerticalAlignment="Center" Margin="2" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" IsChecked="{Binding PositiveUpdatable}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Value is updated by agent'}"></CheckBox>
+                    </Grid>
+                </Grid>
+            </GroupBox>
+
+            <!--Argued-->
+            <GroupBox Grid.Row="1" Margin="0,5,0,0" Header="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Argued'}"  IsEnabled="{Binding IsNotPositive}">
+                <StackPanel Orientation="Vertical">
+                    <!--<RadioButton local:RightsManagement.Rights="Qualification.IsArgued" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.IsArgued}" IsChecked="{Binding Argued}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Argued'}"></RadioButton>
+                    <RadioButton local:RightsManagement.Rights="Qualification.IsNotArgued" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.IsNotArgued}" IsChecked="{Binding Argued, Converter={StaticResource BoolInverter}}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Not argued'}"></RadioButton>-->
+                    <CheckBox Margin="0,5,0,0" local:RightsManagement.Rights="Qualification.IsArgued" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.IsArgued}" IsChecked="{Binding Argued}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Argued'}"></CheckBox>
+                </StackPanel>
+            </GroupBox>
+
+            <!--Others-->
+            <GroupBox Grid.Row="2" Margin="0,5,0,0">
+
+                <GroupBox.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Other settings'}"></TextBlock>
+
+                        <ToggleButton Margin="20,0,0,0" Grid.Column="1" Name="QualifOtherIsExpert"
+                                      ToolTip="{Binding OtherDescription, Converter={StaticResource tooltipConverter}}" 
+                                      Content="{Binding OtherDescription}" HorizontalAlignment="Left">
+
+                            <!--TextBlock Text="{Binding OtherDescription}" TextTrimming="CharacterEllipsis"></TextBlock-->
+                                
+                            <ToggleButton.Effect>
+                                <DropShadowEffect></DropShadowEffect>
+                            </ToggleButton.Effect>
+
+                            <ToggleButton.Style>
+                                <Style TargetType="{x:Type ToggleButton}" BasedOn="{x:Null}" >
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Foreground" Value="{StaticResource CheckedGreenBackgroundBrush}"/>
+                                        </Trigger>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="Foreground" Value="{StaticResource CheckedGreenBackgroundBrush}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+
+                                </Style>
+                            </ToggleButton.Style>
+
+                            <ToggleButton.Template>
+                                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                    <Grid >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{TemplateBinding Content}" TextTrimming="CharacterEllipsis"/>
+                                        <!--ContentPresenter Name="cp" Content="{TemplateBinding Content}"></ContentPresenter-->
+                                        <Path Margin="3,0,0,0" Grid.Column="1" Visibility="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsChecked, Converter={StaticResource visConverter}, ConverterParameter=false }" HorizontalAlignment="Center" Name="Up_Arrow" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M 0 0 L 4 4 L 8 0 Z" />
+                                        <Path Margin="3,0,0,0" Grid.Column="1" Visibility="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsChecked, Converter={StaticResource visConverter} }" HorizontalAlignment="Center" Name="Down_Arrow" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M 0 4 L 4 0 L 8 4 Z" />
+                                    </Grid>
+                                </ControlTemplate>
+                            </ToggleButton.Template>
+                            
+                        </ToggleButton>
+                        </Grid>
+
+                </GroupBox.Header>
+
+                <nixxis:NixxisStackPanel Visibility="{Binding ElementName=QualifOtherIsExpert, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}}">
+
+                    <Label  Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Action:'}"></Label>
+                    <ComboBox local:RightsManagement.Rights="Qualification.Action" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.Action}" Visibility="{Binding MainCampaign.Advanced, Converter={StaticResource VisWithCollapseConverter}}"  SelectedValue="{Binding Action, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Description"  SelectedValuePath="EnumValue" ItemsSource="{Binding Source={StaticResource qualificationActionHelper}}"></ComboBox>
+                    <ComboBox local:RightsManagement.Rights="Qualification.Action" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.Action}" Visibility="{Binding MainCampaign.Advanced, Converter={StaticResource VisWithCollapseConverter}, ConverterParameter=false}" SelectedValue="{Binding Action, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Description"  SelectedValuePath="EnumValue" ItemsSource="{Binding Source={StaticResource qualificationActionHelperRestricted}}"></ComboBox>
+
+                    <Label Visibility="{Binding Action, Converter={StaticResource IneqCConverter}, ConverterParameter={x:Static crsc:QualificationAction.RetryNotBefore}}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Delay:'}"></Label>
+                    <nixxis:DurationPicker local:RightsManagement.Rights="Qualification.Delay" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.Delay}"  Visibility="{Binding Action, Converter={StaticResource IneqCConverter}, ConverterParameter={x:Static crsc:QualificationAction.RetryNotBefore}}" Duration="{Binding Delay}" ShowSeconds="False"></nixxis:DurationPicker>
+
+                    <Label Visibility="{Binding Action, Converter={StaticResource IneqCConverter}, ConverterParameter={x:Static crsc:QualificationAction.RetryAt}}"  Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Delay:'}"></Label>
+                    <nixxis:DurationPicker local:RightsManagement.Rights="Qualification.Delay" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.Delay}" Visibility="{Binding Action, Converter={StaticResource IneqCConverter}, ConverterParameter={x:Static crsc:QualificationAction.RetryAt}}" Duration="{Binding Delay}" ShowSeconds="False"></nixxis:DurationPicker>
+
+                    <Label Visibility="{Binding Action, Converter={StaticResource IneqCConverter}, ConverterParameter={x:Static crsc:QualificationAction.ChangeActivity}}"  Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='New activity:'}"></Label>
+                    <ComboBox local:RightsManagement.Rights="Qualification.NewActivity" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.NewActivity}" Visibility="{Binding Action, Converter={StaticResource IneqCConverter}, ConverterParameter={x:Static crsc:QualificationAction.ChangeActivity}}" SelectedValue="{Binding ActionParameters, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="DisplayText"  SelectedValuePath="Id" ItemsSource="{Binding MainCampaign.OutboundActivities}"></ComboBox>
+
+
+                    <Label Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='New activity:'}">
+                        <Label.Visibility>
+                            <MultiBinding Converter="{StaticResource BoolMultiAndConverter}" ConverterParameter="false,true" TargetNullValue="Collapsed">
+                                <Binding Path="Action" Converter="{StaticResource IneqCConverter}"  ConverterParameter="{x:Static crsc:QualificationAction.RetryAt}"></Binding>
+                                <Binding Path="MainCampaign.Advanced"></Binding>
+                            </MultiBinding>
+                        </Label.Visibility>
+                    </Label>
+                    <ComboBox local:RightsManagement.Rights="Qualification.NewActivity" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.NewActivity}" SelectedValue="{Binding NewActivity, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="DisplayText"  SelectedValuePath="Id" ItemsSource="{Binding MainCampaign.OutboundActivities, Converter={StaticResource cboConverter}}">
+                        <ComboBox.Visibility>
+                            <MultiBinding Converter="{StaticResource BoolMultiAndConverter}" ConverterParameter="false,true" TargetNullValue="Collapsed">
+                                <Binding Path="Action" Converter="{StaticResource IneqCConverter}"  ConverterParameter="{x:Static crsc:QualificationAction.RetryAt}"></Binding>
+                                <Binding Path="MainCampaign.Advanced"></Binding>
+                            </MultiBinding>
+                        </ComboBox.Visibility>
+                        <ComboBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Visibility="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsEnabled, Converter={StaticResource VisWithCollapseConverter}}" Header="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Go to definition'}" Command="local:AdminFrameSet.ShowObject" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"></MenuItem>
+                            </ContextMenu>
+                        </ComboBox.ContextMenu>
+
+                    </ComboBox>
+
+                    <Label Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='New activity:'}">
+                        <Label.Visibility>
+                            <MultiBinding Converter="{StaticResource BoolMultiAndConverter}" ConverterParameter="false,true" TargetNullValue="Collapsed">
+                                <Binding Path="Action" Converter="{StaticResource IneqCConverter}"  ConverterParameter="{x:Static crsc:QualificationAction.RetryNotBefore}"></Binding>
+                                <Binding Path="MainCampaign.Advanced"></Binding>
+                            </MultiBinding>
+                        </Label.Visibility>
+                    </Label>
+                    <ComboBox local:RightsManagement.Rights="Qualification.NewActivity" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.NewActivity}" SelectedValue="{Binding NewActivity, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="DisplayText"  SelectedValuePath="Id" ItemsSource="{Binding MainCampaign.OutboundActivities, Converter={StaticResource cboConverter}}">
+                        <ComboBox.Visibility>
+                            <MultiBinding Converter="{StaticResource BoolMultiAndConverter}" ConverterParameter="false,true" TargetNullValue="Collapsed">
+                                <Binding Path="Action" Converter="{StaticResource IneqCConverter}"  ConverterParameter="{x:Static crsc:QualificationAction.RetryNotBefore}"></Binding>
+                                <Binding Path="MainCampaign.Advanced"></Binding>
+                            </MultiBinding>
+                        </ComboBox.Visibility>
+
+                        <ComboBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Visibility="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsEnabled, Converter={StaticResource VisWithCollapseConverter}}" Header="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Go to definition'}" Command="local:AdminFrameSet.ShowObject" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"></MenuItem>
+                            </ContextMenu>
+                        </ComboBox.ContextMenu>
+
+
+                    </ComboBox>
+
+
+                    <Label Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='New activity:'}">
+                        <Label.Visibility>
+                            <MultiBinding Converter="{StaticResource BoolMultiAndConverter}" ConverterParameter="false,true" TargetNullValue="Collapsed">
+                                <Binding Path="Action" Converter="{StaticResource IneqCConverter}"  ConverterParameter="{x:Static crsc:QualificationAction.Callback}"></Binding>
+                                <Binding Path="MainCampaign.Advanced"></Binding>
+                            </MultiBinding>
+                        </Label.Visibility>
+                    </Label>
+                    <ComboBox local:RightsManagement.Rights="Qualification.NewActivity" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.NewActivity}" SelectedValue="{Binding NewActivity, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="DisplayText"  SelectedValuePath="Id" ItemsSource="{Binding MainCampaign.OutboundActivities, Converter={StaticResource cboConverter}}">
+                        <ComboBox.Visibility>
+                            <MultiBinding Converter="{StaticResource BoolMultiAndConverter}" ConverterParameter="false,true" TargetNullValue="Collapsed">
+                                <Binding Path="Action" Converter="{StaticResource IneqCConverter}"  ConverterParameter="{x:Static crsc:QualificationAction.Callback}"></Binding>
+                                <Binding Path="MainCampaign.Advanced"></Binding>
+                            </MultiBinding>
+                        </ComboBox.Visibility>
+                        <ComboBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Visibility="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsEnabled, Converter={StaticResource VisWithCollapseConverter}}" Header="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Go to definition'}" Command="local:AdminFrameSet.ShowObject" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"></MenuItem>
+                            </ContextMenu>
+                        </ComboBox.ContextMenu>
+
+                    </ComboBox>
+
+
+                    <Label Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='New activity:'}">
+                        <Label.Visibility>
+                            <MultiBinding Converter="{StaticResource BoolMultiAndConverter}" ConverterParameter="false,true" TargetNullValue="Collapsed">
+                                <Binding Path="Action" Converter="{StaticResource IneqCConverter}"  ConverterParameter="{x:Static crsc:QualificationAction.TargetedCallback}"></Binding>
+                                <Binding Path="MainCampaign.Advanced"></Binding>
+                            </MultiBinding>
+                        </Label.Visibility>
+                    </Label>
+                    <ComboBox local:RightsManagement.Rights="Qualification.NewActivity" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.NewActivity}" SelectedValue="{Binding NewActivity, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="DisplayText"  SelectedValuePath="Id" ItemsSource="{Binding MainCampaign.OutboundActivities, Converter={StaticResource cboConverter}}">
+                        <ComboBox.Visibility>
+                            <MultiBinding Converter="{StaticResource BoolMultiAndConverter}" ConverterParameter="false,true" TargetNullValue="Collapsed">
+                                <Binding Path="Action" Converter="{StaticResource IneqCConverter}"  ConverterParameter="{x:Static crsc:QualificationAction.TargetedCallback}"></Binding>
+                                <Binding Path="MainCampaign.Advanced"></Binding>
+                            </MultiBinding>
+                        </ComboBox.Visibility>
+                        <ComboBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Visibility="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsEnabled, Converter={StaticResource VisWithCollapseConverter}}" Header="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Go to definition'}" Command="local:AdminFrameSet.ShowObject" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"></MenuItem>
+                            </ContextMenu>
+                        </ComboBox.ContextMenu>
+
+                    </ComboBox>
+
+
+
+
+                    <Label  Visibility="{Binding  ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.IsExpert}"  Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Custom value:'}"></Label>
+                    <TextBox local:RightsManagement.Rights="Qualification.CustomValue" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.CustomValue}" Visibility="{Binding  ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.IsExpert}" Text="{Binding CustomValue}"></TextBox>
+
+                    <CheckBox local:RightsManagement.Rights="Qualification.IsExportable" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.IsExportable}" IsChecked="{Binding Exportable}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Exportable'}"></CheckBox>
+
+                    <CheckBox local:RightsManagement.Rights="Qualification.TriggerHangup" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.TriggerHangup}" IsChecked="{Binding TriggerHangup}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Hangup the call'}"></CheckBox>
+
+                    <CheckBox local:RightsManagement.Rights="Qualification.IgnoreMaxDialAttempts" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.IgnoreMaxDialAttempts}" IsChecked="{Binding IgnoreMaxDialAttempts}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Ignore max. dial attempts'}"></CheckBox>
+
+
+
+                    <nixxis:NixxisDetailedCheckBox local:RightsManagement.Rights="Qualification.PostWrapupBehavior" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.PostWrapupBehavior}" VerticalAlignment="Center" Name="chkPostWrapupBehavior" IsChecked="{Binding IsPostWrapupBehaviorDefined}" DetailContent="{Binding PostWrapupBehaviorDescription}" DetailVisibility="{Binding ElementName=chkPostWrapupBehavior, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Define wrapup and auto ready behaviors'}"></nixxis:NixxisDetailedCheckBox>
+
+                    <GroupBox Margin="20,0,0,0" Visibility="{Binding ElementName=chkPostWrapupBehavior, Path=IsDetailChecked, Converter={StaticResource VisWithCollapseConverter}}" Header="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Wrapup settings'}">
+                        <nixxis:NixxisStackPanel>
+
+
+                            <CheckBox Name="chkModifyWrapupTime" local:RightsManagement.Rights="Qualification.PostWrapupBehavior.ModifyWrapupTime" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.PostWrapupBehavior.ModifyWrapupTime}" IsChecked="{Binding IsWrapupTimeModified}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Modify standard wrapup time'}"></CheckBox>
+
+                            <Grid Visibility="{Binding ElementName=chkModifyWrapupTime, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>                                    
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                            
+
+                                <RadioButton Grid.Row="0" IsChecked="{Binding PostWrapupOptionsSetWrapupDuration}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Set wrapup standard duration to a specific value'}"></RadioButton>
+                                <RadioButton Grid.Row="1" IsChecked="{Binding PostWrapupOptionsIncreaseWrapupDuration}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Increase wrapup standard duration by'}"></RadioButton>
+                                <RadioButton Grid.Row="2" IsChecked="{Binding PostWrapupOptionsDecreaseWrapupDuration}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Decrease wrapup standard duration by'}"></RadioButton>
+
+                                <nixxis:DurationPicker  Grid.Row="3" Margin="22,0,0,0" local:RightsManagement.Rights="Qualification.PostWrapupBehavior.WrapupTime" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.PostWrapupBehavior.WrapupTime}" ShowMilliseconds="False" Duration="{Binding WrapupTime, Converter={StaticResource MultConverter}, ConverterParameter=1000}"></nixxis:DurationPicker>
+                            </Grid>
+                            
+                            <CheckBox  local:RightsManagement.Rights="Qualification.PostWrapupBehavior.WrapupExtendable" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.PostWrapupBehavior.WrapupExtendable}" IsChecked="{Binding WrapupExtendable}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Wrapup duration can be extended'}"></CheckBox>
+
+
+                            <CheckBox IsThreeState="True" local:RightsManagement.Rights="Qualification.PostWrapupBehavior.Alert" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.PostWrapupBehavior.Alert}" IsChecked="{Binding PostWrapupOptionsAlert}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Send alert'}"></CheckBox>
+                            <CheckBox IsThreeState="True" local:RightsManagement.Rights="Qualification.PostWrapupBehavior.SupAlert" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.PostWrapupBehavior.SupAlert}" IsChecked="{Binding PostWrapupOptionsSupAlert}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Send supervisor alert'}"></CheckBox>
+                            <CheckBox IsThreeState="True" local:RightsManagement.Rights="Qualification.PostWrapupBehavior.CloseScript" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.PostWrapupBehavior.CloseScript}" IsChecked="{Binding PostWrapupOptionsCloseScript}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Close the script'}"></CheckBox>
+                            <CheckBox IsThreeState="True" local:RightsManagement.Rights="Qualification.PostWrapupBehavior.ForceReady" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.PostWrapupBehavior.ForceReady}" IsChecked="{Binding PostWrapupOptionsForceReady}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Force ready'}"></CheckBox>
+
+
+
+                        </nixxis:NixxisStackPanel>
+                    </GroupBox>
+
+                    <GroupBox Margin="20,0,0,0" Visibility="{Binding ElementName=chkPostWrapupBehavior, Path=IsDetailChecked, Converter={StaticResource VisWithCollapseConverter}}" Header="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Auto ready settings'}">
+                        <nixxis:NixxisStackPanel>
+
+                            <CheckBox IsThreeState="True" local:RightsManagement.Rights="Qualification.PostWrapupBehavior.PostWrapupOptionsReadyWhenScriptIsClosed" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.PostWrapupBehavior.PostWrapupOptionsReadyWhenScriptIsClosed}" IsChecked="{Binding PostWrapupOptionsReadyWhenScriptIsClosed}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Closing the script sets the agent ready'}"></CheckBox>
+
+                            <CheckBox Name="chkModifyAutoReadyDelay" local:RightsManagement.Rights="Qualification.PostWrapupBehavior.ModifyAutoReadyDelay" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.PostWrapupBehavior.ModifyAutoReadyDelay}" IsChecked="{Binding IsAutoReadyDelayModified}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Modify auto ready delay'}"></CheckBox>
+
+                            <Grid Visibility="{Binding ElementName=chkModifyAutoReadyDelay, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+
+
+                                <RadioButton Grid.Row="0" IsChecked="{Binding PostWrapupOptionsSetAutoReadyDelay}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Set auto ready delay to a specific value'}"></RadioButton>
+                                <RadioButton Grid.Row="1" IsChecked="{Binding PostWrapupOptionsIncreaseAutoReadyDelay}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Increase auto ready delay by'}"></RadioButton>
+                                <RadioButton Grid.Row="2" IsChecked="{Binding PostWrapupOptionsDecreaseAutoReadyDelay}" Content="{Binding Source={StaticResource tcxy}, Converter={StaticResource tcv}, ConverterParameter='Decrease auto ready delay by'}"></RadioButton>
+
+                                <nixxis:DurationPicker Grid.Row="3"  Margin="22,0,0,0"  local:RightsManagement.Rights="Qualification.PostWrapupBehavior.AutoReadyDelay" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Qualification.PostWrapupBehavior.AutoReadyDelay}"  Duration="{Binding AutoReadyDelay, Converter={StaticResource MultConverter}, ConverterParameter=1000}" ShowMilliseconds="false"></nixxis:DurationPicker>
+
+                            </Grid>
+                        </nixxis:NixxisStackPanel>
+                    </GroupBox>
+
+
+                </nixxis:NixxisStackPanel>
+            </GroupBox>
+
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

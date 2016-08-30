@@ -1,0 +1,1073 @@
+﻿<UserControl x:Class="Nixxis.Client.Admin.QueuesControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+             xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+             xmlns:local="clr-namespace:Nixxis.Client.Admin"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:adminlink="clr-namespace:Nixxis.Client.Admin;assembly=AdminLink"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             Name="MySelf">
+
+
+    <UserControl.CommandBindings>
+        <CommandBinding Command="local:AdminFrameSet.AdminObjectAddOperation" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.AdminObjectDuplicateOperation" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.AdminObjectDeleteOperation" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.AdminObjectPrintOperation" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>        
+        <CommandBinding Command="local:AdminFrameSet.ShowObject" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+
+    </UserControl.CommandBindings>
+
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+
+            <crs:TranslationContext Context="QueuesControl" x:Key="tcx"></crs:TranslationContext>
+
+            <local:IsDummyIdConverter x:Key="isDummyId"></local:IsDummyIdConverter>
+
+
+            <CollectionViewSource x:Key="List" Source="{Binding Queues}">
+            </CollectionViewSource>
+
+            <local:ComboListConverter x:Key="cboConverter" />
+            <local:ComboListConverterNoDummies x:Key="cboConverterNoDummies" />
+
+            <CollectionViewSource x:Key="SecurityContexts" Source="{Binding SecurityContexts, Converter={StaticResource cboConverter}}"/>
+            <CollectionViewSource x:Key="SecurityContextsNoDummies" Source="{Binding SecurityContexts, Converter={StaticResource cboConverterNoDummies}}"/>
+
+            <local:RightsConverter x:Key="rightsConverter"></local:RightsConverter><local:InvertedRightsConverter x:Key="invertedRightsConverter"></local:InvertedRightsConverter>
+            
+            <local:AdminObjectConverter x:Key="adminObjectConverter"></local:AdminObjectConverter>
+            
+            <local:ProfitEvaluationConverter x:Key="profitConverter"></local:ProfitEvaluationConverter>
+
+            <local:ComboStringListConverter x:Key="cboStringConverter" />
+            
+            <local:WaitTimeConverter x:Key="WTConverter"/>
+
+            <local:DurationConverter3 x:Key="durationConverter3" />
+
+            <local:DurationConverter x:Key="durationConverter" />
+
+            <CollectionViewSource x:Key="VoicePreprocessors" Source="{Binding Preprocessors, Converter={StaticResource cboConverter}}" Filter="VoicePreprocessors_Filter"/>
+
+            <sys:Single x:Key="-1F">-1</sys:Single>
+            <sys:Int32 x:Key="-1">-1</sys:Int32>
+            <sys:Int32 x:Key="1">1</sys:Int32>
+            <sys:Int32 x:Key="0">0</sys:Int32>
+
+
+            <nixxis:NixxisExpandPanel x:Key="AdminPanel" Title="Administration toolbar" nixxis:NixxisGrid.Panel="CenterLeft">
+                <nixxis:NixxisButton local:RightsManagement.Rights="Queue.Add"  Command="local:AdminFrameSet.AdminObjectAddOperation" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Action_Add.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Add'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton local:RightsManagement.Rights="Queue.Duplicate"  Command="local:AdminFrameSet.AdminObjectDuplicateOperation" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Action_Duplicate.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Duplicate'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton local:RightsManagement.Rights="Queue.Delete" Command="local:AdminFrameSet.AdminObjectDeleteOperation"  CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Action_Delete.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Delete'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton local:RightsManagement.Rights="Queue.Print" Command="local:AdminFrameSet.AdminObjectPrintOperation" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Action_Print.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Print'}"></nixxis:NixxisButton>
+            </nixxis:NixxisExpandPanel>
+
+            <DataTemplate x:Key="FullView">
+                <nixxis:CoverflowElement Margin="5" IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPresenter}}, Path=(nixxis:NixxisCoverFlowPanel.IsSelected), Mode=TwoWay}">
+                    <StackPanel Margin="5" Orientation="Vertical">
+
+                        <Label Content="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Queue {0}',BindTo={Binding Description}}" ></Label>
+
+                        <Label>
+                            <Label.Content>
+                                <nixxis:FormatStringExtension TranslationContext="{StaticResource tcx}" FormatString="Created at {0:dd/MM/yyy HH:mm} by {1}">
+                                    <nixxis:FormatStringExtension.BindTo>
+                                        <MultiBinding>
+                                            <Binding Path="CreationTime"></Binding>
+                                            <Binding Path="Creator"></Binding>
+                                        </MultiBinding>
+                                    </nixxis:FormatStringExtension.BindTo>
+                                </nixxis:FormatStringExtension>
+                            </Label.Content>
+                        </Label>
+
+                        <Label>
+                            <nixxis:FormatStringExtension TranslationContext="{StaticResource tcx}" FormatString="Modified at {0:dd/MM/yyy HH:mm} by {1}">
+                                <nixxis:FormatStringExtension.BindTo>
+                                    <MultiBinding>
+                                        <Binding Path="ModifyTime"></Binding>
+                                        <Binding Path="Modificator"></Binding>
+                                    </MultiBinding>
+                                </nixxis:FormatStringExtension.BindTo>
+                            </nixxis:FormatStringExtension>
+                        </Label>
+
+                        <Label>
+                            <Label.Content>
+                                <nixxis:FormatStringExtension TranslationContext="{StaticResource tcx}" FormatString="Owned by {0}">
+                                    <nixxis:FormatStringExtension.BindTo>
+                                        <Binding Path="OwnerUser.Target.DisplayText"></Binding>
+                                    </nixxis:FormatStringExtension.BindTo>
+                                </nixxis:FormatStringExtension>
+                            </Label.Content>
+                        </Label>
+
+                        <TextBlock>
+                            <TextBlock.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}" ConverterParameter="true,false,false" FallbackValue="Collapsed" TargetNullValue="Collapsed">
+                                    <Binding Path="IsRightsHandlingAllowed"></Binding>
+                                    <Binding Path="IsReadOnly"></Binding>
+                                    <Binding Path="IsOwned"></Binding>
+                                </MultiBinding>                                                                
+                            </TextBlock.Visibility>
+
+                            <Hyperlink Foreground="White" Click="TakeOwnerShip">Take ownership</Hyperlink>
+
+                        </TextBlock>
+
+                    </StackPanel>
+
+                </nixxis:CoverflowElement>
+
+            </DataTemplate>
+
+            <nixxis:NixxisExpandCoverFlowPanel x:Key="DetailsPanel" ItemsSource="{Binding Source={StaticResource List}, Path=CurrentItem}" Title="Details" nixxis:NixxisGrid.Panel="CenterRight" ItemTemplate="{StaticResource FullView}" ItemsWidth="350"/>
+
+        </ResourceDictionary>
+        
+    </UserControl.Resources>
+
+    <nixxis:PresentationGrid Orientation="{Binding Source={x:Static local:AdminFrameSet.Settings}, Path=PanelsOrientation}" >
+
+        <ComboBox nixxis:PresentationGrid.Meaning="Filter" Name="cboFilter" Margin="5,0,0,0" ItemsSource="{Binding GroupKeysSameType, Converter={StaticResource cboStringConverter}}" DisplayMemberPath="DisplayText" SelectedValue="{x:Null}" SelectedValuePath="Id" DropDownOpened="ComboBox_DropDownOpened" DropDownClosed="ComboBox_DropDownClosed" ></ComboBox>
+
+
+        <nixxis:NixxisDataGrid nixxis:PresentationGrid.Meaning="List" BorderThickness="0" Name="MainGrid" DefaultSortOrder="Description" SelectedItem="{Binding ElementName=MySelf, Path=SelectedItem}" ItemsSource="{Binding Source={StaticResource List}}" CanUserAddRows="False" HeadersVisibility="Column" RowDetailsVisibilityMode="Collapsed" IsReadOnly="True">
+
+            <nixxis:NixxisDataGrid.Columns>
+
+                <DataGridTemplateColumn IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="Images\AdminSmall_Queue.png"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Description'}" Binding="{Binding Description}"></DataGridTextColumn>
+                <DataGridTextColumn EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Group'}" Binding="{Binding GroupKey}"></DataGridTextColumn>
+            </nixxis:NixxisDataGrid.Columns>
+
+        </nixxis:NixxisDataGrid>
+
+        <nixxis:NixxisTabControl  Name="MainTabControl" nixxis:PresentationGrid.Meaning="Properties" DataContext="{StaticResource List}" IsEnabled="{Binding ElementName=MainGrid, Path=SelectedIndex, Converter={StaticResource IneqConverter}, ConverterParameter={StaticResource -1}}">
+
+            <!--General-->
+            <nixxis:NixxisTabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Width="25" Height="25" Source="Images\AdminSmall_Queue.png"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='General'}"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+
+                <ScrollViewer CanContentScroll="False" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <nixxis:NixxisStackPanel>
+                        <Label Visibility="{Binding Source={x:Static local:AdminFrameSet.Settings}, Path=IsDebug, Converter={StaticResource VisWithCollapseConverter}}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Id:'}"></Label>
+                        <TextBox Visibility="{Binding Source={x:Static local:AdminFrameSet.Settings}, Path=IsDebug, Converter={StaticResource VisWithCollapseConverter}}" IsReadOnly="True" 
+                                             Text="{Binding Id, Mode=OneWay}"></TextBox>
+
+                        <Label  Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Description:'}"></Label>
+                        <TextBox Name="NameToHelpDebug" local:RightsManagement.Rights="Queue.Description" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Queue.Description}" Text="{Binding Description}"></TextBox>
+
+                        <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Group:'}"></Label>
+                        <ComboBox local:RightsManagement.Rights="Queue.GroupKey" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Queue.GroupKey}" ItemsSource="{Binding GroupKeys}" SelectedItem="{Binding GroupKey}" Text="{Binding GroupKey}" IsEditable="True"></ComboBox>
+
+                        <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Security context:'}">
+                        </Label>
+                        <ComboBox local:RightsManagement.Rights="Queue.SecurityContext" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Queue.SecurityContext}" IsSynchronizedWithCurrentItem="False"  ItemsSource="{Binding Source={StaticResource SecurityContexts}}" DisplayMemberPath="DisplayText" SelectedValuePath="Id" SelectedValue="{Binding SecurityContext.TargetId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                            <ComboBox.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}"  TargetNullValue="Collapsed">
+                                    <Binding Path="SecurityContext.TargetId" Converter="{StaticResource isDummyId}"></Binding>
+                                </MultiBinding>
+                            </ComboBox.Visibility>
+                            <ComboBox.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Go to definition'}" Command="local:AdminFrameSet.ShowObject" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"></MenuItem>
+                                </ContextMenu>
+                            </ComboBox.ContextMenu>
+                        </ComboBox>
+                        <ComboBox local:RightsManagement.Rights="Queue.SecurityContext" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Queue.SecurityContext}" IsSynchronizedWithCurrentItem="False"  ItemsSource="{Binding Source={StaticResource SecurityContextsNoDummies}}" DisplayMemberPath="DisplayText" SelectedValuePath="Id" SelectedValue="{Binding SecurityContext.TargetId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                            <ComboBox.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}" TargetNullValue="Collapsed" >
+                                    <Binding Path="SecurityContext.TargetId" Converter="{StaticResource isDummyId}" ConverterParameter="true"></Binding>
+                                </MultiBinding>
+                            </ComboBox.Visibility>
+                            <ComboBox.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Go to definition'}" Command="local:AdminFrameSet.ShowObject" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"></MenuItem>
+                                </ContextMenu>
+                            </ComboBox.ContextMenu>
+                        </ComboBox>
+
+
+                        <Label  Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Short code:'}"></Label>
+                        <TextBox local:RightsManagement.Rights="Queue.ShortCode" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Queue.ShortCode}" Text="{Binding ShortCode}"></TextBox>
+
+                        <CheckBox local:RightsManagement.Rights="Queue.HighPriority" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Queue.HighPriority}" IsChecked="{Binding HighPriority}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='High priority'}"></CheckBox>
+
+                        <nixxis:NixxisDetailedCheckBox local:RightsManagement.Rights="Queue.GenerateOverflow" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Queue.GenerateOverflow}" IsChecked="{Binding OverflowCondition, Converter={StaticResource IneqConverter}, ConverterParameter={x:Static adminlink:OverflowConditions.None}}" VerticalAlignment="Center" Name="chkOverflow"  DetailContent="{Binding OverflowSettings}" DetailVisibility="{Binding ElementName=chkOverflow, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Generate overflow'}"></nixxis:NixxisDetailedCheckBox>
+
+                        <GroupBox Margin="20,0,0,0" Visibility="{Binding ElementName=chkOverflow, Path=IsDetailChecked, Converter={StaticResource VisWithCollapseConverter}}">
+                            <local:OverflowConditionHelper
+                                Text="{Binding Source={StaticResource tcx},  Converter={StaticResource tcv}, ConverterParameter='Condition triggering the overflow:'}"
+                                OverflowCondition="{Binding OverflowCondition, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                OverflowConditionItemsInQueueThreshold="{Binding OverflowConditionItemsInQueueThreshold}"
+                                OverflowConditionMaxWait="{Binding OverflowConditionMaxWait}"
+                                OverflowConditionMaxEWT="{Binding OverflowConditionMaxEWT}"
+                                OverflowConditionAgentsReadySmallerThanThreshold="{Binding OverflowConditionAgentsReadySmallerThanThreshold}"
+                                OverflowConditionRatioInQueueAgents="{Binding OverflowConditionRatioInQueueAgents}"
+                                >
+
+                            </local:OverflowConditionHelper>
+                        </GroupBox>
+
+                        <GroupBox Margin="20,0,0,0" Visibility="{Binding ElementName=chkOverflow, Path=IsDetailChecked, Converter={StaticResource VisWithCollapseConverter}}">
+                            <local:OverflowHelper 
+                                          Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Action when overflow is trigered:'}"
+                                          Prompts="{Binding AllPrompts}"
+                                          OverflowActionType="{Binding OverflowActionType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                          OverflowMessage="{Binding OverflowMessage}"                                           
+                                OverflowReroutePrompt="{Binding OverflowReroutePrompt}"                                           
+                                Preprocessors="{Binding Preprocessors, Mode=OneWay}" 
+                                OverflowPreprocessor="{Binding OverflowPreprocessor, Mode=OneWay}" 
+                                          OverflowPreprocessorParams="{Binding OverflowPreprocessorParams}" 
+                                OverflowPreprocessorConfig="{Binding OverflowPreprocessorConfig}" 
+                                          OverflowRerouteDestination ="{Binding OverflowRerouteDestination}"></local:OverflowHelper>
+
+                        </GroupBox>
+
+
+                    </nixxis:NixxisStackPanel>
+
+                </ScrollViewer>
+            </nixxis:NixxisTabItem>
+
+            <!--Profit evaluation-->
+            <nixxis:NixxisTabItem Name="ProfitEvaluation" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Profit evaluation'}">
+                <Grid Margin="10">
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type Thumb}" BasedOn="{StaticResource {x:Type Thumb}}">
+                            <Setter Property="Background" Value="#5eb500"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <CheckBox local:RightsManagement.Rights="Queue.ProfitEvaluation" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Queue.ProfitEvaluation}" Name="chkEval" IsChecked="{Binding ProfitEvaluatorActive}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Profit evalution is function of time'}"></CheckBox>
+                    <GroupBox Grid.Row="1" Visibility="{Binding ElementName=chkEval, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}}" >
+                        <Canvas Name="DrawingCanvas">
+
+                            <Line StrokeThickness="1" Stroke="White" X1="5" Y1="{Binding ElementName=DrawingCanvas, Path=ActualHeight}"  X2="5" Y2="5" >
+                                <Line.RenderTransform>
+                                    <TranslateTransform Y="0"></TranslateTransform>
+                                </Line.RenderTransform>
+                            </Line>
+
+                            <Line StrokeThickness="1" Stroke="White" X1="2" X2="5" Y1="{Binding ElementName=DrawingCanvas, Path=ActualHeight}" Y2="{Binding ElementName=DrawingCanvas, Path=ActualHeight}" >
+                                <Line.RenderTransform>
+                                    <ScaleTransform ScaleY="0.5"></ScaleTransform>
+                                </Line.RenderTransform>
+                            </Line>
+
+                            <Line StrokeThickness="0.5" Stroke="White" X1="2" X2="5" Y1="5" Y2="5" >
+                            </Line>
+
+                            <Line StrokeThickness="1" Stroke="White" X1="0" Y1="{Binding ElementName=DrawingCanvas, Path=ActualHeight}"  X2="{Binding ElementName=DrawingCanvas, Path=ActualWidth}" Y2="{Binding ElementName=DrawingCanvas, Path=ActualHeight}">
+                                <Line.RenderTransform>
+                                    <TranslateTransform Y="-5"></TranslateTransform>
+                                </Line.RenderTransform>
+                            </Line>
+
+                            <Line StrokeThickness="0.5" Stroke="#dfdfdf">
+                                <Line.X1>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="X1">
+                                        <Binding Source="{StaticResource List}" Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                    </MultiBinding>
+                                </Line.X1>
+                                <Line.Y1>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="Y1">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Line.Y1>
+                                <Line.X2>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="X2">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Line.X2>
+                                <Line.Y2>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="Y2">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Line.Y2>
+                            </Line>
+
+                            <Line StrokeThickness="0.5" Stroke="#dfdfdf">
+                                <Line.X1>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="X2">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Line.X1>
+                                <Line.Y1>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="Y2">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Line.Y1>
+                                <Line.X2>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="X3">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Line.X2>
+                                <Line.Y2>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="Y3">
+                                        <Binding Source="{StaticResource List}" Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Line.Y2>
+                            </Line>
+
+                            <Line StrokeThickness="0.5" Stroke="#dfdfdf">
+                                <Line.X1>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="X3">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Line.X1>
+                                <Line.Y1>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="Y3">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Line.Y1>
+                                <Line.X2>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="X4">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Line.X2>
+                                <Line.Y2>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="Y4">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Line.Y2>
+                            </Line>
+
+                            <Line StrokeThickness="0.5" Stroke="#dfdfdf">
+                                <Line.X1>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="X4">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Line.X1>
+                                <Line.Y1>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="Y4">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Line.Y1>
+                                <Line.X2>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="X5">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Line.X2>
+                                <Line.Y2>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="Y5">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Line.Y2>
+                            </Line>
+
+                            <Line StrokeThickness="0.5" Stroke="#dfdfdf" StrokeDashArray="2,2">
+                                <Line.X1>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="X5">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Line.X1>
+                                <Line.Y1>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="Y5">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Line.Y1>
+                                <Line.X2>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="X6">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                    </MultiBinding>
+                                </Line.X2>
+                                <Line.Y2>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="Y6">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Line.Y2>
+                            </Line>
+
+                            <Popup Name="Thumb1Popup" AllowsTransparency="True" Placement="Relative"  PlacementTarget="{Binding ElementName=DrawingCanvas}" DataContext="{Binding ElementName=MySelf, Path=SelectedItem}">
+                                <Popup.HorizontalOffset>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="X2">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Popup.HorizontalOffset>
+                                <Popup.VerticalOffset>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="Y2">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Popup.VerticalOffset>
+                                <Border>
+                                    <TextBlock Margin="10,10,0,0" >
+                                        <TextBlock.Text>
+                                            <nixxis:FormatStringExtension TranslationContext="{StaticResource tcx}" FormatString=" {0:0} secs, {1:0}%">
+                                                <nixxis:FormatStringExtension.BindTo>
+                                                    <MultiBinding>
+                                                        <Binding Path="Time0"></Binding>
+                                                        <Binding Path="Coef0"></Binding>
+                                                    </MultiBinding>
+                                                </nixxis:FormatStringExtension.BindTo>
+                                            </nixxis:FormatStringExtension>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </Border>
+                            </Popup>
+
+                            <Thumb local:RightsManagement.Rights="Queue.ProfitThumb1" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Queue.ProfitThumb1}" DragDelta="Thumb1_DragDelta" DragStarted="Thumb1_DragStarted" DragCompleted="Thumb1_DragCompleted" DataContext="{Binding ElementName=MySelf, Path=SelectedItem}" Height="6" Width="6" Margin="-3,-3,0,0">
+                                <Thumb.ToolTip>
+                                    <TextBlock >
+                                        <TextBlock.Text>
+                                            <nixxis:FormatStringExtension TranslationContext="{StaticResource tcx}" FormatString=" {0:0} secs, {1:0}%">
+                                                <nixxis:FormatStringExtension.BindTo>
+                                                    <MultiBinding>
+                                                        <Binding Path="Time0"></Binding>
+                                                        <Binding Path="Coef0"></Binding>
+                                                    </MultiBinding>
+                                                </nixxis:FormatStringExtension.BindTo>
+                                            </nixxis:FormatStringExtension>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </Thumb.ToolTip>
+                                <Canvas.Left>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="X2">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Canvas.Left>
+                                <Canvas.Top>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="Y2">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Canvas.Top>
+                            </Thumb>
+
+                            <Popup Name="Thumb2Popup" AllowsTransparency="True" Placement="Relative"  PlacementTarget="{Binding ElementName=DrawingCanvas}" DataContext="{Binding ElementName=MySelf, Path=SelectedItem}">
+                                <Popup.HorizontalOffset>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="X3">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Popup.HorizontalOffset>
+                                <Popup.VerticalOffset>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="Y3">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Popup.VerticalOffset>
+                                <Border>
+                                    <TextBlock Margin="10,10,0,0" >
+                                        <TextBlock.Text>
+                                            <nixxis:FormatStringExtension TranslationContext="{StaticResource tcx}" FormatString=" {0:0} secs, {1:0}%">
+                                                <nixxis:FormatStringExtension.BindTo>
+                                                    <MultiBinding>
+                                                        <Binding Path="Time1"></Binding>
+                                                        <Binding Path="Coef1"></Binding>
+                                                    </MultiBinding>
+                                                </nixxis:FormatStringExtension.BindTo>
+                                            </nixxis:FormatStringExtension>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </Border>
+                            </Popup>
+
+                            <Thumb local:RightsManagement.Rights="Queue.ProfitThumb2" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Queue.ProfitThumb2}" Name="Thumb2" DragDelta="Thumb2_DragDelta" DragStarted="Thumb2_DragStarted" DragCompleted="Thumb2_DragCompleted" DataContext="{Binding ElementName=MySelf, Path=SelectedItem}" Height="6" Width="6"  Margin="-3,-3,0,0">
+                                <Thumb.ToolTip>
+                                    <TextBlock >
+                                        <TextBlock.Text>
+                                            <nixxis:FormatStringExtension TranslationContext="{StaticResource tcx}" FormatString=" {0:0} secs, {1:0}%">
+                                                <nixxis:FormatStringExtension.BindTo>
+                                                    <MultiBinding>
+                                                        <Binding Path="Time1"></Binding>
+                                                        <Binding Path="Coef1"></Binding>
+                                                    </MultiBinding>
+                                                </nixxis:FormatStringExtension.BindTo>
+                                            </nixxis:FormatStringExtension>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </Thumb.ToolTip>
+                                <Canvas.Left>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="X3">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Canvas.Left>
+                                <Canvas.Top>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="Y3">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Canvas.Top>
+                            </Thumb>
+
+                            <Popup Name="Thumb3Popup" AllowsTransparency="True" Placement="Relative"  PlacementTarget="{Binding ElementName=DrawingCanvas}" DataContext="{Binding ElementName=MySelf, Path=SelectedItem}">
+                                <Popup.HorizontalOffset>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="X4">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Popup.HorizontalOffset>
+                                <Popup.VerticalOffset>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="Y4">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Popup.VerticalOffset>
+                                <Border>
+                                    <TextBlock Margin="10,10,0,0" >
+                                        <TextBlock.Text>
+                                            <nixxis:FormatStringExtension TranslationContext="{StaticResource tcx}" FormatString=" {0:0} secs, {1:0}%">
+                                                <nixxis:FormatStringExtension.BindTo>
+                                                    <MultiBinding>
+                                                        <Binding Path="Time2"></Binding>
+                                                        <Binding Path="Coef2"></Binding>
+                                                    </MultiBinding>
+                                                </nixxis:FormatStringExtension.BindTo>
+                                            </nixxis:FormatStringExtension>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </Border>
+                            </Popup>
+
+                            <Thumb local:RightsManagement.Rights="Queue.ProfitThumb3" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Queue.ProfitThumb3}" DragDelta="Thumb3_DragDelta" DragStarted="Thumb3_DragStarted" DragCompleted="Thumb3_DragCompleted" DataContext="{Binding ElementName=MySelf, Path=SelectedItem}" Height="6" Width="6"  Margin="-3,-3,0,0">
+                                <Thumb.ToolTip>
+                                    <TextBlock >
+                                        <TextBlock.Text>
+                                            <nixxis:FormatStringExtension TranslationContext="{StaticResource tcx}" FormatString=" {0:0} secs, {1:0}%">
+                                                <nixxis:FormatStringExtension.BindTo>
+                                                    <MultiBinding>
+                                                        <Binding Path="Time2"></Binding>
+                                                        <Binding Path="Coef2"></Binding>
+                                                    </MultiBinding>
+                                                </nixxis:FormatStringExtension.BindTo>
+                                            </nixxis:FormatStringExtension>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </Thumb.ToolTip>
+                                <Canvas.Left>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="X4">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Canvas.Left>
+                                <Canvas.Top>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="Y4">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Canvas.Top>
+                            </Thumb>
+
+                            <Popup Name="Thumb4Popup" AllowsTransparency="True" Placement="Relative"  PlacementTarget="{Binding ElementName=DrawingCanvas}" DataContext="{Binding ElementName=MySelf, Path=SelectedItem}">
+                                <Popup.HorizontalOffset>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="X5">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Popup.HorizontalOffset>
+                                <Popup.VerticalOffset>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="Y5">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Popup.VerticalOffset>
+                                <Border>
+                                    <TextBlock Margin="10,10,0,0" >
+                                        <TextBlock.Text>
+                                            <nixxis:FormatStringExtension TranslationContext="{StaticResource tcx}" FormatString=" {0:0} secs, {1:0}%">
+                                                <nixxis:FormatStringExtension.BindTo>
+                                                    <MultiBinding>
+                                                        <Binding Path="Time3"></Binding>
+                                                        <Binding Path="Coef3"></Binding>
+                                                    </MultiBinding>
+                                                </nixxis:FormatStringExtension.BindTo>
+                                            </nixxis:FormatStringExtension>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </Border>
+                            </Popup>
+
+                            <Thumb local:RightsManagement.Rights="Queue.ProfitThumb4" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Queue.ProfitThumb4}" DragDelta="Thumb4_DragDelta" DragStarted="Thumb4_DragStarted" DragCompleted="Thumb4_DragCompleted" DataContext="{Binding ElementName=MySelf, Path=SelectedItem}" Height="6" Width="6"  Margin="-3,-3,0,0">
+                                <Thumb.ToolTip>
+                                    <TextBlock >
+                                        <TextBlock.Text>
+                                            <nixxis:FormatStringExtension TranslationContext="{StaticResource tcx}" FormatString=" {0:0} secs, {1:0}%">
+                                                <nixxis:FormatStringExtension.BindTo>
+                                                    <MultiBinding>
+                                                        <Binding Path="Time3"></Binding>
+                                                        <Binding Path="Coef3"></Binding>
+                                                    </MultiBinding>
+                                                </nixxis:FormatStringExtension.BindTo>
+                                            </nixxis:FormatStringExtension>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </Thumb.ToolTip>
+                                <Canvas.Left>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="X5" >
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Canvas.Left>
+                                <Canvas.Top>
+                                    <MultiBinding Converter="{StaticResource profitConverter}" ConverterParameter="Y5">
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem"></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualWidth" ></Binding>
+                                        <Binding ElementName="DrawingCanvas" Path="ActualHeight" ></Binding>
+                                        <Binding Source="{StaticResource List}"  Path="CurrentItem.TimeCoefHelper" ></Binding>
+                                    </MultiBinding>
+                                </Canvas.Top>
+                            </Thumb>
+                        </Canvas>
+                    </GroupBox>
+                </Grid>
+            </nixxis:NixxisTabItem>
+
+            <!--Teams-->
+            <nixxis:NixxisTabItem Name="Teams" Visibility="{Binding Source={x:Static local:AdminFrameSet.Settings}, Path=IsFullVersion, Converter={StaticResource VisWithCollapseConverter}}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Width="25" Height="25" Source="Images\AdminSmall_Team.png"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Teams'}"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+
+                <nixxis:NixxisDataGrid local:RightsManagement.Rights="Queue.Teams" IsDisabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource invertedRightsConverter}, ConverterParameter=Queue.Teams}" DefaultSortOrder="Item.DisplayText" Name="DGTeams" EditMode="SingleClick" Margin="10" ItemsSource="{Binding CheckedTeams}" CanUserAddRows="False" HeadersVisibility="Column" RowDetailsVisibilityMode="Collapsed"  >
+                    <nixxis:NixxisDataGrid.Columns>
+                        <DataGridTemplateColumn IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding Item, Converter={StaticResource adminObjectConverter}}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridCheckBoxColumn ElementStyle="{StaticResource DatagridCheckBox}" EditingElementStyle="{StaticResource {x:Type CheckBox}}" Binding="{Binding HasLink, UpdateSourceTrigger=PropertyChanged}"></DataGridCheckBoxColumn>
+
+                        <nixxis:NixxisDataGridSliderColumn EnabledBinding="{Binding HasLink}" AutoToolTipPlacement="BottomRight" EditingElementStyle="{StaticResource {x:Type Slider}}" ElementStyle="{StaticResource DatagridSlider}" Minimum="0" Maximum="100" SliderWidth="100" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Level'}" SortMemberPath="Level" Binding="{Binding Link.BaseLevel, UpdateSourceTrigger=PropertyChanged}"></nixxis:NixxisDataGridSliderColumn>
+
+                        <DataGridTemplateColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Min. wait time'}" >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+
+                                        <CheckBox IsEnabled="False" IsChecked="{Binding Link.MinWaitTime, Converter={StaticResource IneqConverter}, ConverterParameter={StaticResource -1F}, UpdateSourceTrigger=PropertyChanged }" Visibility="{Binding HasLink, Converter={StaticResource VisWithCollapseConverter}}" VerticalAlignment="Center" VerticalContentAlignment="Center"></CheckBox>
+                                        <TextBlock Grid.Column="1" Name="txtMinWait" Text="-">
+                                            <TextBlock.Visibility>
+                                                <MultiBinding Converter="{StaticResource WTConverter}" TargetNullValue="Collapsed">
+                                                    <Binding Path="HasLink"></Binding>
+                                                    <Binding Path="Link.MinWaitTime" Converter="{StaticResource EqConverter}" ConverterParameter="{StaticResource -1F}"></Binding>
+                                                </MultiBinding>
+                                            </TextBlock.Visibility>
+                                        </TextBlock>
+                                        <TextBlock Grid.Column="1" Text="{Binding Link.MinWaitTime, Converter={StaticResource durationConverter3}}">
+                                            <TextBlock.Visibility>
+                                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}" ConverterParameter="true,false" TargetNullValue="Collapsed">
+                                                    <Binding Path="HasLink"></Binding>
+                                                    <Binding  ElementName="txtMinWait" Path="IsVisible"></Binding>
+                                                </MultiBinding>
+                                            </TextBlock.Visibility>
+                                        </TextBlock>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <Grid Visibility="{Binding HasLink, Converter={StaticResource VisWithCollapseConverter}}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center" Name="chkMinWait" IsChecked="{Binding Link.MinWaitTime, Converter={StaticResource IneqConverter}, ConverterParameter={StaticResource -1F}, UpdateSourceTrigger=PropertyChanged }"></CheckBox>
+                                        <nixxis:DurationPicker ShowMilliseconds="False" IsEnabled="{Binding ElementName=chkMinWait, Path=IsChecked}" Grid.Column="1" Duration="{Binding Link.MinWaitTime,  UpdateSourceTrigger=PropertyChanged}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Max. wait time'}" >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+
+                                        <CheckBox IsEnabled="False" IsChecked="{Binding Link.MaxWaitTime, Converter={StaticResource IneqConverter}, ConverterParameter={StaticResource -1F}, UpdateSourceTrigger=PropertyChanged }" Visibility="{Binding HasLink, Converter={StaticResource VisWithCollapseConverter}}" VerticalAlignment="Center" VerticalContentAlignment="Center"></CheckBox>
+                                        <TextBlock Grid.Column="1" Name="txtMaxWait" Text="-">
+                                            <TextBlock.Visibility>
+                                                <MultiBinding Converter="{StaticResource WTConverter}" TargetNullValue="Collapsed">
+                                                    <Binding Path="HasLink"></Binding>
+                                                    <Binding Path="Link.MaxWaitTime" Converter="{StaticResource EqConverter}" ConverterParameter="{StaticResource -1F}"></Binding>
+                                                </MultiBinding>
+                                            </TextBlock.Visibility>
+                                        </TextBlock>
+                                        <TextBlock Grid.Column="1" Text="{Binding Link.MaxWaitTime, Converter={StaticResource durationConverter3}}">
+                                            <TextBlock.Visibility>
+                                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}" ConverterParameter="true,false" TargetNullValue="Collapsed">
+                                                    <Binding Path="HasLink"></Binding>
+                                                    <Binding  ElementName="txtMaxWait" Path="IsVisible"></Binding>
+                                                </MultiBinding>
+                                            </TextBlock.Visibility>
+                                        </TextBlock>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <Grid Visibility="{Binding HasLink, Converter={StaticResource VisWithCollapseConverter}}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center" Name="chkMaxWait" IsChecked="{Binding Link.MaxWaitTime, Converter={StaticResource IneqConverter}, ConverterParameter={StaticResource -1F}, UpdateSourceTrigger=PropertyChanged }"></CheckBox>
+                                        <nixxis:DurationPicker ShowMilliseconds="False" IsEnabled="{Binding ElementName=chkMaxWait, Path=IsChecked}" Grid.Column="1" Duration="{Binding Link.MaxWaitTime,  UpdateSourceTrigger=PropertyChanged}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTextColumn IsReadOnly="True" EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Team'}" Binding="{Binding Item.DisplayText}"></DataGridTextColumn>
+                    </nixxis:NixxisDataGrid.Columns>
+                    <nixxis:NixxisDataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Visibility="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsEnabled, Converter={StaticResource VisWithCollapseConverter}}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Go to definition'}" Command="local:AdminFrameSet.ShowObject" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"></MenuItem>
+                        </ContextMenu>
+                    </nixxis:NixxisDataGrid.ContextMenu>
+                </nixxis:NixxisDataGrid>
+            </nixxis:NixxisTabItem>
+
+            <!--Prompts-->
+            <nixxis:NixxisTabItem Name="TabPrompts" Visibility="{Binding OverflowCondition, Converter={StaticResource EqCConverter}, ConverterParameter={x:Static adminlink:OverflowConditions.None}}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Width="25" Height="25" Source="Images\AdminSmall_Prompt.png"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Prompts'}"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+
+                <ScrollViewer CanContentScroll="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='The available prompts for playing in this context'}"></Label>
+                        <nixxis:NixxisDataGrid local:RightsManagement.Rights="Queue.Prompts" IsDisabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource invertedRightsConverter}, ConverterParameter=Queue.Prompts}" SelectionChanged="DataGridPrompts_SelectionChanged" Grid.Row="1" DefaultSortOrder="Prompt.Description"  Name="DGPrompts" EditMode="SingleClick"  ItemsSource="{Binding Prompts}" CanUserAddRows="False" HeadersVisibility="Column" RowDetailsVisibilityMode="Collapsed"  >
+
+                            <nixxis:NixxisDataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Makes globally available'}" Command="local:AdminFrameSet.AffectToCore" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"></MenuItem>
+                                </ContextMenu>
+                            </nixxis:NixxisDataGrid.ContextMenu>
+
+
+                            <nixxis:NixxisDataGrid.Columns>
+
+                                <nixxis:NixxisDataGridToggleDetailColumn SingleDetail="True" Header="">
+                                    <nixxis:NixxisDataGridToggleDetailColumn.ToggleDetailTemplate>
+                                        <ControlTemplate>
+                                            <Image Width="25" Height="25" 
+                                                   Visibility="{Binding Prompt.HasRelatedPrompts, Converter={StaticResource VisWithCollapseConverter}}"
+                                                   RenderOptions.BitmapScalingMode="LowQuality" Source="Images\Action_Add.png">
+                                            </Image>
+                                        </ControlTemplate>
+                                    </nixxis:NixxisDataGridToggleDetailColumn.ToggleDetailTemplate>
+                                </nixxis:NixxisDataGridToggleDetailColumn>
+
+
+                                <DataGridTemplateColumn IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <nixxis:NixxisPlayback Path="{Binding Prompt.Path}"></nixxis:NixxisPlayback>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTextColumn IsReadOnly="False" EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Description'}" Binding="{Binding Prompt.Description}"></DataGridTextColumn>
+
+
+                                <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Prompt.Language.Target.DisplayText }"></TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Core.Languages, Converter={StaticResource cboConverter}}" SelectedValuePath="Id" SelectedValue="{Binding Prompt.Language.TargetId, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="DisplayText"></ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTextColumn IsReadOnly="True" EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Path'}" Binding="{Binding Prompt.Path}"></DataGridTextColumn>
+
+                            </nixxis:NixxisDataGrid.Columns>
+
+                            <nixxis:NixxisDataGrid.RowDetailsTemplate>
+                                <DataTemplate>
+                                    <Grid Visibility="{Binding Prompt.HasRelatedPrompts, Converter={StaticResource VisWithCollapseConverter}}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#dfdfdf" Margin="8,0,8,0"> 
+                                                Related
+                                            <TextBlock.LayoutTransform>
+                                                <RotateTransform Angle="-90"></RotateTransform>
+                                            </TextBlock.LayoutTransform>
+                                        </TextBlock>
+
+                                        <nixxis:NixxisDataGrid local:RightsManagement.Rights="Queue.Prompt.RelatedPrompts" IsDisabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource invertedRightsConverter}, ConverterParameter=Queue.Prompt.RelatedPrompts}" SelectionChanged="DataGridPrompts_SelectionChanged" Grid.Column="1" Name="DGRelatedPrompts"  ItemsSource="{Binding Prompt.RelatedPrompts}" CanUserAddRows="False" HeadersVisibility="Column" RowDetailsVisibilityMode="Collapsed" >
+                                            <nixxis:NixxisDataGrid.Columns>
+
+                                                <DataGridTemplateColumn IsReadOnly="True">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <nixxis:NixxisPlayback Path="{Binding Path}"></nixxis:NixxisPlayback>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+
+                                                <DataGridTemplateColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Language'}">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding Language.Target.DisplayText }"></TextBlock>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                                        <DataTemplate>
+                                                            <ComboBox IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Core.Languages, Converter={StaticResource cboConverter}}" SelectedValuePath="Id" SelectedValue="{Binding Language.TargetId, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="DisplayText"></ComboBox>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                                </DataGridTemplateColumn>
+
+                                                <DataGridTextColumn IsReadOnly="True" EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Path'}" Binding="{Binding Path}"></DataGridTextColumn>
+
+                                            </nixxis:NixxisDataGrid.Columns>
+
+                                        </nixxis:NixxisDataGrid>
+
+                                    </Grid>
+                                </DataTemplate>
+                            </nixxis:NixxisDataGrid.RowDetailsTemplate>
+                        </nixxis:NixxisDataGrid>
+                    </Grid>
+                </ScrollViewer>
+
+            </nixxis:NixxisTabItem>
+
+            <!--Security-->
+            <nixxis:NixxisTabItem Name="Rights">
+                <nixxis:NixxisTabItem.Visibility>
+                    <MultiBinding Converter="{StaticResource BoolMultiAndConverter}" TargetNullValue="Collapsed">
+                        <Binding Source="{x:Static local:AdminFrameSet.Settings}" Path="IsFullVersion"  ></Binding>
+                        <Binding Path="IsRightsHandlingAllowed"></Binding>
+                    </MultiBinding>
+                </nixxis:NixxisTabItem.Visibility>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Width="25" Height="25" Source="Images\AdminSmall_Rights.png"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Rights'}"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='List of roles and their rights associated to the selected item:'}"></Label>
+
+                    <nixxis:NixxisDataGrid Grid.Row="1" local:RightsManagement.Rights="Queue.Rights" IsDisabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource invertedRightsConverter}, ConverterParameter=Queue.Rights}" DefaultSortOrder="DisplayText" Name="DGRights" Margin="10" ItemsSource="{Binding RolesOverview}" CanUserAddRows="False" HeadersVisibility="Column" RowDetailsVisibilityMode="Collapsed" Loaded="DGRights_Loaded"  >
+                        <nixxis:NixxisDataGrid.Columns>
+                            <DataGridTemplateColumn IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image Source="Images\AdminSmall_Rights.png"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTextColumn IsReadOnly="True" EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Role'}" Binding="{Binding DisplayText}"></DataGridTextColumn>
+
+                            <DataGridTextColumn IsReadOnly="True" EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Rights'}" Binding="{Binding Rights}"></DataGridTextColumn>
+
+                        </nixxis:NixxisDataGrid.Columns>
+
+                        <nixxis:NixxisDataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Visibility="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsEnabled, Converter={StaticResource VisWithCollapseConverter}}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Go to definition'}" Command="local:AdminFrameSet.ShowObject" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"></MenuItem>
+                            </ContextMenu>
+                        </nixxis:NixxisDataGrid.ContextMenu>
+                    </nixxis:NixxisDataGrid>
+
+                    <nixxis:NixxisDataGrid Grid.Row="2" local:RightsManagement.Rights="Queue.Rights" IsDisabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource invertedRightsConverter}, ConverterParameter=Queue.Rights}" Name="DGSubRights" EditMode="SingleClick" Margin="10" ItemsSource="{Binding ElementName=DGRights, Path=SelectedItem.Security}" CanUserAddRows="False" HeadersVisibility="Column" RowDetailsVisibilityMode="Collapsed"  >
+                        <nixxis:NixxisDataGrid.Columns>
+                            <DataGridTemplateColumn IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding ., Converter={StaticResource adminObjectConverter}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTextColumn IsReadOnly="True" EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Right'}" Binding="{Binding RightDescription}"></DataGridTextColumn>
+
+                            <nixxis:NixxisDataGridCheckBoxColumn EnabledBinding="{Binding IsListAllowedEnabled}" VisibilityBinding="{Binding IsListAllowedVisible, Converter={StaticResource VisWithCollapseConverter}}" ElementStyle="{StaticResource DatagridCheckBox}" EditingElementStyle="{StaticResource {x:Type CheckBox}}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='List'}" Binding="{Binding ListAllowed, UpdateSourceTrigger=PropertyChanged}" IsThreeState="True">
+                            </nixxis:NixxisDataGridCheckBoxColumn>
+
+                            <nixxis:NixxisDataGridCheckBoxColumn EnabledBinding="{Binding IsReadAllowedEnabled}" VisibilityBinding="{Binding IsReadAllowedVisible, Converter={StaticResource VisWithCollapseConverter}}" ElementStyle="{StaticResource DatagridCheckBox}" EditingElementStyle="{StaticResource {x:Type CheckBox}}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Read'}" Binding="{Binding ReadAllowed, UpdateSourceTrigger=PropertyChanged}" IsThreeState="True">
+                            </nixxis:NixxisDataGridCheckBoxColumn>
+
+                            <nixxis:NixxisDataGridCheckBoxColumn EnabledBinding="{Binding IsWriteAllowedEnabled}" VisibilityBinding="{Binding IsWriteAllowedVisible, Converter={StaticResource VisWithCollapseConverter}}" ElementStyle="{StaticResource DatagridCheckBox}" EditingElementStyle="{StaticResource {x:Type CheckBox}}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Write'}" Binding="{Binding WriteAllowed, UpdateSourceTrigger=PropertyChanged}" IsThreeState="True" >
+                            </nixxis:NixxisDataGridCheckBoxColumn>
+
+                            <nixxis:NixxisDataGridCheckBoxColumn EnabledBinding="{Binding IsCreateAllowedEnabled}" VisibilityBinding="{Binding IsCreateAllowedVisible, Converter={StaticResource VisWithCollapseConverter}}" ElementStyle="{StaticResource DatagridCheckBox}" EditingElementStyle="{StaticResource {x:Type CheckBox}}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Create'}" Binding="{Binding CreateAllowed, UpdateSourceTrigger=PropertyChanged}" IsThreeState="True" >
+                            </nixxis:NixxisDataGridCheckBoxColumn>
+
+                            <nixxis:NixxisDataGridCheckBoxColumn EnabledBinding="{Binding IsDeleteAllowedEnabled}" VisibilityBinding="{Binding IsDeleteAllowedVisible, Converter={StaticResource VisWithCollapseConverter}}" ElementStyle="{StaticResource DatagridCheckBox}" EditingElementStyle="{StaticResource {x:Type CheckBox}}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Delete'}" Binding="{Binding DeleteAllowed, UpdateSourceTrigger=PropertyChanged}" IsThreeState="True" >
+                            </nixxis:NixxisDataGridCheckBoxColumn>
+
+                            <nixxis:NixxisDataGridCheckBoxColumn EnabledBinding="{Binding IsPowerUserEnabled}" VisibilityBinding="{Binding IsPowerUserVisible, Converter={StaticResource VisWithCollapseConverter}}" ElementStyle="{StaticResource DatagridCheckBox}" EditingElementStyle="{StaticResource {x:Type CheckBox}}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Power'}" Binding="{Binding PowerUser, UpdateSourceTrigger=PropertyChanged}" IsThreeState="True">                                
+                            </nixxis:NixxisDataGridCheckBoxColumn>
+
+                            <nixxis:NixxisDataGridCheckBoxColumn EnabledBinding="{Binding IsFullControlEnabled}" VisibilityBinding="{Binding IsFullControlVisible, Converter={StaticResource VisWithCollapseConverter}}" ElementStyle="{StaticResource DatagridCheckBox}" EditingElementStyle="{StaticResource {x:Type CheckBox}}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Full'}" Binding="{Binding FullControl, UpdateSourceTrigger=PropertyChanged}" IsThreeState="True" >
+                            </nixxis:NixxisDataGridCheckBoxColumn>
+
+                        </nixxis:NixxisDataGrid.Columns>
+
+                        
+                    </nixxis:NixxisDataGrid>
+
+
+                </Grid>
+                
+            </nixxis:NixxisTabItem>
+        </nixxis:NixxisTabControl>
+
+    </nixxis:PresentationGrid>
+    
+</UserControl>

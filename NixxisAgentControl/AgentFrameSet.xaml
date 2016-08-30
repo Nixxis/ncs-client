@@ -1,0 +1,299 @@
+﻿<UserControl x:Class="Nixxis.Client.Agent.AgentFrameSet"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+             xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+             xmlns:n="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControlsCommon"
+             xmlns:local="clr-namespace:Nixxis.Client.Agent"
+             xmlns:clientLink="clr-namespace:Nixxis.Client;assembly=NixxisClientLink"
+             xmlns:uia="clr-namespace:System.Windows.Automation;assembly=UIAutomationClient"
+             GotFocus="UserControl_GotFocus" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.CommandBindings>
+        <CommandBinding Command="local:AgentFrameSet.DoNewCall" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AgentFrameSet.CloseContact" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AgentFrameSet.SetQualification" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AgentFrameSet.SearchMode" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <!--CommandBinding Command="local:AgentFrameSet.SendMessage" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding-->
+        <CommandBinding Command="local:AgentFrameSet.TeamSelection" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AgentFrameSet.DisplayContactHistory" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+    </UserControl.CommandBindings>
+
+    <UserControl.Resources>
+
+        <ResourceDictionary>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisPanel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisDataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+            <crs:TranslationContext x:Key="tcx" Context="AgentFrameSet"></crs:TranslationContext>
+            <local:DebugConverter x:Key="myDebugConverter"></local:DebugConverter>
+            <local:InfoPanelOriginatorConverter x:Key="InfoPanelOriginatorConverter"></local:InfoPanelOriginatorConverter>
+            <n:ObjectCompairToVisibilityConverter x:Key="objectCompairToVisibilityConverter"></n:ObjectCompairToVisibilityConverter>
+            
+            <DataTemplate x:Key="InfoPanelFullView">
+                <!--<nixxis:CoverflowElement Margin="5" IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPresenter}}, Path=(nixxis:NixxisCoverFlowPanel.IsSelected), Mode=TwoWay}">-->
+                <!--<local:InfoPanelViewer ClientLink="{Binding ClientLink}" ParentForm="{Binding}" Margin="5">
+                </local:InfoPanelViewer>-->
+
+                <n:NixxisPanelSelector ClientLink="{Binding ClientLink}" ParentForm="{Binding}" Margin="5">
+                    <n:NixxisPanelSelector.Controls>
+                        <Grid>
+                            <local:StatusView NixxisPanelDescription="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Status View'}" NixxisPanelKey="Panel0"></local:StatusView>
+                            <local:WallboardView NixxisPanelDescription="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Wallboard View'}" NixxisPanelKey="Panel1"></local:WallboardView>
+                            <local:DtmfSelectorPanel NixxisPanelDescription="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Send Dtmf tone'}" NixxisPanelKey="Panel2"></local:DtmfSelectorPanel>
+                            <local:AgentWarningMessages NixxisPanelDescription="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Warning messages'}" NixxisPanelKey="Panel3"></local:AgentWarningMessages>
+                            <local:RecordingPlaybackPanel NixxisPanelDescription="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Recording playback'}" NixxisPanelKey="Panel4" HistoryItem="{Binding Path=SelectedContactHistory}" Config="{Binding Path=RecordingConfig}"></local:RecordingPlaybackPanel>
+                        </Grid>
+                    </n:NixxisPanelSelector.Controls>
+                </n:NixxisPanelSelector>
+
+                <!--<local:AgentWarningMessages 
+                                ClientLink="{Binding ElementName=xxx, Path=ClientLink}"
+                                ParentForm="{Binding ElementName=xxx, Path=ParentForm}"
+                                Tag="2"
+                                Visibility="{Binding ElementName=xxx,Path=ShowPanel, Converter={StaticResource objectCompairToVisibilityConverter}, ConverterParameter=2}">
+                </local:AgentWarningMessages>-->
+                <!---->
+                <!--</local:NixxisToolbarPanelSelector>-->
+                <!--</nixxis:CoverflowElement>-->
+            </DataTemplate>
+
+           
+            <nixxis:NixxisExpandCoverFlowPanel 
+                x:Key="InfoPanelStatusView" 
+                Title="Test third" 
+                nixxis:NixxisGrid.Panel="Right"
+                ItemsSource="{Binding}"
+                ItemTemplate="{StaticResource InfoPanelFullView}" >               
+            </nixxis:NixxisExpandCoverFlowPanel>
+                        
+            
+            <DataTemplate x:Key="FullView">
+                <local:ContactInfoPanel
+                    IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPresenter}}, Path=(nixxis:NixxisCoverFlowPanel.IsSelected), Mode=TwoWay}"
+                    Contact="{Binding}"
+                    Margin="5">
+                    <local:ContactInfoPanel.Control>
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Context}" HorizontalAlignment="Center" Foreground="White"></TextBlock>
+                                <Label FontSize="14" Content=" " Margin="0,0,5,0" Foreground="White"></Label>
+                                <TextBlock FontSize="14" Text="{Binding ContactDuration}" Foreground="White"></TextBlock>
+                            </StackPanel>                                
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Label  FontSize="13" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=From:}" Margin="0,0,5,0" Foreground="White"></Label>                                
+                                <TextBlock FontSize="13" Text="{Binding From}" Foreground="White"></TextBlock>                                
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Label FontSize="13" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=To:}" Margin="0,0,5,0" Foreground="White"></Label>
+                                <TextBlock FontSize="13" Text="{Binding To}" Foreground="White"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Label FontSize="13" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=State:}" Margin="0,0,5,0" Foreground="White"></Label>                                
+                                <TextBlock FontSize="13" Text="{Binding StateDescription}" Foreground="White"></TextBlock>
+                                <Label FontSize="13" Content=" " Margin="0,0,5,0" Foreground="White"></Label>
+                                <TextBlock FontSize="13" Text="{Binding StateDuration}" Foreground="White"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Label FontSize="13" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Customer:}" Margin="0,0,5,0" Foreground="White"></Label>
+                                <TextBlock FontSize="13" Text="{Binding CustomerDescription}" Foreground="White"></TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                    </local:ContactInfoPanel.Control>
+                </local:ContactInfoPanel>
+               <!--<ToggleButton Margin="5" IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPresenter}}, Path=(nixxis:NixxisCoverFlowPanel.IsSelected), Mode=TwoWay}">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+                        <TextBlock FontWeight="Bold" FontSize="10" Text="{Binding Context}" HorizontalAlignment="Center"></TextBlock>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label  FontSize="9" Content="From: "></Label>
+                            <TextBlock FontSize="9" Text="{Binding From}"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label FontSize="9" Content="To: "></Label>
+                            <TextBlock FontSize="9" Text="{Binding To}"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label FontSize="9" Content="State: "></Label>
+                            <TextBlock FontSize="9" Text="{Binding StateDescription}"></TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </ToggleButton>-->
+            </DataTemplate>
+
+            <DataTemplate x:Key="NotCovered">
+                <local:ContactInfoPanel
+                    IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPresenter}}, Path=(nixxis:NixxisCoverFlowPanel.IsSelected), Mode=TwoWay}"
+                    Contact="{Binding}"
+                    Margin="5">
+                    <local:ContactInfoPanel.Control>
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock FontWeight="Bold" FontSize="12" Text="{Binding Context}" HorizontalAlignment="Center" Foreground="White"></TextBlock>
+                                <Label FontSize="12" Content=" " Margin="0,0,5,0" Foreground="White"></Label>
+                                <TextBlock FontSize="12" Text="{Binding ContactDuration}" Foreground="White"></TextBlock>
+                            </StackPanel>
+
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="11" Text="{Binding Converter={StaticResource InfoPanelOriginatorConverter}}" Foreground="White"></TextBlock>
+                                <!--<TextBlock FontSize="11" Text=" (" Foreground="White"></TextBlock>-->
+                                <Label FontSize="11" Content=" " Margin="0,0,5,0" Foreground="White"></Label>
+                                <TextBlock FontSize="11" Text="{Binding StateDescription}" Foreground="White"></TextBlock>
+                                <Label FontSize="11" Content=" " Margin="0,0,5,0" Foreground="White"></Label>
+                                <TextBlock FontSize="11" Text="{Binding StateDuration}" Foreground="White"></TextBlock>
+
+                                <!--<TextBlock FontSize="11" Text=")" Foreground="White"></TextBlock>-->
+                            </StackPanel>
+                        </StackPanel>
+                    </local:ContactInfoPanel.Control>
+                </local:ContactInfoPanel>                
+                <!--<ToggleButton Margin="5" IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPresenter}}, Path=(nixxis:NixxisCoverFlowPanel.IsSelected), Mode=TwoWay}">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <TextBlock FontSize="10" Text="{Binding Context}"></TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="9" Text="{Binding Converter={StaticResource InfoPanelOriginatorConverter}}"></TextBlock>
+                            <TextBlock FontSize="9" Text=" ("></TextBlock>
+                            <TextBlock FontSize="9" Text="{Binding StateDescription}"></TextBlock>
+                            <TextBlock FontSize="9" Text=")"></TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </ToggleButton>-->
+            </DataTemplate>
+
+            <DataTemplate x:Key="CoveredOnTop">
+                <ToggleButton Margin="5" Padding="0,0,0,-10" IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPresenter}}, Path=(nixxis:NixxisCoverFlowPanel.IsSelected), Mode=TwoWay}">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <TextBlock FontSize="10" Text="{Binding Context}" Foreground="White"></TextBlock>
+                        <TextBlock FontSize="9" Text="{Binding Converter={StaticResource InfoPanelOriginatorConverter}}" Foreground="White"></TextBlock>
+                    </StackPanel>
+                </ToggleButton>
+            </DataTemplate>
+
+            <DataTemplate x:Key="CoveredOnBottom">
+                <ToggleButton Margin="5" Padding="0,-10,0,0" IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPresenter}}, Path=(nixxis:NixxisCoverFlowPanel.IsSelected), Mode=TwoWay}">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <TextBlock FontSize="10" Text="{Binding Context}" Foreground="White"></TextBlock>
+                        <TextBlock FontSize="9" Text="{Binding Converter={StaticResource InfoPanelOriginatorConverter}}" Foreground="White"></TextBlock>
+                    </StackPanel>
+                </ToggleButton>
+            </DataTemplate>
+
+            <nixxis:NixxisCoverFlowPanelDefaultTemplateSelector 
+                x:Key="testSelector" 
+                FullView="{StaticResource FullView}" 
+                CoveredOnBottom="{StaticResource CoveredOnBottom}" 
+                NotCovered="{StaticResource NotCovered}" 
+                CoveredOnTop="{StaticResource CoveredOnTop}"
+                />
+
+            <nixxis:NixxisExpandCoverFlowPanel 
+                x:Key="AgtPanel1" 
+                Title="Test third" 
+                nixxis:NixxisGrid.Panel="CenterRight" 
+                ItemTemplateSelector="{StaticResource testSelector}" 
+                SelectedItem="{Binding ClientLink.Contacts.ActiveContact, Mode=TwoWay}" 
+                ItemsSource="{Binding ClientLink.Contacts}" 
+                SelectionChanged="NixxisExpandCoverFlowPanel_SelectionChanged"  ></nixxis:NixxisExpandCoverFlowPanel>
+
+            <nixxis:NixxisExpandPanel x:Key="VoiceCommands" Title="Voice" nixxis:NixxisGrid.Panel="CenterLeft" MinimumNumberOfVerticalItems="2">
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Command="local:AgentFrameSet.SetQualification" CommandParameter="myParam" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Selectqual.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Qualification}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Command="local:AgentFrameSet.DisplayContactHistory" CommandParameter="myParam" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\ContactHistory.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Contact history'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Name="VoiceClose" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource RedGradient}" ImageSource="Images\CloseScript.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Close}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="2" Name="VoiceHold" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\VoiceHold.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Hold}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="2" Name="VoiceRetrieve" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\VoiceRetrieve.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Retrieve}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="2" Name="VoiceForward" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\AgentTel_Forward.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Forward}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="2" Name="VoiceTransfer" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\VoiceTransfer.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Transfer}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="1" Name="VoiceConference" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\VoiceConference.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Conference}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Name="VoiceHangup" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource RedGradient}" ImageSource="Images\VoiceHangup.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Hangup}"></nixxis:NixxisButton>
+            </nixxis:NixxisExpandPanel>
+
+            <nixxis:NixxisExpandPanel x:Key="ChatCommands" Title="Voice" nixxis:NixxisGrid.Panel="CenterLeft"  MinimumNumberOfVerticalItems="2">
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Command="local:AgentFrameSet.SetQualification" CommandParameter="myParam" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Selectqual.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Qualification}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Command="local:AgentFrameSet.DisplayContactHistory" CommandParameter="myParam" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\ContactHistory.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Contact history'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Name="ChatClose" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource RedGradient}" ImageSource="Images\CloseScript.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Close}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Name="ChatHold" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\ChatHold.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Hold}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Name="ChatRetrieve" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\ChatRetrieve.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Retrieve}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="2" Name="ChatForward" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\AgentTel_Forward.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Forward}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Name="ChatHangup" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource RedGradient}" ImageSource="Images\ChatHangup.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Hangup}"></nixxis:NixxisButton>
+            </nixxis:NixxisExpandPanel>
+
+            <nixxis:NixxisExpandPanel x:Key="MailCommands" Title="Voice" nixxis:NixxisGrid.Panel="CenterLeft"  MinimumNumberOfVerticalItems="2">
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Command="local:AgentFrameSet.SetQualification" CommandParameter="myParam" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Selectqual.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Qualification}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Command="local:AgentFrameSet.DisplayContactHistory" CommandParameter="myParam" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\ContactHistory.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Contact history'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Name="MailClose" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource RedGradient}" ImageSource="Images\CloseScript.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Close}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Name="MailReply" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\MailReply.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Reply}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Name="MailForward" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\MailForward.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Forward}"></nixxis:NixxisButton>
+            </nixxis:NixxisExpandPanel>
+
+            <nixxis:NixxisExpandPanel x:Key="EmptyCommands" Title="Voice" nixxis:NixxisGrid.Panel="CenterLeft"  MinimumNumberOfVerticalItems="2">
+            </nixxis:NixxisExpandPanel>
+
+            <nixxis:NixxisExpandPanel x:Key="AgentCommands" Title="General" nixxis:NixxisGrid.Panel="Left"  MinimumNumberOfVerticalItems="2">
+                <nixxis:NixxisButton Name="btnAgt" DropDownReplaceContent="False" KeepDropDownButton="True" ClickMeansDropDown="True" nixxis:NixxisBasePanel.Priority="4" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application_Agent.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Agent}">
+                    <nixxis:NixxisButton.DropDown>
+                        <nixxis:NixxisContextMenu>
+                            <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="5" IsEnabled="True" Command="nixxis:GeneralCommands.ShowApplication" CommandParameter="agt" nixxis:NixxisButton.DropDownCloser="True" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application_Agent.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Agent}"></nixxis:NixxisButton>
+                            <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" IsEnabled="True" Command="nixxis:GeneralCommands.ShowApplication" CommandParameter="sup" nixxis:NixxisButton.DropDownCloser="True" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application_Supervisor.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Supervisor}"></nixxis:NixxisButton>
+                            <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" IsEnabled="True" Command="nixxis:GeneralCommands.ShowApplication" CommandParameter="adm" nixxis:NixxisButton.DropDownCloser="True" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application_Administrator.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Administrator}"></nixxis:NixxisButton>
+                            <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" IsEnabled="True" Command="nixxis:GeneralCommands.ShowApplication" CommandParameter="rec" nixxis:NixxisButton.DropDownCloser="True" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application_RecordingTool.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Recording Tool'}"></nixxis:NixxisButton>
+                            <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" IsEnabled="True" Command="nixxis:GeneralCommands.ShowApplication" CommandParameter="rpt" nixxis:NixxisButton.DropDownCloser="True" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application_Reporting.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Reporting Tool'}"></nixxis:NixxisButton>
+                        </nixxis:NixxisContextMenu>
+                    </nixxis:NixxisButton.DropDown>
+                </nixxis:NixxisButton>
+                <nixxis:NixxisButton DropDownReplaceContent="False" KeepDropDownButton="True" ClickMeansDropDown="False" nixxis:NixxisBasePanel.Priority="5" Name="Ready" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\ReadyGlobal.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Ready}">
+                    <nixxis:NixxisButton.DropDown>
+                        <nixxis:NixxisContextMenu>
+                            <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Name="WaitForCall" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\ReadyVoice.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Ready voice'}"></nixxis:NixxisButton>
+                            <nixxis:NixxisButton Visibility="{Binding Path=Version, Converter={StaticResource objectCompairToVisibilityConverter}, ConverterParameter=NCS}" nixxis:NixxisBasePanel.Priority="3" Name="WaitForChat" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\ReadyChat.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Ready chat'}"></nixxis:NixxisButton>
+                            <nixxis:NixxisButton Visibility="{Binding Path=Version, Converter={StaticResource objectCompairToVisibilityConverter}, ConverterParameter=NCS}" nixxis:NixxisBasePanel.Priority="3" Name="WaitForMail" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\ReadyMail.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Ready mail'}"></nixxis:NixxisButton>
+                        </nixxis:NixxisContextMenu>
+                    </nixxis:NixxisButton.DropDown>
+                </nixxis:NixxisButton>
+                <!--<nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Name="SingleReady" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\ReadyGlobal.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Ready}"></nixxis:NixxisButton>-->
+                <!--<nixxis:NixxisButton Visibility="{Binding Path=Version, Converter={StaticResource objectCompairToVisibilityConverter}, ConverterParameter=Express}" nixxis:NixxisBasePanel.Priority="3" Name="WaitForCallExpress" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\ReadyVoice.png">Ready voice</nixxis:NixxisButton>-->                
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Name="Pause" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Pause.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Pause}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="6" Name="PriorityPickup" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\PriorityPickup.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Priority pickup'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Command="local:AgentFrameSet.SearchMode" CommandParameter="myParam" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\SearchMode.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Search Mode'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Command="local:AgentFrameSet.DoNewCall" CommandParameter="myParam" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\VoiceNewCall.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Manual dial'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Command="local:AgentFrameSet.TeamSelection" CommandParameter="myParam" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\TeamSelection.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Team selection'}"></nixxis:NixxisButton>
+                <!--nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Command="local:AgentFrameSet.SendMessage" CommandParameter="myParam" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\AlertFunction.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Send alert'}"></nixxis:NixxisButton-->
+                <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Name="RequestAssistance" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\AlertFunction.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Send alert'}"></nixxis:NixxisButton>
+            </nixxis:NixxisExpandPanel>
+            
+        </ResourceDictionary>
+
+    </UserControl.Resources>
+
+    <Grid Background="AliceBlue">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" MinHeight="10"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*" MinHeight="0"></RowDefinition>
+        </Grid.RowDefinitions>
+
+
+
+        <ContentControl Grid.Row="0" x:Name="ScriptContainer" Background="AliceBlue" />
+
+        <nixxis:NixxisSimpleGridSplitter Name="ContentSplitter" HorizontalAlignment="Stretch"  Grid.Row="1"></nixxis:NixxisSimpleGridSplitter>
+
+        <ContentControl Grid.Row="2" x:Name="MediaContainer" Background="AliceBlue" />
+    </Grid>
+
+</UserControl>

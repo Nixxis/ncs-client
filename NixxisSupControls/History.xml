@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<modules>
+  <module name="NixxisSupControls">
+    <version build="2.0.2.13" date="05/03/2013">
+      <note type="Bug">(BUG-414)</note>
+    </version>
+
+    <version build="2.0.2.12" date="01/03/2013">
+      <note type="Bug">(BUG-412)</note>
+    </version>
+
+    <version build="2.0.2.11" date="12/02/2013">
+      <note type="Bug">(BUG-403) (possible loss in performances due to VirtualizingStackPanel.VirtualizationMode="Standard")</note>
+    </version>
+
+    <version build="2.0.2.10" date="04/01/2013">
+      <note type="Bug">(BUG-246)</note>
+    </version>
+
+    <version build="2.0.0.8" date="22/05/2012">
+      <note type="Improvement">(FR-356) Allow listening continuously to a selected agent.</note>
+    </version>
+    
+    <version build="2.0.0.7" date="22/03/2012">
+      <note type="New">Manual call for supervision (Do call,onhold, retrieve and hangup)</note>
+      <note type="New">Support for the outbound Dial remark column</note>
+      <note type="Improvement">Open and save workspace is now using id's on the column and not the order of the column. This is done for inbound and agent. Other will follow</note>
+      <note type="Improvement">On disconnnected the call will be automaticcaly closed.</note>
+    </version>
+    
+    <version build="2.0.0.5" date="18/10/2011">
+      <note type="New">Open and save workspace</note>
+    </version>
+    
+    <version build="2.0.0.4" date="22/09/2011">
+      <note type="Fix">Application crash when chat window is still open</note>
+    </version>
+    
+    <version build="2.0.0.3" date="22/09/2011">
+      <note type="Fix">Chat opens multiple windows</note>
+    </version>
+    
+    <version build="2.0.0.2" date="21/09/2011">
+      <note type="Fix">Agent status timer is showing +2 hour</note>
+    </version>
+    
+    <version build="2.0.0.1" date="20/09/2011">
+      <note type="">First release</note>
+    </version>
+  </module>
+</modules>

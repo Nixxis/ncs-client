@@ -1,0 +1,139 @@
+﻿<Window x:Class="Nixxis.Client.Recording.CallCenterWavFileSelector"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:local="clr-namespace:Nixxis.Client.Recording"
+        xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+        mc:Ignorable="d"
+        Name="MySelf"
+        ShowInTaskbar="False" WindowStartupLocation="CenterOwner" WindowStyle="ToolWindow"  
+        SizeToContent="WidthAndHeight" Title="{Binding Source={x:Static crs:TranslationContext.Default}, Converter={x:Static nixxis:TranslationConverter.Default}, ConverterParameter='Select file to play...'}" MinHeight="410" MinWidth="400" MaxWidth="500"
+        Loaded="Window_Loaded">
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
+            <GradientStop Color="#757575" Offset="0.1"></GradientStop>
+            <GradientStop Color="#353535" Offset="0.7"></GradientStop>
+        </LinearGradientBrush>
+    </Window.Background>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisPanel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisDataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+            <crs:TranslationContext x:Key="tcx" Context="CallCenterWavFileSelector"></crs:TranslationContext>
+            <local:MediaTypeIcon x:Key="mediaTypeIcon"/>
+            <local:DebugConverter x:Key="myDebugConverter"></local:DebugConverter>
+
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Name="mainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="2"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Image Width="50" Height="50" Source="{Binding MediaSubType, Converter={StaticResource mediaTypeIcon}}"></Image>
+            <Label VerticalAlignment="Center" Padding="2,0,0,0" FontSize="18" FontWeight="Bold" Content="{Binding MediaTypeDescription}"></Label>
+        </StackPanel>
+
+        <Rectangle Grid.Row="1" Margin="3,0" Fill="gray"></Rectangle>
+
+        <Label Grid.Row="2" VerticalAlignment="Center" Margin="5,0,0,0" FontSize="16" >General info</Label>
+        
+        <ScrollViewer Grid.Row="3" Grid.Column="0" Margin="10,0,5,0" CanContentScroll="False" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Stretch">
+            <Grid HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>                   
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Campaign:'}"></Label>
+                <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="2" Text="{Binding CampDescription}"></TextBlock>
+
+                <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Activity:'}"></Label>
+                <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="2" Text="{Binding Description}"></TextBlock>
+
+                <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Type:'}"></Label>
+                <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="2" Text="{Binding MediaTypeDescription}"></TextBlock>
+
+                <Label Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Qualification:'}"></Label>
+                <TextBlock Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="2" Text="{Binding QualificationDescription}"></TextBlock>
+
+                <Label Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Local start date/time:'}"></Label>
+                <TextBlock Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="2" Text="{Binding LocalDateTime}"></TextBlock>
+
+                <Label Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Originator:'}"></Label>
+                <TextBlock Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="2" Text="{Binding Originator}"></TextBlock>
+
+                <Label Grid.Row="7" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Destination:'}"></Label>
+                <TextBlock Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="2" Text="{Binding Destination}"></TextBlock>
+
+                <Label Grid.Row="8" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Total duration:'}"></Label>
+                <TextBlock Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="2" Text="{Binding Duration}"></TextBlock>
+
+                <Label Grid.Row="9" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Communication duration:'}"></Label>
+                <TextBlock Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="2" Text="{Binding ComDuration}"></TextBlock>
+            </Grid>
+        </ScrollViewer>
+
+        <Label Grid.Row="4" VerticalAlignment="Center" Margin="5,0,0,0" FontSize="16" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Files}"></Label>
+
+        <ListBox Name="lbFiles" Grid.Row="5" MinHeight="40">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal">
+                    </StackPanel>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical" MaxWidth="100">
+                        <Image Width="50" Height="50" Source="Images/_Others/RecordingFile_50.png"></Image>
+                        <Label VerticalAlignment="Center" Padding="2,0,0,0" FontSize="18" FontWeight="Bold" Content="{Binding DispalyFileName}"></Label>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
+        <StackPanel Grid.Row="6" Orientation="Horizontal" FlowDirection="RightToLeft">
+            <Button Height="24" Padding="5,0" Margin="5" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Cancel}" Click="btnCancel_Click"></Button>
+            <Button Height="24" Padding="5,0" Margin="5" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Play}" Click="btnPlayFile_Click"></Button>
+        </StackPanel>
+    </Grid>
+</Window>

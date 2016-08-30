@@ -1,0 +1,131 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:nixxis="clr-namespace:Nixxis.Client.Controls">
+
+    <Style x:Key="MenuItemStyle" TargetType="{x:Type MenuItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type MenuItem}">
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Visibility="Collapsed" Margin="4,0,6,0" x:Name="GlyphPanel" VerticalAlignment="Center">
+                            <Path x:Name="GlyphPanelpath" VerticalAlignment="Center" Fill="White" Data="M0,2 L0,4.8 L2.5,7.4 L7.1,2.8 L7.1,0 L2.5,4.6 z" FlowDirection="LeftToRight" />
+                        </Grid>
+
+                        <Rectangle Grid.Column="1" Name="OverBorder" Fill="White" Margin="3" RadiusX="1" RadiusY="1" Opacity="0">
+                        </Rectangle>
+                        <ContentPresenter Grid.Column="1"  ContentSource="Header" Margin="10,5,10,5">
+                            <ContentPresenter.Effect>
+                                <DropShadowEffect></DropShadowEffect>
+                            </ContentPresenter.Effect>
+                        </ContentPresenter>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="OverBorder" Property="Opacity" Value="0.2"></Setter>
+                        </Trigger>
+
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter Property="Visibility" Value="Visible" TargetName="GlyphPanel" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SeperatorStyle" TargetType="{x:Type Separator}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Separator}">
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Rectangle Grid.Column="1" Name="OverBorder" Fill="White" Margin="3" RadiusX="1" RadiusY="1" Height="1" Opacity="0.5">
+                        </Rectangle>
+
+                    </Grid>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <nixxis:SourceChooserConverter x:Key="srcChooser"></nixxis:SourceChooserConverter>
+    
+    <nixxis:IntegerInverterConverter x:Key="integerInverter"></nixxis:IntegerInverterConverter>
+
+    <nixxis:MultiEqConverter x:Key="EqMultiConverter"></nixxis:MultiEqConverter>
+    
+    <nixxis:FirstNonNullConverter x:Key="FirstNonNullConverter"></nixxis:FirstNonNullConverter>
+    
+    <nixxis:EqualityConverter x:Key="EqConverter"></nixxis:EqualityConverter>
+
+    <nixxis:TimeSpanConverter x:Key="timeSpanConverter"></nixxis:TimeSpanConverter>
+    
+    <nixxis:InequalityConverter x:Key="IneqConverter"></nixxis:InequalityConverter>
+
+    <nixxis:EqualityCollapsedConverter x:Key="EqCConverter"></nixxis:EqualityCollapsedConverter>
+
+    <nixxis:InequalityCollapsedConverter x:Key="IneqCConverter"></nixxis:InequalityCollapsedConverter>
+
+    <nixxis:DebugConverter x:Key="DbgConverter"></nixxis:DebugConverter>
+    
+    <nixxis:VisibilityConverter x:Key="VisConverter"></nixxis:VisibilityConverter>
+
+    <nixxis:BooleanMultiAndConverter x:Key="BoolMultiAndConverter"></nixxis:BooleanMultiAndConverter>
+
+    <nixxis:BooleanMultiOrConverter x:Key="BoolMultiOrConverter"></nixxis:BooleanMultiOrConverter>
+
+    <nixxis:VisibilityMultiConverter x:Key="VisMultiConverter"></nixxis:VisibilityMultiConverter>
+
+    <nixxis:VisibilityWithCollapseMultiConverter x:Key="VisWithCollapseMultiConverter"></nixxis:VisibilityWithCollapseMultiConverter>
+
+    <nixxis:VisibilityWithCollapseConverter x:Key="VisWithCollapseConverter"/>
+    
+    <nixxis:TextMappingConverter x:Key="TextMapConv"></nixxis:TextMappingConverter>
+
+    <nixxis:ConcatConverter x:Key="ConcatConv"></nixxis:ConcatConverter>
+
+    <nixxis:BoolInverterConverter x:Key="BoolInverter"></nixxis:BoolInverterConverter>
+
+    <nixxis:MultiplicatorConverter x:Key="MultConverter"></nixxis:MultiplicatorConverter>
+
+    <nixxis:CoefConverter x:Key="CoefConverter"></nixxis:CoefConverter>
+
+    <nixxis:MenuItemStyleSelector x:Key="MenuItemStyleSelector" MenuItemStyle="{StaticResource MenuItemStyle}" SeparatorStyle="{StaticResource SeperatorStyle}"></nixxis:MenuItemStyleSelector>
+
+    <LinearGradientBrush x:Key="OrangeGradient" StartPoint="0,0" EndPoint="0,1" >
+        <GradientStop Color="#ffa20b" Offset="0"></GradientStop>
+        <GradientStop Color="#cb5709" Offset="1"></GradientStop>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="RedGradient" StartPoint="0,0" EndPoint="0,1" >
+        <GradientStop Color="#de1e08" Offset="0"></GradientStop>
+        <GradientStop Color="#610d03" Offset="1"></GradientStop>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="GreenGradient" StartPoint="0,0" EndPoint="0,1" >
+        <GradientStop Color="#95da00" Offset="0"></GradientStop>
+        <GradientStop Color="#416e15" Offset="1"></GradientStop>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="GreyGradient" StartPoint="0,0" EndPoint="0,1" >
+        <GradientStop Color="#505050" Offset="0"></GradientStop>
+        <GradientStop Color="#000000" Offset="1"></GradientStop>
+    </LinearGradientBrush>
+
+</ResourceDictionary>

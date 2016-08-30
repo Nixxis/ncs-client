@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="modules">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="unbounded" name="module">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="1" maxOccurs="unbounded" name="version">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element minOccurs="1" maxOccurs="unbounded" name="note">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute name="type" type="xs:string" use="required">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  The release note type. Following values can be used:
+
+                                  New         --> a new feature or function
+                                  Fix         --> a bug fix
+                                  Improvement --> Improvement on an existing function.
+                                  [Empty]     --> When version of the product increased whiteout any of the above change. Example: commercial product version number increased.
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:attribute>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="build" type="xs:string" use="required">
+                    <xs:annotation>
+                      <xs:documentation>
+                        The full version number.
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:attribute>
+                  <xs:attribute name="date" type="xs:string" use="required">
+                    <xs:annotation>
+                      <xs:documentation>
+                        The release date of the version
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:attribute>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" use="required">
+              <xs:annotation>
+                <xs:documentation>
+                  Module description.
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

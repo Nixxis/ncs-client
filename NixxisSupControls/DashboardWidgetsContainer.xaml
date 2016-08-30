@@ -1,0 +1,401 @@
+﻿<UserControl x:Class="Nixxis.Client.Supervisor.DashboardWidgetsContainer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Nixxis.Client.Supervisor"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:npg="clr-namespace:System.Windows.Controls.WpfPropertyGrid;assembly=System.Windows.Controls.WpfPropertyGrid"
+             xmlns:npgd="clr-namespace:System.Windows.Controls.WpfPropertyGrid.Design;assembly=System.Windows.Controls.WpfPropertyGrid"
+             xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+             xmlns:collections="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+             xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+             Name="MySelf"
+             mc:Ignorable="d"              
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+
+        <ResourceDictionary>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisSupControls;component/DashboardDefaultTheme.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="{x:Type npg:PropertyGrid}" BasedOn="{StaticResource {x:Type npg:PropertyGrid}}">
+                <Setter Property="ItemsForeground" Value="{DynamicResource TextBrush}"/>
+            </Style>
+
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+
+            <crs:TranslationContext Context="DashboardWidgetsContainer" x:Key="tcx"></crs:TranslationContext>
+
+            <local:SelectorConverter x:Key="selectorConverter"></local:SelectorConverter>
+
+            <local:VisibilityConverter x:Key="visConv"></local:VisibilityConverter>
+
+            <local:DisplayModeConverter x:Key="displayModeConverter"></local:DisplayModeConverter>
+
+            <local:DecimalConverter x:Key="decimalConverter"></local:DecimalConverter>
+
+            <local:ScrollVisibilityConverter x:Key="scrollVisibilityConverter"></local:ScrollVisibilityConverter>
+
+            <local:StretchConverter x:Key="stretchConverter"></local:StretchConverter>
+
+            <local:DebugConverter x:Key="debugConverter"></local:DebugConverter>
+
+            <local:BooleanToSBVisibilityConverter x:Key="visConverter"></local:BooleanToSBVisibilityConverter>
+            
+
+        </ResourceDictionary>
+
+    </UserControl.Resources>
+
+    <Grid Background="{Binding ElementName=MySelf, Path=BackgroundColor}">        
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <ScrollViewer Grid.Column="1" >
+            <ScrollViewer.HorizontalScrollBarVisibility>
+                <MultiBinding Converter="{StaticResource scrollVisibilityConverter}">
+                    <Binding ElementName="MySelf" Path="OverflowMode"></Binding>
+                    <Binding ElementName="MySelf" Path="DisplayMode"></Binding>
+                </MultiBinding>
+            </ScrollViewer.HorizontalScrollBarVisibility>
+            <ScrollViewer.VerticalScrollBarVisibility>
+                <MultiBinding Converter="{StaticResource scrollVisibilityConverter}">
+                    <Binding ElementName="MySelf" Path="OverflowMode"></Binding>
+                    <Binding ElementName="MySelf" Path="DisplayMode"></Binding>
+                </MultiBinding>
+            </ScrollViewer.VerticalScrollBarVisibility>
+            <Viewbox>
+                <Viewbox.Stretch>
+                    <MultiBinding Converter="{StaticResource stretchConverter}">
+                        <Binding ElementName="MySelf" Path="OverflowMode"></Binding>
+                        <Binding ElementName="MySelf" Path="DisplayMode"></Binding>
+                    </MultiBinding>
+                </Viewbox.Stretch>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <local:GridControl Grid.Column="1" Grid.Row="1" x:Name="MainGrid" ShowCustomGridLines="{Binding ElementName=MySelf, Path=DisplayMode, Converter={StaticResource displayModeConverter}}"  PreviewDragOver="MainGrid_DragOver"  DragOver="MainGrid_DragOver" Drop="MainGrid_Drop" GiveFeedback="MainGrid_GiveFeedback" AllowDrop="True" MouseDown="MainGrid_MouseDown">
+                    </local:GridControl>
+
+                </Grid>
+            </Viewbox>
+        </ScrollViewer>
+
+        <StackPanel Orientation="Vertical" Grid.ColumnSpan="2" Grid.RowSpan="2" Opacity="0.0" HorizontalAlignment="Left" >
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Style.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Duration="00:00:00.1" Storyboard.TargetProperty="Opacity" To="1"></DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard Name="Fade">
+                                <Storyboard>
+                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity" >
+                                        <SplineDoubleKeyFrame KeyTime="00:00:5" Value="1"></SplineDoubleKeyFrame>
+                                        <SplineDoubleKeyFrame KeyTime="00:00:5.2" Value="0.2"></SplineDoubleKeyFrame>
+                                        <SplineDoubleKeyFrame KeyTime="00:00:7" Value="0.2"></SplineDoubleKeyFrame>
+                                        <SplineDoubleKeyFrame KeyTime="00:00:7.5" Value="0.0"></SplineDoubleKeyFrame>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+            <Button DockPanel.Dock="Top" Margin="10,10,10,0" ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Edit toolbox'}" HorizontalAlignment="Center" Click="ShowToolbox" >
+                <Image Width="50" Height="50" Source="Images\SupervisionViews\Dashboard_Design.png"/>
+            </Button>
+            <Button DockPanel.Dock="Top" Margin="10,10,10,0" ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Open'}" HorizontalAlignment="Center" Click="Open" >
+                <Image Width="50" Height="50" Source="Images\Toolbars\Open.png"/>
+            </Button>
+            <Button DockPanel.Dock="Top" Margin="10,10,10,0" ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Save'}" HorizontalAlignment="Center" Click="Save" >
+                <Image Width="50" Height="50" Source="Images\Toolbars\Supervisor_Save.png"/>
+            </Button>
+            <Button DockPanel.Dock="Top" Margin="10,10,10,0" ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Duplicate in new window'}" HorizontalAlignment="Center" Click="DetachWindow">
+                <Image Width="50" Height="50" Source="Images\SupervisionViews\DashboardDuplicate.png"/>
+            </Button>
+        </StackPanel>
+
+        <DockPanel Grid.Column="0" Name="DesignToolbox" HorizontalAlignment="Left" Width="250" Visibility="Collapsed" >
+            <DockPanel.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#454545" Offset="0.1"></GradientStop>
+                    <GradientStop Color="#151515" Offset="0.7"></GradientStop>
+                </LinearGradientBrush>
+            </DockPanel.Background>
+
+            <!--Region Not used anymore-->
+            <DockPanel.RenderTransform>
+                <TranslateTransform x:Name="MoveMeBaby" X="0" />
+            </DockPanel.RenderTransform>
+
+            <DockPanel.Triggers>
+                <EventTrigger RoutedEvent="local:DashboardWidgetsContainer.Hide">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="MoveMeBaby" Duration="00:00:00.5" To="-300" Storyboard.TargetProperty="X">
+                                <DoubleAnimation.EasingFunction>
+                                    <CubicEase EasingMode="EaseOut"></CubicEase>
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="local:DashboardWidgetsContainer.Show">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="MoveMeBaby" Duration="00:00:00.5" To="0" Storyboard.TargetProperty="X">
+                                <DoubleAnimation.EasingFunction>
+                                    <CubicEase EasingMode="EaseOut"></CubicEase>
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </DockPanel.Triggers>
+            <!--Endregion-->
+
+            <Grid Margin="3" DockPanel.Dock="Top" Visibility="{Binding ElementName=MySelf, Path=DisplayMode, Converter={StaticResource displayModeConverter}}">
+
+
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Border BorderBrush="#FF8B8B8B" Margin="5" BorderThickness="0,0,0,1" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0,3,3,3" FontWeight="Bold" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Dashboard properties'}">
+                                <Label.Visibility>
+                                    <MultiBinding Converter="{StaticResource selectorConverter}">
+                                        <MultiBinding.ConverterParameter>
+                                            <x:ArrayExtension Type="{x:Type Visibility}">
+                                                <Visibility>Visible</Visibility>
+                                                <Visibility>Collapsed</Visibility>
+                                            </x:ArrayExtension>
+                                        </MultiBinding.ConverterParameter>
+                                        <Binding ElementName="MySelf" Path="SelectedWidget"></Binding>
+                                        <Binding Source="{x:Null}"></Binding>
+                                    </MultiBinding>
+                                </Label.Visibility>
+                            </Label>
+                            <Label Margin="0,3,3,3" FontWeight="Bold" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Widget properties'}">
+                                <Label.Visibility>
+                                    <MultiBinding Converter="{StaticResource selectorConverter}">
+                                        <MultiBinding.ConverterParameter>
+                                            <x:ArrayExtension Type="{x:Type Visibility}">
+                                                <Visibility>Collapsed</Visibility>
+                                                <Visibility>Visible</Visibility>
+                                            </x:ArrayExtension>
+                                        </MultiBinding.ConverterParameter>
+                                        <Binding ElementName="MySelf" Path="SelectedWidget"></Binding>
+                                        <Binding Source="{x:Null}"></Binding>
+                                    </MultiBinding>
+                                </Label.Visibility>
+                            </Label>
+
+                            <Button Margin="0,0,0,3" Grid.Column="1" Width="18" Height="18" Click="CloseToolbox">
+                                <Path Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="White" Data="M1,1 L8,8 M1,8 L8,1"></Path>
+                            </Button>
+
+                        </Grid>
+                    </Border>
+
+                    <npg:PropertyGrid Margin="0,5,0,0"  Grid.Row="1" Name="dashboardProperties" ShowReadOnlyProperties="True" PropertyFilterVisibility="Collapsed" PropertyDisplayMode="All" >
+                        <npg:PropertyGrid.Editors>
+
+                            <npg:TypeEditor EditedType="{x:Type sys:Boolean}">
+                                <npg:TypeEditor.InlineTemplate>
+                                    <DataTemplate>
+                                        <CheckBox HorizontalAlignment="Right" IsChecked="{Binding Value, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,-5,0"></CheckBox>
+                                    </DataTemplate>
+                                </npg:TypeEditor.InlineTemplate>
+                            </npg:TypeEditor>
+
+
+                            <npg:TypeEditor EditedType="{x:Type sys:String}">
+                                <npg:TypeEditor.InlineTemplate>
+                                    <DataTemplate>
+                                        <TextBox MinLines="{Binding MinLines}" MaxLines="{Binding MaxLines}" VerticalScrollBarVisibility="{Binding IsMultiLines, Converter={StaticResource visConverter}}" AcceptsReturn="{Binding IsMultiLines}" Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                                    </DataTemplate>
+                                </npg:TypeEditor.InlineTemplate>
+                            </npg:TypeEditor>
+
+
+                            <npg:TypeEditor EditedType="{x:Type sys:Int32}">
+                                <npg:TypeEditor.InlineTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <nixxis:NumericUpDown HorizontalAlignment="Right"  NumberFormat="0" MinimumValue="-1" Value="{Binding Value, Converter={StaticResource decimalConverter}}"></nixxis:NumericUpDown>
+                                        </Grid>
+                                    </DataTemplate>
+                                </npg:TypeEditor.InlineTemplate>
+                            </npg:TypeEditor>
+
+                            <npg:TypeEditor EditedType="{x:Type sys:Double}">
+                                <npg:TypeEditor.InlineTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <nixxis:NumericUpDown HorizontalAlignment="Right"  NumberFormat="0.0" MinimumValue="0" Increment="1" Value="{Binding Value, Converter={StaticResource decimalConverter}, ConverterParameter={x:Type sys:Double}}"></nixxis:NumericUpDown>
+                                        </Grid>
+                                    </DataTemplate>
+                                </npg:TypeEditor.InlineTemplate>
+                            </npg:TypeEditor>
+
+
+                            <npg:TypeEditor EditedType="{x:Static local:DashboardWidgetsContainer.CollectionOfInt}">
+                                <npg:TypeEditor.InlineTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBox Grid.Column="0"  Text="{nixxis:FormatString TranslationContext={StaticResource tcx}, FormatString='{}{0} levels configured', BindTo={Binding Value.Count, Mode=OneWay}}" IsReadOnly="True"/>
+
+                                            <Button Grid.Column="1" Margin="2,0,0,0" Content="..." Width="20" Click="ConfigureCollection" CommandParameter="{Binding}"/>
+                                        </Grid>
+
+                                    </DataTemplate>
+                                </npg:TypeEditor.InlineTemplate>
+                            </npg:TypeEditor>
+
+
+                            <npg:TypeEditor EditedType="{x:Type local:DashboardWidgetDataSource}">
+                                <npg:TypeEditor.InlineTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBox Grid.Column="0"  Text="{Binding Value.Description, Mode=OneWay}" IsReadOnly="True"/>
+
+                                            <Button Grid.Column="1" Margin="2,0,0,0" Content="..." Width="20" Click="ConfigureDataSource" CommandParameter="{Binding}"/>
+                                        </Grid>
+
+                                    </DataTemplate>
+                                </npg:TypeEditor.InlineTemplate>
+                            </npg:TypeEditor>
+
+                            <npg:TypeEditor EditedType="{x:Type local:DashboardWidgetPalette}">
+                                <npg:TypeEditor.InlineTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <ItemsControl ItemsSource="{Binding Value.Brushes}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid Background="{Binding}"></Grid>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <local:UniformStackPanel></local:UniformStackPanel>
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                            </ItemsControl>
+
+                                            <Button Grid.Column="1" Margin="2,0,0,0" Content="..." Width="20" Click="ConfigurePalette" CommandParameter="{Binding}"/>
+                                        </Grid>
+
+                                    </DataTemplate>
+                                </npg:TypeEditor.InlineTemplate>
+                            </npg:TypeEditor>
+
+
+                            <npg:PropertyEditor PropertyName="CurrentTheme" DeclaringType="{x:Type local:DashboardWidgetsContainer}">
+                                <npg:PropertyEditor.InlineTemplate>
+                                    <DataTemplate>
+                                        <ComboBox ItemsSource="{Binding ElementName=MySelf, Path=Themes}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding Value}" ></ComboBox>
+                                    </DataTemplate>
+                                </npg:PropertyEditor.InlineTemplate>
+                            </npg:PropertyEditor>
+
+                            
+                            <npg:CategoryEditor CategoryName="Widgets" DeclaringType="{x:Type local:DashboardWidgetsContainer}" >
+                                <npg:CategoryEditor.InlineTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <ListBox ItemsSource="{Binding [WidgetTypes].PropertyValue.Value}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Center" BorderThickness="0" Background="Transparent">
+                                                <ListBox.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <WrapPanel></WrapPanel>
+                                                    </ItemsPanelTemplate>
+                                                </ListBox.ItemsPanel>
+                                                <ListBox.ItemContainerStyle>
+                                                    <Style TargetType="{x:Type ListBoxItem}" >
+                                                        <Setter Property="Margin" Value="3" />
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                                    <Viewbox Height="64" Width="64" RenderOptions.BitmapScalingMode="HighQuality">
+                                                                        <ContentPresenter Width="128" Height="128" ToolTip="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content.Widget.WidgetName}"></ContentPresenter>
+                                                                    </Viewbox>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+
+                                                </ListBox.ItemContainerStyle>
+
+                                            </ListBox>
+                                        </Grid>
+                                    </DataTemplate>
+                                </npg:CategoryEditor.InlineTemplate>
+                            </npg:CategoryEditor>
+
+
+                        </npg:PropertyGrid.Editors>
+
+                        <npg:PropertyGrid.Layout>
+                            <npgd:CategorizedLayout></npgd:CategorizedLayout>
+                        </npg:PropertyGrid.Layout>
+
+                    </npg:PropertyGrid>
+
+                </Grid>
+
+            </Grid>
+
+        </DockPanel>
+
+    </Grid>
+
+
+</UserControl>

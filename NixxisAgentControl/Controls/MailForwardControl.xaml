@@ -1,0 +1,82 @@
+﻿<UserControl x:Class="Nixxis.Client.Agent.MailForwardControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+             xmlns:n="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControlsCommon"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             xmlns:local="clr-namespace:Nixxis.Client.Agent"
+             xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+             xmlns:clientLink="clr-namespace:Nixxis.Client;assembly=NixxisClientLink"
+             Focusable="True"
+             Background="Transparent"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             Name="MySelf">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisPanel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisDataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+            <crs:TranslationContext x:Key="tcx" Context="MailForwardControl"></crs:TranslationContext>
+            
+            <n:BoolToVisibilityCollapsedConverter x:Key="boolToVisibilityCollapsedConverter"></n:BoolToVisibilityCollapsedConverter>
+            <local:StyleBold_StartsWithConverter x:Key="styleBold_StartsWithConverter"></local:StyleBold_StartsWithConverter>
+
+            <CollectionViewSource x:Key="WellKnowDestinationList" Source="{Binding ElementName=MySelf, Path=ItemSource}" Filter="WellKnowDestinationList_Filter">
+                <CollectionViewSource.SortDescriptions>
+                    <scm:SortDescription PropertyName="Destination" Direction="Ascending" />
+                </CollectionViewSource.SortDescriptions>
+            </CollectionViewSource>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <ScrollViewer Padding="10" CanContentScroll="False" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Stretch">
+        <nixxis:NixxisStackPanel>
+            <Label VerticalAlignment="Center" FontSize="14" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please enter the mail destination or select one from the list:'}"></Label>
+
+            <Label VerticalAlignment="Center" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Destination:'}"></Label>
+            <ComboBox 
+                VerticalAlignment="Center"
+                IsEditable="True"
+                ItemsSource="{Binding Source={StaticResource WellKnowDestinationList}}"
+                SelectedIndex="0"
+                Text="{Binding ElementName=MySelf, Path=SelectedText}"
+                SelectedItem="{Binding ElementName=MySelf, Path=SelectedItem}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding DisplayText}" FontWeight="{Binding Destination, Converter={StaticResource styleBold_StartsWithConverter}, ConverterParameter='@'}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <!--<StackPanel Margin="0,3,0,0" Orientation="Horizontal">
+                <Button x:Name="btnSpam" Margin="3" Padding="3" Click="btnSpam_Click" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=SPAM}"></Button>
+            </StackPanel>-->
+
+            <CheckBox x:Name="chkAdv" VerticalAlignment="Center" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Advanced'}"></CheckBox>
+            <GroupBox Margin="20,0,0,0" Visibility="{Binding ElementName=chkAdv, Path=IsChecked, Converter={StaticResource boolToVisibilityCollapsedConverter}}">
+                <StackPanel Margin="0,3,0,0" >
+                    <CheckBox x:Name="chkDelay" VerticalAlignment="Center" IsChecked="{Binding ElementName=MySelf, Path=IsDelayChecked}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Hold mail'}"></CheckBox>
+                    <GroupBox Margin="20,0,0,0" IsEnabled="{Binding ElementName=chkDelay, Path=IsChecked}">
+                        <StackPanel Margin="0,3,0,0" Orientation="Horizontal">
+                            <DatePicker SelectedDate="{Binding ElementName=MySelf, Path=DelayDate}"></DatePicker>
+                            <n:TimePicker SelectedTime="{Binding ElementName=MySelf, Path=DelayTime}"></n:TimePicker>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <CheckBox IsChecked="{Binding ElementName=MySelf, Path=SendResponseNow}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Send current response now'}"></CheckBox>
+                </StackPanel>
+            </GroupBox>
+        </nixxis:NixxisStackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<modules>
+  <module name="NixxisWpfControls">
+    <version build="2.0.0.19" date="05/03/2013">
+      <note type="Bug">BUG-415</note>
+    </version>
+
+    <version build="2.0.0.18" date="26/02/2013">
+      <note type="Improvement">FR-384</note>
+    </version>
+
+    <version build="2.0.0.17" date="07/02/2013">
+      <note type="Improvement">Three state checkboxes</note>
+    </version>
+
+    <version build="2.0.0.15" date="20/12/2012">
+      <note type="Improvement">Extra exception handling</note>
+    </version>
+
+    <version build="2.0.0.14" date="18/07/2012">
+      <note type="Improvement">Text centered in progress dialog</note>
+    </version>
+
+    <version build="2.0.0.13" date="26/06/2012">
+      <note type="Bug">(263)Checkboxes in datagrids are not reacting correctly and generate after a few clicks, the application to crash.</note>
+    </version>
+
+    <version build="2.0.0.12" date="02/04/2012">
+      <note type="Bug">(209)Prevent crash when displaying context menu on scrollbar.</note>
+    </version>
+
+    <version build="2.0.0.11" date="20/02/2012">
+      <note type="Improvement">Wizard control is able to verify the "required" attribute of datepicker controls.</note>
+    </version>
+
+    <version build="2.0.0.10" date="08/02/2012">
+      <note type="Improvement">Translations related.</note>
+    </version>
+
+    <version build="2.0.0.8" date="19/12/2011">
+      <note type="Improvement">Progress bar.</note>
+    </version>
+
+    <version build="2.0.0.6" date="08/11/2011">
+      <note type="Improvement">Wave information module is implemented.</note>
+    </version>
+
+    <version build="2.0.0.5" date="28/10/2011">
+      <note type="Improvement">Playback control does not verify to load files before a play has been requested.</note>
+    </version>
+
+    <version build="2.0.0.4" date="26/10/2011">
+      <note type="internal">Translations related.</note>
+    </version>
+
+    <version build="2.0.0.3" date="21/10/2011">
+      <note type="improvement">Translations handling.</note>
+    </version>
+
+    <version build="2.0.0.2" date="27/09/2011">
+      <note type="improvement">Allowing multiple conditions for visibility in PriorityPanel</note>
+    </version>
+
+  <version build="2.0.0.1" date="20/09/2011">
+      <note type="">First release</note>
+    </version>
+  </module>
+</modules>

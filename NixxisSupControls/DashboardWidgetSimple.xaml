@@ -1,0 +1,44 @@
+﻿<local:DashboardWidgetBase 
+    x:Class="Nixxis.Client.Supervisor.DashboardWidgetSimple"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+            xmlns:local="clr-namespace:Nixxis.Client.Supervisor"
+    mc:Ignorable="d" 
+    x:Name="MySelf"             
+    d:DesignHeight="300" d:DesignWidth="300"
+    >
+
+    <local:DashboardWidgetBase.Resources>
+        <local:DoubleConverter x:Key="dblConv"></local:DoubleConverter>
+        <local:LevelsConverter x:Key="levelConv"></local:LevelsConverter>
+        <local:FormatConverter x:Key="formatConverter"></local:FormatConverter>
+    </local:DashboardWidgetBase.Resources>
+
+    <Grid >
+        
+        <Rectangle x:Name="colorRectangle">
+            <Rectangle.Fill>
+                <MultiBinding Converter="{StaticResource levelConv}">
+                    <Binding ElementName="MySelf" Path="Palette.Brushes"></Binding>
+                    <Binding ElementName="MySelf" Path="Levels"></Binding>
+                    <Binding ElementName="MySelf" Path="Data.Objects[0].Values[0].Value" Converter="{StaticResource dblConv}"></Binding>
+                </MultiBinding>
+            </Rectangle.Fill>
+        </Rectangle>
+        
+        <Viewbox Stretch="Uniform" Margin="5">
+            <TextBlock>
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource formatConverter}">
+                        <Binding ElementName="MySelf" Path="Format"></Binding>
+                        <Binding ElementName="MySelf" Path="Data.Objects[0].Values[0].Value"></Binding>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </Viewbox>
+
+        
+    </Grid>
+</local:DashboardWidgetBase>

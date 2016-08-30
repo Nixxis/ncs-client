@@ -1,0 +1,140 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Nixxis.Client.Controls">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    
+    <local:ColorToBrushConverter x:Key="colorToBrushConverter"></local:ColorToBrushConverter>
+    <local:DebugConverter x:Key="debugConverter" />
+    
+    <Style x:Key="SelectorList" TargetType="{x:Type ListBox}">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+    </Style>
+    
+    <Style TargetType="{x:Type local:NixxisColorPicker}">
+        <Setter Property="Background" Value="{StaticResource FocusedBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="#5f5f5f"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+        <Setter Property="Height" Value="200"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:NixxisColorPicker}">
+                    <ControlTemplate.Resources>
+                        <Storyboard x:Key="HoverOn">
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="HoverBorder" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0.5" />
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                        <Storyboard x:Key="HoverOff">
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="HoverBorder" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.4000000" Value="0" />
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                        <Storyboard x:Key="FocusedOn">
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="Opacity">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1" />
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                        <Storyboard x:Key="FocusedOff">
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="Opacity">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.4000000" Value="0" />
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </ControlTemplate.Resources>
+                    <Grid>
+                        <!--<Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>-->
+                        <!--Border that wraps the control-->
+                        <Border 
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="{TemplateBinding CornerRadius}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                            Padding="1"
+                            x:Name="Border">
+
+                            <ListBox 
+                                x:Name="PART_ColorSelection" 
+                                HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type local:NixxisColor}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Border x:Name="BdOut" Background="{Binding Path=Color, Converter={StaticResource colorToBrushConverter}}" BorderBrush="#E2E4E7" BorderThickness="1" Width="12" Height="12">
+                                                <Border x:Name="BdInner" Background="Transparent" BorderBrush="Transparent" BorderThickness="1"></Border>
+                                            </Border>
+                                            <TextBlock Padding="5,0,0,0" Text="{Binding Path=Description}"></TextBlock>
+                                        </StackPanel>
+                                        <DataTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="BdInner" Property="BorderBrush" Value="#FFE294" />
+                                                <Setter TargetName="BdOut" Property="BorderBrush" Value="#F29436" />
+                                            </Trigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                                <!--<ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Width="144" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>-->
+                            </ListBox>
+                        </Border>
+
+                        <Border 
+                            x:Name="HoverBorder" 
+                            IsHitTestVisible="False" 
+                            Opacity="0" 
+                            BorderBrush="{DynamicResource GlyphBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"/>
+                        <Border 
+                            x:Name="FocusVisualElement" 
+                            IsHitTestVisible="False" 
+                            Opacity="0" 
+                            BorderBrush="{DynamicResource HoverShineBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="HasFocus" Value="True">
+                            <Trigger.ExitActions>
+                                <BeginStoryboard Storyboard="{StaticResource FocusedOff}" x:Name="FocusedOff_BeginStoryboard" />
+                            </Trigger.ExitActions>
+                            <Trigger.EnterActions>
+                                <BeginStoryboard Storyboard="{StaticResource FocusedOn}" x:Name="FocusedOn_BeginStoryboard" />
+                            </Trigger.EnterActions>
+                            <Setter Property="Background" Value="{StaticResource SelectedFocusedBackgroundBrush}"></Setter>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.ExitActions>
+                                <BeginStoryboard Storyboard="{StaticResource HoverOff}" x:Name="HoverOff_BeginStoryboard" />
+                            </MultiTrigger.ExitActions>
+                            <MultiTrigger.EnterActions>
+                                <BeginStoryboard Storyboard="{StaticResource HoverOn}" />
+                            </MultiTrigger.EnterActions>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="IsFocused" Value="False" />
+                            </MultiTrigger.Conditions>
+                        </MultiTrigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" TargetName="Border" Value="{DynamicResource DisabledBackgroundBrush}" />
+                            <Setter Property="BorderBrush" TargetName="Border" Value="{DynamicResource DisabledBorderBrush}" />
+                            <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+</ResourceDictionary>

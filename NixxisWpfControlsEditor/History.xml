@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<modules>
+  <module name="NixxisWpfControlsEditor">
+
+    <version build="2.0.0.5" date="05/03/2013">
+      <note type="Bug">(BUG-414)</note>
+    </version>
+
+    <version build="2.0.0.4" date="01/03/2013">
+      <note type="Bug">(BUG-412)</note>
+    </version>
+    <version build="2.0.0.2" date="19/10/2011">
+      <note type="Fix">After each character typed in html cursor jump to end</note>
+    </version>
+    <version build="2.0.0.1" date="20/09/2011">
+      <note type="">First release</note>
+    </version>
+  </module>
+</modules>

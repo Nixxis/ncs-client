@@ -1,0 +1,640 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{41215429-5E55-433B-B7B3-82F5DC5FC056}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Nixxis.Client.Supervisor</RootNamespace>
+    <AssemblyName>NixxisSupControls</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>..\bin\Debug\NixxisSupControls.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.JScript" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Controls.DataVisualization.Toolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\debug\System.Windows.Controls.DataVisualization.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\VoiceNewCallControl.xaml.cs">
+      <DependentUpon>VoiceNewCallControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DashboardHelpers.cs" />
+    <Compile Include="DashboardWidgetText.xaml.cs">
+      <DependentUpon>DashboardWidgetText.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NixxisViewAgentScreen.xaml.cs">
+      <DependentUpon>NixxisViewAgentScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SavedContextsSaveDialog.xaml.cs">
+      <DependentUpon>SavedContextsSaveDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SavedContextsOpenDialog.xaml.cs">
+      <DependentUpon>SavedContextsOpenDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DashboardWidgetLevelsDialog.xaml.cs">
+      <DependentUpon>DashboardWidgetLevelsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DashboardWidgetPaletteDialog.xaml.cs">
+      <DependentUpon>DashboardWidgetPaletteDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DashboardWidgetPalette.cs" />
+    <Compile Include="DashboardWidgetPropertySelectorDialog.xaml.cs">
+      <DependentUpon>DashboardWidgetPropertySelectorDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DashboardWidgetObjectSelectorDialog.xaml.cs">
+      <DependentUpon>DashboardWidgetObjectSelectorDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DashboardWidgetsContainer.xaml.cs">
+      <DependentUpon>DashboardWidgetsContainer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DashboardWidgetStackedColumns.xaml.cs">
+      <DependentUpon>DashboardWidgetStackedColumns.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DashboardWidgetPie.xaml.cs">
+      <DependentUpon>DashboardWidgetPie.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DashboardWidgetHistory.xaml.cs">
+      <DependentUpon>DashboardWidgetHistory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DashboardWidgetDatasource.cs" />
+    <Compile Include="IDashboardWidget.cs" />
+    <Compile Include="DashboardWidget.xaml.cs">
+      <DependentUpon>DashboardWidget.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DashboardWidgetSimple.xaml.cs">
+      <DependentUpon>DashboardWidgetSimple.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DashboardWidgetDataSourceDialog.xaml.cs">
+      <DependentUpon>DashboardWidgetDataSourceDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StandAloneWindow.xaml.cs">
+      <DependentUpon>StandAloneWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DataHelpers.cs" />
+    <Compile Include="CreateEditCustomColumns.xaml.cs">
+      <DependentUpon>CreateEditCustomColumns.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="InfoPanels\AgentWarningMessages.xaml.cs">
+      <DependentUpon>AgentWarningMessages.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NixxisSendMessageRequest.xaml.cs">
+      <DependentUpon>NixxisSendMessageRequest.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="StdControls\CommonConverters.cs" />
+    <Compile Include="NixxisSupervisionTileItems.cs" />
+    <Compile Include="NixxisSupervsionColumnDescriptions.cs" />
+    <Compile Include="SupFrameSet.xaml.cs">
+      <DependentUpon>SupFrameSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\VoiceNewCallWindow.xaml.cs">
+      <DependentUpon>VoiceNewCallWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Workspace.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Controls\VoiceNewCallControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CreateEditCustomColumns.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DashboardDefaultTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DashboardDefaultThemePrimitives.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DashboardWidgetText.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="NixxisViewAgentScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SavedContextsSaveDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SavedContextsOpenDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DashboardWidgetLevelsDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DashboardWidgetPaletteDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DashboardWidgetPropertySelectorDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DashboardWidgetObjectSelectorDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DashboardWidgetsContainer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DashboardWidget.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DashboardWidgetStackedColumns.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DashboardWidgetPie.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DashboardWidgetHistory.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DashboardWidgetSimple.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DashboardWidgetDataSourceDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StandAloneWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InfoPanels\AgentWarningMessages.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="NixxisSendMessageRequest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NixxisSupervisionTileItems.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SupFrameSet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\VoiceNewCallWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ApplicationServer\CRShared\CRShared.csproj">
+      <Project>{16dbb7b7-5760-4c7a-8171-9a391c59d418}</Project>
+      <Name>CRShared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NixxisClientLink\NixxisClientLink.csproj">
+      <Project>{AC0298AE-6AC8-48DC-BCEE-35B916FF44F2}</Project>
+      <Name>NixxisClientLink</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NixxisControls\NixxisWpfControls.csproj">
+      <Project>{6FF8901B-0189-4B8D-BAA9-4D85F26CB34D}</Project>
+      <Name>NixxisWpfControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NixxisRfbClient\NixxisRfbClient.csproj">
+      <Project>{8740b467-6d65-427c-b85b-5cbe24586b1f}</Project>
+      <Name>NixxisRfbClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NixxisWpfCommonControls\NixxisWpfControlsCommon.csproj">
+      <Project>{DAE35BA5-EDFC-4DB9-BC91-C94C1A7CD5E4}</Project>
+      <Name>NixxisWpfControlsCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SupervisionClientV2\SupervisionclientV2.csproj">
+      <Project>{94E8805F-21C0-47FC-96F9-78231E8A99B7}</Project>
+      <Name>SupervisionclientV2</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WpfPropertyGrid\WpfPropertyGrid.csproj">
+      <Project>{5a48b67f-1e7e-4ed6-a201-f6cc8e7e6788}</Project>
+      <Name>WpfPropertyGrid</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\_Backup\AdminSmall_Agent.png" />
+    <Resource Include="Images\_Backup\AdminSmall_Appointment.png" />
+    <Resource Include="Images\_Backup\AdminSmall_Phone.png" />
+    <Resource Include="Images\_Backup\AdminSmall_Preprocessor.png" />
+    <Resource Include="Images\_Backup\AgentTel_Call.png" />
+    <Resource Include="Images\_Backup\AgentTel_Conference.png" />
+    <Resource Include="Images\_Backup\AgentTel_Forward.png" />
+    <Resource Include="Images\_Backup\AgentTel_Hold.png" />
+    <Resource Include="Images\_Backup\AgentTel_Retrieve.png" />
+    <Resource Include="Images\_Backup\AgentTel_Transfer.png" />
+    <Resource Include="Images\_Backup\AgentTel_Hangup.png" />
+    <Resource Include="Images\Application\Application_Administrator.png" />
+    <Resource Include="Images\Application\Application_Agent.png" />
+    <Resource Include="Images\_Backup\Application_Choose.png" />
+    <Resource Include="Images\_Backup\Application_RecordingTool.png" />
+    <Resource Include="Images\_Backup\Application_Reporting.png" />
+    <Resource Include="Images\Application\Application_Supervisor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SupervisionViews\TileViewLarge.png" />
+    <Resource Include="Images\SupervisionViews\TileViewMedium.png" />
+    <Resource Include="Images\SupervisionViews\TileViewSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SupervisionViews\Admin_Agent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SupervisionViews\Admin_Campaign.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\_Backup\Admin_Team.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SupervisionViews\Activities_Outbound.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SupervisionViews\Admin_Queue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AgentState\AgentState_Off.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AgentState\AgentState_OnLine.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AgentState\AgentState_Pause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AgentState\AgentState_Preview.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AgentState\AgentState_Supervisor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AgentState\AgentState_Waiting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AgentState\AgentState_Wrapup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MediaType\Activities_Chat.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MediaType\Activities_Inbound.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MediaType\Activities_Mail.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MediaType\Activities_Outbound.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SupervisionViews\Admin_ Agent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Toolbars\Supervisor_Listen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Toolbars\Supervisor_CustomColumns.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Toolbars\Supervisor_SelectionColumn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Toolbars\Supervisor_ListenStop.png" />
+    <Resource Include="Images\Toolbars\Supervisor_Recording.png" />
+    <Resource Include="Images\Toolbars\Supervisor_RecordingStop.png" />
+    <Resource Include="Images\Toolbars\Supervisor_Viewer.png" />
+    <Resource Include="Images\Toolbars\Supervisor_ViewerStop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Toolbars\AgentTel_Call.png" />
+    <Resource Include="Images\Toolbars\AgentTel_Hold.png" />
+    <Resource Include="Images\Toolbars\AgentTel_Retrieve.png" />
+    <Resource Include="Images\Toolbars\Agent_Hangup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Toolbars\Supervisor_Help.png" />
+    <Resource Include="Images\Toolbars\Supervisor_Save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SupervisionViews\Activities_Inbound.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Other\BooleanOff.png" />
+    <Resource Include="Images\Other\BooleanOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SupervisionViews\AdminSmall_Agent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SupervisionViews\AdminSmall_Campaign.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SupervisionViews\AdminSmall_Queue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Toolbars\phone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Toolbars\Tools.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SupervisionViews\Application_Supervisor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Toolbars\Open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Application\Application_RecordingTool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SupervisionViews\AlertFunction.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SupervisionViews\AlertFunctionSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AlertType_HelpRequest_24.png" />
+    <Resource Include="Images\AlertType_Warning_24.png" />
+    <Resource Include="Images\AltertType_Alert_24.png" />
+    <Resource Include="Images\AlterType_Default_24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ReadyChatIndication.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ReadyChatIndication_Dis.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ReadyMailIndication.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ReadyMailIndication_Dis.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ReadyVoiceIndication.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ReadyVoiceIndication_Dis.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Toolbars\VoiceNewCall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Toolbars\SendMsg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AgtWarningMsg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Application\Application_Reporting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="History.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ico\ManualCall.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NewVoiceControl\btnPad_0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NewVoiceControl\btnPad_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NewVoiceControl\btnPad_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NewVoiceControl\btnPad_3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NewVoiceControl\btnPad_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NewVoiceControl\btnPad_5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NewVoiceControl\btnPad_6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NewVoiceControl\btnPad_7.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NewVoiceControl\btnPad_8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NewVoiceControl\btnPad_9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NewVoiceControl\btnPad_Clear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NewVoiceControl\btnPad_Dial.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NewVoiceControl\btnPad_Hash.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NewVoiceControl\btnPad_Star.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NewVoiceControl\btnPadOver_Clear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NewVoiceControl\btnPadOver_Dial.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NewVoiceControl\textbox_BackgroundScreen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SupervisionViews\Dashboard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SupervisionViews\DashboardSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SupervisionViews\Dashboard_Design.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SupervisionViews\Dashboard_Settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SupervisionViews\DashboardSmall_Settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SupervisionViews\Remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SupervisionViews\Action_Add.png" />
+    <Resource Include="Images\SupervisionViews\Action_Delete.png" />
+    <Resource Include="Images\SupervisionViews\Action_MoveDown.png" />
+    <Resource Include="Images\SupervisionViews\Action_MoveUp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SupervisionViews\DashboardDuplicate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Recorded_Me_Active.png" />
+    <Resource Include="Images\Recorded_Me_Inactive.png" />
+    <Resource Include="Images\Recorded_Others_Active.png" />
+    <Resource Include="Images\Recorded_Others_Inactive.png" />
+    <Resource Include="Images\Recorded__Active.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Viewed.png" />
+    <Resource Include="Images\ViewedOthers.png" />
+    <Resource Include="Images\ViewedOthers_Dis.png" />
+    <Resource Include="Images\Viewed_Dis.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Monitored_Me.png" />
+    <Resource Include="Images\Monitored_Others.png" />
+    <Resource Include="Images\MonitorRequest_Me.png" />
+    <Resource Include="Images\MonitorRequest_Others.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Outbound_Pause.png" />
+    <Resource Include="Images\Outbound_Play.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

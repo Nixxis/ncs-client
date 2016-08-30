@@ -1,0 +1,71 @@
+﻿<Window x:Class="Nixxis.Client.Supervisor.NixxisSendMessageRequest"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:local="clr-namespace:Nixxis.Client.Supervisor"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:n="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControlsCommon"
+        mc:Ignorable="d"
+        Name="MySelf" 
+        ShowInTaskbar="False" WindowStartupLocation="CenterOwner" WindowStyle="ToolWindow" 
+        SizeToContent="WidthAndHeight" Title="Send message..." MinHeight="410" MinWidth="400" MaxWidth="500"
+        Loaded="MySelf_Loaded">
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
+            <GradientStop Color="#757575" Offset="0.1"></GradientStop>
+            <GradientStop Color="#353535" Offset="0.7"></GradientStop>
+        </LinearGradientBrush>
+    </Window.Background>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisPanel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisDataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <local:DebugConverter x:Key="myDebugConverter"></local:DebugConverter>
+            <n:BoolToVisibilityCollapsedConverter x:Key="boolToVisibilityCollapsedConverter"></n:BoolToVisibilityCollapsedConverter>
+            <n:StringToBoolConverter x:Key="stringToBoolConverter"></n:StringToBoolConverter>
+            
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical">
+            
+            <Label Style="{StaticResource DlgHeaderLabel}" Content="What do you want to do?"></Label>
+            
+            <StackPanel Orientation="Vertical">
+                <RadioButton Name="radioOpenChat" IsChecked="True" Content="Open chat window"></RadioButton>
+
+                <RadioButton Name="radioSendToSelectedAgent" Visibility="{Binding ElementName=MySelf, Path=ToAgents, Converter={StaticResource boolToVisibilityCollapsedConverter}}" IsChecked="False" Content="Send message to selected agent"></RadioButton>
+
+                <RadioButton Name="radioSendToAllAgents" Visibility="Collapsed" IsChecked="False" Content="Send message to all agents"></RadioButton>
+
+                <RadioButton Name="radioSendToSelectedTeam" Visibility="{Binding ElementName=MySelf, Path=ToTeams, Converter={StaticResource boolToVisibilityCollapsedConverter}}" IsChecked="False" Content="Send message to selected team"></RadioButton>
+
+                <RadioButton Name="radioSendToAllTeams" Visibility="{Binding ElementName=MySelf, Path=ToTeams, Converter={StaticResource boolToVisibilityCollapsedConverter}}" IsChecked="False" Content="Send message to all teams"></RadioButton>
+            </StackPanel>
+
+            <Label Style="{StaticResource DlgHeaderLabel}" Content="Enter message to send:"></Label>
+
+            <TextBox Name="txtSendText" Text="{Binding ElementName=MySelf, Path=SendText}"></TextBox>
+            
+        </StackPanel>
+        
+        <StackPanel Grid.Row="1" Orientation="Horizontal" FlowDirection="RightToLeft">
+            <Button Height="24" Padding="5,0" Margin="5" Content="Cancel" Click="btnCancel_Click"></Button>
+            <Button Height="24" Padding="5,0" Margin="5" Content="Send" Click="btnOk_Click" IsEnabled="{Binding ElementName=txtSendText, Path=Text, Converter={StaticResource stringToBoolConverter}}"></Button>
+        </StackPanel>
+    </Grid>
+</Window>
+    

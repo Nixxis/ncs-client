@@ -1,0 +1,536 @@
+﻿<Window x:Class="Nixxis.Client.Admin.DlgStdPreprocessorConfigure"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:Nixxis.Client.Admin"
+        xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+        Name="MySelf"
+        xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+        WindowStyle="ToolWindow" ResizeMode="NoResize" ShowInTaskbar="False" SizeToContent="WidthAndHeight"        
+        Title="{Binding Source={x:Static crs:TranslationContext.Default}, Converter={x:Static nixxis:TranslationConverter.Default}, ConverterParameter='Preprocessor configuration...'}" MinHeight="400" MinWidth="300" MaxHeight="600" MaxWidth="400" WindowStartupLocation="CenterOwner">
+
+    <Window.Resources>
+
+        <ResourceDictionary>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisPanel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisTabControl.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisDataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+
+            <crs:TranslationContext x:Key="tcx" Context="DlgStdPreprocessorConfigure" ></crs:TranslationContext>
+
+
+            <local:AtivityPromptsToPromptsConverter x:Key="AtivityPromptsToPromptsConverter"></local:AtivityPromptsToPromptsConverter>
+
+            <local:IsDummyIdConverter x:Key="isDummyId"></local:IsDummyIdConverter>
+
+            <local:ComboListConverter x:Key="cboConverter" />
+
+            <CollectionViewSource x:Key="ListQueues" Source="{Binding ElementName=WizControl, Path=Context.Core.Queues, Converter={StaticResource cboConverter}}"  />
+
+            <local:ComboListConverterNoDummies x:Key="cboConverterNoDummies" />
+
+            <CollectionViewSource x:Key="ListQueuesNoDummies" Source="{Binding ElementName=WizControl, Path=Context.Core.Queues, Converter={StaticResource cboConverterNoDummies}}"  />
+
+
+            <local:PreprocessorMenu x:Key="lan1" Dtmf="1"></local:PreprocessorMenu>
+            <local:PreprocessorMenu x:Key="lan2" Dtmf="2"></local:PreprocessorMenu>
+            <local:PreprocessorMenu x:Key="lan3" Dtmf="3"></local:PreprocessorMenu>
+            <local:PreprocessorMenu x:Key="lan4" Dtmf="4"></local:PreprocessorMenu>
+            <local:PreprocessorMenu x:Key="lan5" Dtmf="5"></local:PreprocessorMenu>
+            <local:PreprocessorMenu x:Key="lan6" Dtmf="6"></local:PreprocessorMenu>
+            <local:PreprocessorMenu x:Key="lan7" Dtmf="7"></local:PreprocessorMenu>
+            <local:PreprocessorMenu x:Key="lan8" Dtmf="8"></local:PreprocessorMenu>
+            <local:PreprocessorMenu x:Key="lan9" Dtmf="9"></local:PreprocessorMenu>
+            <local:PreprocessorMenu x:Key="lanStar" Dtmf="*"></local:PreprocessorMenu>
+            <local:PreprocessorMenu x:Key="lan0" Dtmf="0"></local:PreprocessorMenu>
+            <local:PreprocessorMenu x:Key="lanHash" Dtmf="#"></local:PreprocessorMenu>
+            
+            <local:PreprocessorMenu x:Key="menu1" Dtmf="1"></local:PreprocessorMenu>
+            <local:PreprocessorMenu x:Key="menu2" Dtmf="2"></local:PreprocessorMenu>
+            <local:PreprocessorMenu x:Key="menu3" Dtmf="3"></local:PreprocessorMenu>
+            <local:PreprocessorMenu x:Key="menu4" Dtmf="4"></local:PreprocessorMenu>
+            <local:PreprocessorMenu x:Key="menu5" Dtmf="5"></local:PreprocessorMenu>
+            <local:PreprocessorMenu x:Key="menu6" Dtmf="6"></local:PreprocessorMenu>
+            <local:PreprocessorMenu x:Key="menu7" Dtmf="7"></local:PreprocessorMenu>
+            <local:PreprocessorMenu x:Key="menu8" Dtmf="8"></local:PreprocessorMenu>
+            <local:PreprocessorMenu x:Key="menu9" Dtmf="9"></local:PreprocessorMenu>
+            <local:PreprocessorMenu x:Key="menuStar" Dtmf="*"></local:PreprocessorMenu>
+            <local:PreprocessorMenu x:Key="menu0" Dtmf="0"></local:PreprocessorMenu>
+            <local:PreprocessorMenu x:Key="menuHash" Dtmf="#"></local:PreprocessorMenu>
+            
+
+        </ResourceDictionary>
+
+    </Window.Resources>
+
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
+            <GradientStop Color="#757575" Offset="0.1"></GradientStop>
+            <GradientStop Color="#353535" Offset="0.7"></GradientStop>
+        </LinearGradientBrush>
+    </Window.Background>
+
+
+
+    <Grid Margin="10" DataContext="{Binding ElementName=WizControl, Path=Context}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Name="AddWizard" >
+
+            <!--Welcome-->
+            <Grid Name="Start">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the settings for preprocessor...'}"></Label>
+
+
+                <nixxis:NixxisStackPanel Grid.Row="1">
+
+
+                    <Label Grid.Row="1" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Welcome message:'}"></Label>
+                    <local:PromptHelper IncludeNone="True" Grid.Row="2" x:Name="cboWelcome"> </local:PromptHelper>
+
+                    <CheckBox Margin="3" Grid.Row="3" Name="chkLanguage" nixxis:WizardControl.NextStep="LanguageSettings" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Ask language'}"></CheckBox>
+
+                    <CheckBox Margin="3" Grid.Row="4" Name="chkMenu" nixxis:WizardControl.NextStep="MenuSettings" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Ask menu'}"></CheckBox>
+
+                </nixxis:NixxisStackPanel>
+            </Grid>
+
+            <!--Languages-->
+            <Grid Name="LanguageSettings">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                
+                <Label Grid.ColumnSpan="5" Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the allowed choices for languages...'}"></Label>
+
+                <ToggleButton Name="tb1" Width="40" Height="40" Grid.Row="1" Grid.Column="1" nixxis:WizardControl.NextStep="LanX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource lan1}}">1</ToggleButton>
+                <ToggleButton Name="tb2" Width="40" Height="40" Grid.Row="1" Grid.Column="2" nixxis:WizardControl.NextStep="LanX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource lan2}}">2</ToggleButton>
+                <ToggleButton Name="tb3" Width="40" Height="40" Grid.Row="1" Grid.Column="3" nixxis:WizardControl.NextStep="LanX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource lan3}}">3</ToggleButton>
+                <ToggleButton Name="tb4" Width="40" Height="40" Grid.Row="2" Grid.Column="1" nixxis:WizardControl.NextStep="LanX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource lan4}}">4</ToggleButton>
+                <ToggleButton Name="tb5" Width="40" Height="40" Grid.Row="2" Grid.Column="2" nixxis:WizardControl.NextStep="LanX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource lan5}}">5</ToggleButton>
+                <ToggleButton Name="tb6" Width="40" Height="40" Grid.Row="2" Grid.Column="3" nixxis:WizardControl.NextStep="LanX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource lan6}}">6</ToggleButton>
+                <ToggleButton Name="tb7" Width="40" Height="40" Grid.Row="3" Grid.Column="1" nixxis:WizardControl.NextStep="LanX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource lan7}}">7</ToggleButton>
+                <ToggleButton Name="tb8" Width="40" Height="40" Grid.Row="3" Grid.Column="2" nixxis:WizardControl.NextStep="LanX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource lan8}}">8</ToggleButton>
+                <ToggleButton Name="tb9" Width="40" Height="40" Grid.Row="3" Grid.Column="3" nixxis:WizardControl.NextStep="LanX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource lan9}}">9</ToggleButton>
+                <ToggleButton Name="tbStar" Width="40" Height="40" Grid.Row="4" Grid.Column="1" nixxis:WizardControl.NextStep="LanX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource lanStar}}">*</ToggleButton>
+                <ToggleButton Name="tb0" Width="40" Height="40" Grid.Row="4" Grid.Column="2" nixxis:WizardControl.NextStep="LanX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource lan0}}">0</ToggleButton>
+                <ToggleButton Name="tbHash" Width="40" Height="40" Grid.Row="4" Grid.Column="3" nixxis:WizardControl.NextStep="LanX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource lanHash}}">#</ToggleButton>
+                                
+            </Grid>
+
+            <!--Language x-->
+            <Grid Name="LanX">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{nixxis:FormatString BindTo={Binding ElementName=WizControl, Path=CurrentStepParam.Dtmf},TranslationContext={StaticResource tcx},FormatString='Please specify the settings for language choice associated to DTMF {0}...'}" ></Label>
+                
+                <nixxis:NixxisStackPanel Grid.Row="1">
+                    
+                    <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Message to prompt:'}"></Label>
+                    <local:PromptHelper IncludeNone="True" 
+                                        MessageId="{Binding ElementName=WizControl, Path=CurrentStepParam.PromptId}"
+                                        ></local:PromptHelper>
+
+                    <Label Content="{nixxis:FormatString BindTo={Binding ElementName=WizControl, Path=CurrentStepParam.Dtmf},TranslationContext={StaticResource tcx},FormatString='When {0} is pressed, contact will be associated to language:'}"></Label>
+                    <ComboBox  ItemsSource="{Binding ElementName=WizControl, Path=Context.Core.Languages}" 
+                               SelectedValuePath="Id" 
+                               DisplayMemberPath="DisplayText" 
+                               nixxis:WizardControl.Required="True" 
+                               SelectedValue="{Binding ElementName=WizControl, Path=CurrentStepParam.SkillId}"
+                               SelectionChanged="ComboBox_SelectionChanged"
+                               >                      
+                    </ComboBox>
+
+                    <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='With Level:'}"></Label>
+                    <nixxis:NixxisDoubleSlider Minimum="0" Maximum="100" Value="{Binding ElementName=WizControl, Path=CurrentStepParam.Value}"></nixxis:NixxisDoubleSlider>
+
+                </nixxis:NixxisStackPanel>
+
+            </Grid>
+
+            <!--Menu-->
+            <Grid Name="MenuSettings">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.ColumnSpan="5" Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the allowed choices for menu...'}"></Label>
+
+                <ToggleButton Name="tbm1"  Width="40" Height="40" Grid.Row="1" Grid.Column="1" nixxis:WizardControl.NextStep="MenuX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource menu1}}">1</ToggleButton>
+                <ToggleButton Name="tbm2"  Width="40" Height="40" Grid.Row="1" Grid.Column="2" nixxis:WizardControl.NextStep="MenuX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource menu2}}">2</ToggleButton>
+                <ToggleButton Name="tbm3"  Width="40" Height="40" Grid.Row="1" Grid.Column="3" nixxis:WizardControl.NextStep="MenuX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource menu3}}">3</ToggleButton>
+                <ToggleButton Name="tbm4"  Width="40" Height="40" Grid.Row="2" Grid.Column="1" nixxis:WizardControl.NextStep="MenuX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource menu4}}">4</ToggleButton>
+                <ToggleButton Name="tbm5"  Width="40" Height="40" Grid.Row="2" Grid.Column="2" nixxis:WizardControl.NextStep="MenuX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource menu5}}">5</ToggleButton>
+                <ToggleButton Name="tbm6"  Width="40" Height="40" Grid.Row="2" Grid.Column="3" nixxis:WizardControl.NextStep="MenuX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource menu6}}">6</ToggleButton>
+                <ToggleButton Name="tbm7"  Width="40" Height="40" Grid.Row="3" Grid.Column="1" nixxis:WizardControl.NextStep="MenuX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource menu7}}">7</ToggleButton>
+                <ToggleButton Name="tbm8"  Width="40" Height="40" Grid.Row="3" Grid.Column="2" nixxis:WizardControl.NextStep="MenuX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource menu8}}">8</ToggleButton>
+                <ToggleButton Name="tbm9"  Width="40" Height="40" Grid.Row="3" Grid.Column="3" nixxis:WizardControl.NextStep="MenuX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource menu9}}">9</ToggleButton>
+                <ToggleButton Name="tbmStar" Width="40" Height="40" Grid.Row="4" Grid.Column="1" nixxis:WizardControl.NextStep="MenuX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource menuStar}}">*</ToggleButton>
+                <ToggleButton Name="tbm0"  Width="40" Height="40" Grid.Row="4" Grid.Column="2" nixxis:WizardControl.NextStep="MenuX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource menu0}}">0</ToggleButton>
+                <ToggleButton Name="tbmHash" Width="40" Height="40" Grid.Row="4" Grid.Column="3" nixxis:WizardControl.NextStep="MenuX" nixxis:WizardControl.NextStepParam="{Binding Source={StaticResource menuHash}}">#</ToggleButton>
+            </Grid>
+
+            <!--Menu x-->
+            <Grid Name="MenuX">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{nixxis:FormatString BindTo={Binding ElementName=WizControl, Path=CurrentStepParam.Dtmf},TranslationContext={StaticResource tcx},FormatString='Please specify the settings for menu choice associated to DTMF {0}...'}" ></Label>
+
+                <ScrollViewer Grid.Row="1" CanContentScroll="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                    <nixxis:NixxisStackPanel >
+
+                        <Label Visibility="{Binding ElementName=chkLanguage, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}, ConverterParameter=false}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Message to prompt:'}"></Label>
+                        <local:PromptHelper 
+                            MessageId="{Binding ElementName=WizControl, Path=CurrentStepParam.PromptId}" 
+                            Visibility="{Binding ElementName=chkLanguage, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}, ConverterParameter=false}" 
+                            IncludeNone="True"></local:PromptHelper>
+
+                        <Label Content="{nixxis:FormatString BindTo={Binding Source={StaticResource lan1}, Path=SkillDescription},TranslationContext={StaticResource tcx},FormatString='Message to prompt in {0}:'}">
+                            <Label.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tb1" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </Label.Visibility>
+                        </Label>
+                        <local:PromptHelper 
+                            MessageId="{Binding ElementName=WizControl, Path=CurrentStepParam.PromptId1}"                             
+                            IncludeNone="True">
+                            <local:PromptHelper.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tb1" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </local:PromptHelper.Visibility>
+                        </local:PromptHelper>
+
+
+
+                        <Label Content="{nixxis:FormatString BindTo={Binding Source={StaticResource lan2}, Path=SkillDescription},TranslationContext={StaticResource tcx},FormatString='Message to prompt in {0}:'}">
+                            <Label.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tb2" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </Label.Visibility>
+                        </Label>                        
+                        <local:PromptHelper 
+                            MessageId="{Binding ElementName=WizControl, Path=CurrentStepParam.PromptId2}" 
+                            IncludeNone="True">
+                            <local:PromptHelper.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tb2" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </local:PromptHelper.Visibility>
+                        </local:PromptHelper>
+
+
+
+                        <Label Content="{nixxis:FormatString BindTo={Binding Source={StaticResource lan3}, Path=SkillDescription},TranslationContext={StaticResource tcx},FormatString='Message to prompt in {0}:'}">
+                            <Label.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tb3" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </Label.Visibility>
+                        </Label>
+                        <local:PromptHelper 
+                            MessageId="{Binding ElementName=WizControl, Path=CurrentStepParam.PromptId3}"                            
+                            IncludeNone="True">
+                            <local:PromptHelper.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tb3" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </local:PromptHelper.Visibility>
+                        </local:PromptHelper>
+
+
+                        <Label Content="{nixxis:FormatString BindTo={Binding Source={StaticResource lan4}, Path=SkillDescription},TranslationContext={StaticResource tcx},FormatString='Message to prompt in {0}:'}">
+                            <Label.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tb4" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </Label.Visibility>
+                        </Label>
+                        <local:PromptHelper 
+                            MessageId="{Binding ElementName=WizControl, Path=CurrentStepParam.PromptId4}"                             
+                            IncludeNone="True">
+                            <local:PromptHelper.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tb4" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </local:PromptHelper.Visibility>
+                        </local:PromptHelper>
+
+                        <Label Content="{nixxis:FormatString BindTo={Binding Source={StaticResource lan5}, Path=SkillDescription},TranslationContext={StaticResource tcx},FormatString='Message to prompt in {0}:'}">
+                            <Label.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tb5" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </Label.Visibility>
+                        </Label>
+                        <local:PromptHelper 
+                            MessageId="{Binding ElementName=WizControl, Path=CurrentStepParam.PromptId5}" 
+                            IncludeNone="True">
+                            <local:PromptHelper.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tb5" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </local:PromptHelper.Visibility>
+                        </local:PromptHelper>
+
+                        <Label Content="{nixxis:FormatString BindTo={Binding Source={StaticResource lan6}, Path=SkillDescription},TranslationContext={StaticResource tcx},FormatString='Message to prompt in {0}:'}">
+                            <Label.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tb6" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </Label.Visibility>
+                        </Label>
+                        <local:PromptHelper 
+                            MessageId="{Binding ElementName=WizControl, Path=CurrentStepParam.PromptId6}"                             
+                            IncludeNone="True">
+                            <local:PromptHelper.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tb6" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </local:PromptHelper.Visibility>
+                        </local:PromptHelper>
+
+
+                        <Label Content="{nixxis:FormatString BindTo={Binding Source={StaticResource lan7}, Path=SkillDescription},TranslationContext={StaticResource tcx},FormatString='Message to prompt in {0}:'}">
+                            <Label.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tb7" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </Label.Visibility>
+                        </Label>
+                        <local:PromptHelper 
+                            MessageId="{Binding ElementName=WizControl, Path=CurrentStepParam.PromptId7}"                             
+                            IncludeNone="True">
+                            <local:PromptHelper.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tb7" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </local:PromptHelper.Visibility>
+                        </local:PromptHelper>
+
+
+                        <Label Content="{nixxis:FormatString BindTo={Binding Source={StaticResource lan8}, Path=SkillDescription},TranslationContext={StaticResource tcx},FormatString='Message to prompt in {0}:'}">
+                            <Label.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tb8" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </Label.Visibility>
+                        </Label>
+                        <local:PromptHelper 
+                            MessageId="{Binding ElementName=WizControl, Path=CurrentStepParam.PromptId8}"                             
+                            IncludeNone="True">
+                            <local:PromptHelper.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tb8" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </local:PromptHelper.Visibility>
+                        </local:PromptHelper>
+
+
+                        <Label Content="{nixxis:FormatString BindTo={Binding Source={StaticResource lan9}, Path=SkillDescription},TranslationContext={StaticResource tcx},FormatString='Message to prompt in {0}:'}">
+                            <Label.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tb9" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </Label.Visibility>
+                        </Label>
+                        <local:PromptHelper 
+                            MessageId="{Binding ElementName=WizControl, Path=CurrentStepParam.PromptId9}" 
+                            IncludeNone="True">
+                            <local:PromptHelper.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tb9" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </local:PromptHelper.Visibility>
+                        </local:PromptHelper>
+
+                        <Label Content="{nixxis:FormatString BindTo={Binding Source={StaticResource lanStar}, Path=SkillDescription},TranslationContext={StaticResource tcx},FormatString='Message to prompt in {0}:'}">
+                            <Label.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tbStar" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </Label.Visibility>
+                        </Label>
+                        <local:PromptHelper 
+                            MessageId="{Binding ElementName=WizControl, Path=CurrentStepParam.PromptIdStar}"                             
+                            IncludeNone="True">
+                            <local:PromptHelper.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tbStar" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </local:PromptHelper.Visibility>
+                        </local:PromptHelper>
+
+
+                        <Label Content="{nixxis:FormatString BindTo={Binding Source={StaticResource lan0}, Path=SkillDescription},TranslationContext={StaticResource tcx},FormatString='Message to prompt in {0}:'}">
+                            <Label.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tb0" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </Label.Visibility>
+                        </Label>
+                        <local:PromptHelper 
+                            MessageId="{Binding ElementName=WizControl, Path=CurrentStepParam.PromptId0}"
+                            IncludeNone="True">
+                            <local:PromptHelper.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tb0" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </local:PromptHelper.Visibility>
+                        </local:PromptHelper>
+
+                        <Label Content="{nixxis:FormatString BindTo={Binding Source={StaticResource lanHash}, Path=SkillDescription},TranslationContext={StaticResource tcx},FormatString='Message to prompt in {0}:'}">
+                            <Label.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tbHash" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </Label.Visibility>
+                        </Label>
+                        <local:PromptHelper 
+                            MessageId="{Binding ElementName=WizControl, Path=CurrentStepParam.PromptIdHash}" 
+                            IncludeNone="True">
+                            <local:PromptHelper.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="tbHash" Path="IsChecked"></Binding>
+                                    <Binding ElementName="chkLanguage" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </local:PromptHelper.Visibility>
+                        </local:PromptHelper>
+
+                        <Label Visibility="{Binding Source={x:Static local:AdminFrameSet.Settings}, Path=IsFullVersion, Converter={StaticResource VisWithCollapseConverter}}" Content="{nixxis:FormatString BindTo={Binding ElementName=WizControl, Path=CurrentStepParam.Dtmf},TranslationContext={StaticResource tcx},FormatString='When {0} is pressed, replace default queue by:'}"></Label>
+                        <!--<ComboBox Visibility="{Binding Source={x:Static local:AdminFrameSet.Settings}, Path=IsFullVersion, Converter={StaticResource VisWithCollapseConverter}}" SelectionChanged="ComboBox_SelectionChanged2"  SelectedValue="{Binding ElementName=WizControl, Path=CurrentStepParam.QueueId}" ItemsSource="{Binding ElementName=WizControl, Path=Context.Core.Queues, Converter={StaticResource cboConverter}}"  SelectedValuePath="Id" DisplayMemberPath="DisplayText" ></ComboBox>-->
+
+                        <ComboBox SelectionChanged="ComboBox_SelectionChanged2"  SelectedValue="{Binding ElementName=WizControl, Path=CurrentStepParam.QueueId}" ItemsSource="{Binding Source={StaticResource ListQueuesNoDummies}}"  SelectedValuePath="Id" DisplayMemberPath="DisplayText" >
+                            <ComboBox.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding Source="{x:Static local:AdminFrameSet.Settings}" Path="IsFullVersion"></Binding>
+                                    <Binding ElementName="WizControl" Path="CurrentStepParam.QueueId" Converter="{StaticResource isDummyId}" ConverterParameter="true"></Binding>
+                                </MultiBinding>
+                            </ComboBox.Visibility>
+                        </ComboBox>
+                        <ComboBox SelectionChanged="ComboBox_SelectionChanged2"  SelectedValue="{Binding ElementName=WizControl, Path=CurrentStepParam.QueueId}" ItemsSource="{Binding Source={StaticResource ListQueues}}"  SelectedValuePath="Id" DisplayMemberPath="DisplayText" >
+                            <ComboBox.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding Source="{x:Static local:AdminFrameSet.Settings}" Path="IsFullVersion"></Binding>
+                                    <Binding ElementName="WizControl" Path="CurrentStepParam.QueueId" Converter="{StaticResource isDummyId}" ></Binding>
+                                </MultiBinding>
+                            </ComboBox.Visibility>
+                        </ComboBox>
+
+
+
+                        <Label Content="{nixxis:FormatString BindTo={Binding ElementName=WizControl, Path=CurrentStepParam.Dtmf},TranslationContext={StaticResource tcx},FormatString='When {0} is pressed, contact will be associated to skill:'}"></Label>
+                        <ComboBox SelectionChanged="ComboBox_SelectionChanged"  SelectedValue="{Binding ElementName=WizControl, Path=CurrentStepParam.SkillId}" ItemsSource="{Binding ElementName=WizControl, Path=Context.Core.Skills, Converter={StaticResource cboConverter}}"  SelectedValuePath="Id" DisplayMemberPath="DisplayText" ></ComboBox>
+
+                        <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='With Level:'}"></Label>
+                        <nixxis:NixxisDoubleSlider Minimum="0" Maximum="100" Value="{Binding ElementName=WizControl, Path=CurrentStepParam.Value}"></nixxis:NixxisDoubleSlider>
+
+                    </nixxis:NixxisStackPanel>
+                </ScrollViewer>
+
+            </Grid>
+
+            <!--End-->
+            <Grid Name="End" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}">
+                    <TextBlock Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please click on finish to complete the configuration of preprocessor'}" TextWrapping="Wrap"></TextBlock>
+                </Label>
+
+                <GroupBox Margin="2" Grid.Row="1" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Summary:'}">
+                    <ScrollViewer CanContentScroll="False" >
+                        <Label>
+                            <TextBlock IsVisibleChanged="TextBlock_IsVisibleChanged" TextWrapping="Wrap"></TextBlock>
+                        </Label>
+                    </ScrollViewer>
+                </GroupBox>
+
+            </Grid>
+
+        </Grid>
+
+        <nixxis:WizardControl Grid.Row="1" Name="WizControl" WizardGrid="{Binding ElementName=AddWizard}" CurrentStep="Start" EndStep="End" WizardFinished="WizControl_WizardFinished" ></nixxis:WizardControl>
+
+    </Grid>
+</Window>

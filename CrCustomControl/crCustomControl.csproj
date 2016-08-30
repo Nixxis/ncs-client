@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{38ADA692-27C4-43A8-9F2F-C13FB98D8C46}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>crCustomControl</RootNamespace>
+    <AssemblyName>crCustomControl</AssemblyName>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EnhancedControls\NumberedTextBoxUC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EnhancedControls\NumberedTextBoxUC.designer.cs">
+      <DependentUpon>NumberedTextBoxUC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Events\SelectionCollection.cs" />
+    <Compile Include="NetControls\FileViewClass.cs" />
+    <Compile Include="NetControls\DataGridViewCustom.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="NetControls\FileView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="NetControls\FileView.Designer.cs">
+      <DependentUpon>FileView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NetControls\PictureBoxButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="NetControls\PictureBoxButton.Designer.cs">
+      <DependentUpon>PictureBoxButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Selection\SelectionObjectCollection.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Selection\SelectionObjectCollection.Designer.cs">
+      <DependentUpon>SelectionObjectCollection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Selection\ScoreSelection.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Selection\ScoreSelection.Designer.cs">
+      <DependentUpon>ScoreSelection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Selection\SelectionConnectionString.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Selection\SelectionConnectionString.Designer.cs">
+      <DependentUpon>SelectionConnectionString.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Selection\SelectionStringCollection.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Selection\SelectionStringCollection.Designer.cs">
+      <DependentUpon>SelectionStringCollection.cs</DependentUpon>
+    </Compile>
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EnhancedControls\NumberedTextBoxUC.resx">
+      <DependentUpon>NumberedTextBoxUC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetControls\FileView.resx">
+      <DependentUpon>FileView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Selection\SelectionObjectCollection.resx">
+      <DependentUpon>SelectionObjectCollection.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Selection\ScoreSelection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ScoreSelection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Selection\SelectionConnectionString.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SelectionConnectionString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Selection\SelectionStringCollection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SelectionStringCollection.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\star_blue16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\star_grey16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\unrated_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\rated_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DB16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="History.htm" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

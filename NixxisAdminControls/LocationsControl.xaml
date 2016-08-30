@@ -1,0 +1,710 @@
+﻿<UserControl x:Class="Nixxis.Client.Admin.LocationsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+             xmlns:local="clr-namespace:Nixxis.Client.Admin"
+             xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:adminlink="clr-namespace:Nixxis.Client.Admin;assembly=AdminLink"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             Name="MySelf">
+
+
+    <UserControl.CommandBindings>
+        <CommandBinding Command="local:AdminFrameSet.AdminObjectAddOperation" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.AdminObjectDuplicateOperation" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.AdminObjectDeleteOperation" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.AdminObjectMoveUpOperation" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.AdminObjectMoveDownOperation" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.AdminObjectPrintOperation" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.ShowObject" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+
+    </UserControl.CommandBindings>
+
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <local:IsDummyIdConverter x:Key="isDummyId"></local:IsDummyIdConverter>
+            
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+
+            <crs:TranslationContext x:Key="tcx" Context="LocationsControl"></crs:TranslationContext>
+
+            <adminlink:DynamicParameterActionHelper x:Key="DynamicParameterActions"></adminlink:DynamicParameterActionHelper>
+
+            <local:ComboListConverter x:Key="cboConverter" />            
+
+            <local:ComboListConverterNoDummies x:Key="cboConverterNoDummies" />
+
+            <CollectionViewSource x:Key="ParamDefs" Source="{Binding DynamicParameterDefinitions}"/>
+
+            <local:RightsConverter x:Key="rightsConverter"></local:RightsConverter><local:InvertedRightsConverter x:Key="invertedRightsConverter"></local:InvertedRightsConverter>
+
+            <CollectionViewSource x:Key="List" Source="{Binding Locations}">
+            </CollectionViewSource>
+
+            <CollectionViewSource x:Key="NumberFormats" Source="{Binding NumberFormats}"/>
+
+            <CollectionViewSource x:Key="Carriers" Source="{Binding Carriers, Converter={StaticResource cboConverter}}"/>
+
+            <CollectionViewSource x:Key="ListQueues" Source="{Binding Queues, Converter={StaticResource cboConverter}}"  />
+            <CollectionViewSource x:Key="ListQueuesNoDummies" Source="{Binding Queues, Converter={StaticResource cboConverterNoDummies}}"  />
+
+            <CollectionViewSource x:Key="ListPrompts" Source="{Binding GlobalPrompts.SimplePrompts, Converter={StaticResource cboConverter}}"  />
+            <CollectionViewSource x:Key="ListPromptsNoDummies" Source="{Binding GlobalPrompts.SimplePrompts, Converter={StaticResource cboConverterNoDummies}}"  />
+
+
+            <adminlink:NumberingCallTypesHelper x:Key="numberingCallTypes"></adminlink:NumberingCallTypesHelper>
+
+            <local:ComboStringListConverter x:Key="cboStringConverter" />
+
+
+            <sys:Int32 x:Key="-1">-1</sys:Int32>
+            <sys:Int32 x:Key="1">1</sys:Int32>
+
+
+            <nixxis:NixxisExpandPanel x:Key="AdminPanel" Title="Administration toolbar" nixxis:NixxisGrid.Panel="CenterLeft">
+                <nixxis:NixxisButton local:RightsManagement.Rights="Location.Add" Command="local:AdminFrameSet.AdminObjectAddOperation" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Action_Add.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Add'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton local:RightsManagement.Rights="Location.Duplicate" Command="local:AdminFrameSet.AdminObjectDuplicateOperation" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Action_Duplicate.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Duplicate'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton local:RightsManagement.Rights="Location.Delete" Command="local:AdminFrameSet.AdminObjectDeleteOperation"  CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Action_Delete.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Delete'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton local:RightsManagement.Rights="Location.MoveUp" Command="local:AdminFrameSet.AdminObjectMoveUpOperation" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Action_MoveUp.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Move Up'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton local:RightsManagement.Rights="Location.MoveDown" Command="local:AdminFrameSet.AdminObjectMoveDownOperation"  CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Action_MoveDown.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Move Down'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton local:RightsManagement.Rights="Location.Print" Command="local:AdminFrameSet.AdminObjectPrintOperation" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Action_Print.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Print'}"></nixxis:NixxisButton>
+            </nixxis:NixxisExpandPanel>
+
+            <DataTemplate x:Key="FullView">
+                <nixxis:CoverflowElement Margin="5" IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPresenter}}, Path=(nixxis:NixxisCoverFlowPanel.IsSelected), Mode=TwoWay}">
+                    <StackPanel Margin="5" Orientation="Vertical">
+
+                        <Label Content="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Location {0}',BindTo={Binding Description}}" ></Label>
+
+                        <Label>
+                            <Label.Content>
+                                <nixxis:FormatStringExtension TranslationContext="{StaticResource tcx}" FormatString="Created at {0:dd/MM/yyy HH:mm} by {1}">
+                                    <nixxis:FormatStringExtension.BindTo>
+                                        <MultiBinding>
+                                            <Binding Path="CreationTime"></Binding>
+                                            <Binding Path="Creator"></Binding>
+                                        </MultiBinding>
+                                    </nixxis:FormatStringExtension.BindTo>
+                                </nixxis:FormatStringExtension>
+                            </Label.Content>
+                        </Label>
+
+                        <Label>
+                            <nixxis:FormatStringExtension TranslationContext="{StaticResource tcx}" FormatString="Modified at {0:dd/MM/yyy HH:mm} by {1}">
+                                <nixxis:FormatStringExtension.BindTo>
+                                    <MultiBinding>
+                                        <Binding Path="ModifyTime"></Binding>
+                                        <Binding Path="Modificator"></Binding>
+                                    </MultiBinding>
+                                </nixxis:FormatStringExtension.BindTo>
+                            </nixxis:FormatStringExtension>
+                        </Label>
+
+                    </StackPanel>
+                </nixxis:CoverflowElement>
+
+            </DataTemplate>
+
+            <nixxis:NixxisExpandCoverFlowPanel x:Key="DetailsPanel" ItemsSource="{Binding Source={StaticResource List}, Path=CurrentItem}" Title="Details" nixxis:NixxisGrid.Panel="CenterRight" ItemTemplate="{StaticResource FullView}" ItemsWidth="350"/>
+
+        </ResourceDictionary>
+        
+    </UserControl.Resources>
+
+    <nixxis:PresentationGrid Orientation="{Binding Source={x:Static local:AdminFrameSet.Settings}, Path=PanelsOrientation}" >
+        
+        <ComboBox nixxis:PresentationGrid.Meaning="Filter" Name="cboFilter" Margin="5,0,0,0" ItemsSource="{Binding GroupKeysSameType, Converter={StaticResource cboStringConverter}}" DisplayMemberPath="DisplayText" SelectedValue="{x:Null}" SelectedValuePath="Id" DropDownOpened="ComboBox_DropDownOpened" DropDownClosed="ComboBox_DropDownClosed" ></ComboBox>
+        
+        <nixxis:NixxisDataGrid nixxis:PresentationGrid.Meaning="List" BorderThickness="0" DefaultSortOrder="Description" Name="MainGrid" SelectedItem="{Binding ElementName=MySelf, Path=SelectedItem}"  ItemsSource="{Binding Source={StaticResource List}}" CanUserAddRows="False" HeadersVisibility="Column" RowDetailsVisibilityMode="Collapsed" IsReadOnly="True">
+
+            <nixxis:NixxisDataGrid.Columns>
+                
+                <DataGridTemplateColumn IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="Images\AdminSmall_Location.png"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Description'}" Binding="{Binding Description}"></DataGridTextColumn>
+                <DataGridTextColumn EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Group'}" Binding="{Binding GroupKey}"></DataGridTextColumn>
+            </nixxis:NixxisDataGrid.Columns>
+
+        </nixxis:NixxisDataGrid>
+
+        <nixxis:NixxisTabControl nixxis:PresentationGrid.Meaning="Properties" DataContext="{StaticResource List}" IsEnabled="{Binding ElementName=MainGrid, Path=SelectedIndex, Converter={StaticResource IneqConverter}, ConverterParameter={StaticResource -1}}">
+            
+            <!--General-->
+            <nixxis:NixxisTabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Width="25" Height="25" Source="Images\AdminSmall_Location.png"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='General'}"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+
+                <ScrollViewer CanContentScroll="False" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+
+                        <nixxis:NixxisStackPanel>
+
+                            <Label Visibility="{Binding Source={x:Static local:AdminFrameSet.Settings}, Path=IsDebug, Converter={StaticResource VisWithCollapseConverter}}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Id:'}"></Label>
+                            <TextBox Visibility="{Binding Source={x:Static local:AdminFrameSet.Settings}, Path=IsDebug, Converter={StaticResource VisWithCollapseConverter}}" IsReadOnly="True" 
+                                             Text="{Binding Id, Mode=OneWay}"></TextBox>
+                            <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Description:'}"></Label>
+                            <TextBox local:RightsManagement.Rights="Location.Description" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Location.Description}" Text="{Binding Description}"></TextBox>
+
+                            <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Group:'}"></Label>
+                            <ComboBox local:RightsManagement.Rights="Location.Group" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Location.Group}" ItemsSource="{Binding GroupKeys}" SelectedItem="{Binding GroupKey}" Text="{Binding GroupKey}" IsEditable="True"></ComboBox>
+
+                            <Label  Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Number format:'}"></Label>
+                            <ComboBox local:RightsManagement.Rights="Location.NumberFormat" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Location.NumberFormat}" IsSynchronizedWithCurrentItem="False"  ItemsSource="{Binding Source={StaticResource NumberFormats}}" DisplayMemberPath="DisplayText" SelectedValuePath="Id" SelectedValue="{Binding NumberFormat.TargetId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                            </ComboBox>
+
+
+                        </nixxis:NixxisStackPanel>
+
+                        <GridSplitter IsTabStop="False" Grid.Column="1" Grid.RowSpan="10" Margin="5,0,5,0"  ResizeDirection="Columns" Width="2" VerticalAlignment="Stretch" HorizontalAlignment="Center"  ></GridSplitter>
+
+                        <nixxis:NixxisStackPanel Grid.Column="2">
+
+                            <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Default location cost:'}"></Label>
+                            <nixxis:NumericUpDown local:RightsManagement.Rights="Location.DefaultCost" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Location.DefaultCost}" Value="{Binding DefaultCost}" NumberFormat="0"></nixxis:NumericUpDown>
+
+
+                        </nixxis:NixxisStackPanel>
+                    </Grid>
+                </ScrollViewer>
+
+            </nixxis:NixxisTabItem>
+
+            <!--Source cost-->
+            <nixxis:NixxisTabItem Name="tabSourceCost">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Width="25" Height="25" Source="Images\AdminSmall_Location.png"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Source costs'}"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+
+                <Grid Margin="10" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Content="{nixxis:FormatString BindTo={Binding DisplayText}, TranslationContext={StaticResource tcx},FormatString='Costs when transporting calls from {0} to other locations'}"></Label>
+                    <nixxis:NixxisDataGrid local:RightsManagement.Rights="Location.SourceCosts" IsDisabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource invertedRightsConverter}, ConverterParameter=Location.SourceCosts}" DefaultSortOrder="ToLocation.Target.Description" Grid.Row="1" Name="DGSourceCosts" EditMode="SingleClick" ItemsSource="{Binding SourceCosts}"  CanUserAddRows="False" HeadersVisibility="Column" RowDetailsVisibilityMode="Collapsed"  >
+                        <nixxis:NixxisDataGrid.Columns>
+                            <DataGridTemplateColumn IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image Source="Images\AdminSmall_Location.png"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridCheckBoxColumn ElementStyle="{StaticResource DatagridCheckBox}" EditingElementStyle="{StaticResource {x:Type CheckBox}}" Binding="{Binding Allowed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></DataGridCheckBoxColumn>
+                            <nixxis:NixxisDataGridSliderColumn EnabledBinding="{Binding Allowed}" AutoToolTipPlacement="BottomRight"  EditingElementStyle="{StaticResource {x:Type Slider}}" ElementStyle="{StaticResource DatagridSlider}" Minimum="0" Maximum="1000" SliderWidth="100" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Cost'}" SortMemberPath="Cost" Binding="{Binding Cost, UpdateSourceTrigger=PropertyChanged}"></nixxis:NixxisDataGridSliderColumn>
+                            <DataGridTextColumn IsReadOnly="True" EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='From'}" Binding="{Binding ToLocation.Target.Description}"></DataGridTextColumn>
+                        </nixxis:NixxisDataGrid.Columns>
+                        <nixxis:NixxisDataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Visibility="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsEnabled, Converter={StaticResource VisWithCollapseConverter}}"  Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Go to definition'}" Command="local:AdminFrameSet.ShowObject" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"></MenuItem>
+                            </ContextMenu>
+                        </nixxis:NixxisDataGrid.ContextMenu>
+                    </nixxis:NixxisDataGrid>
+                </Grid>
+            </nixxis:NixxisTabItem>
+
+            <!--Destination cost-->
+            <nixxis:NixxisTabItem Name="tabDestinationCost">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Width="25" Height="25" Source="Images\AdminSmall_Location.png"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Destination costs'}"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+
+                <Grid Margin="10" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Content="{nixxis:FormatString BindTo={Binding DisplayText}, TranslationContext={StaticResource tcx},FormatString='Costs when transporting calls from other locations to {0}'}"></Label>
+                    <nixxis:NixxisDataGrid local:RightsManagement.Rights="Location.DestinationCosts" IsDisabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource invertedRightsConverter}, ConverterParameter=Location.DestinationCosts}" DefaultSortOrder="FromLocation.Target.Description" Grid.Row="1" Name="DGDestinationCosts" EditMode="SingleClick" ItemsSource="{Binding DestinationCosts}"  CanUserAddRows="False" HeadersVisibility="Column" RowDetailsVisibilityMode="Collapsed"  >
+                        <nixxis:NixxisDataGrid.Columns>
+                            <DataGridTemplateColumn IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image Source="Images\AdminSmall_Location.png"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridCheckBoxColumn ElementStyle="{StaticResource DatagridCheckBox}" EditingElementStyle="{StaticResource {x:Type CheckBox}}" Binding="{Binding Allowed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></DataGridCheckBoxColumn>
+                            <nixxis:NixxisDataGridSliderColumn EnabledBinding="{Binding Allowed}" AutoToolTipPlacement="BottomRight"  EditingElementStyle="{StaticResource {x:Type Slider}}" ElementStyle="{StaticResource DatagridSlider}" Minimum="0" Maximum="1000" SliderWidth="100" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Cost'}" SortMemberPath="Cost" Binding="{Binding Cost, UpdateSourceTrigger=PropertyChanged}"></nixxis:NixxisDataGridSliderColumn>
+                            <DataGridTextColumn IsReadOnly="True" EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='From'}" Binding="{Binding FromLocation.Target.Description}"></DataGridTextColumn>
+
+
+                        </nixxis:NixxisDataGrid.Columns>
+                        <nixxis:NixxisDataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Visibility="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsEnabled, Converter={StaticResource VisWithCollapseConverter}}"  Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Go to definition'}" Command="local:AdminFrameSet.ShowObject" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"></MenuItem>
+                            </ContextMenu>
+                        </nixxis:NixxisDataGrid.ContextMenu>
+                    </nixxis:NixxisDataGrid>
+                </Grid>
+            </nixxis:NixxisTabItem>
+
+            <!--Phones-->
+            <nixxis:NixxisTabItem Name="Phones">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Width="25" Height="25" Source="Images\AdminSmall_Phone.png"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Phones'}"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+
+                <Grid Margin="10" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='The list of phones associated to this location'}"></Label>
+                    <nixxis:NixxisDataGrid local:RightsManagement.Rights="Location.Phones" IsDisabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource invertedRightsConverter}, ConverterParameter=Location.Phones}" DefaultSortOrder="Item.DisplayText" Grid.Row="1" Name="DGPhones" EditMode="SingleClick" ItemsSource="{Binding CheckedPhones}"  CanUserAddRows="False" HeadersVisibility="Column" RowDetailsVisibilityMode="Collapsed" >
+                        <nixxis:NixxisDataGrid.Columns>
+                            <DataGridTemplateColumn IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image Source="Images\AdminSmall_Phone.png"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridCheckBoxColumn ElementStyle="{StaticResource DatagridCheckBox}" EditingElementStyle="{StaticResource {x:Type CheckBox}}" Binding="{Binding HasLink, UpdateSourceTrigger=PropertyChanged}"></DataGridCheckBoxColumn>                            
+                            <DataGridTextColumn IsReadOnly="True" EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Phone'}" Binding="{Binding Item.DisplayText}"></DataGridTextColumn>
+                        </nixxis:NixxisDataGrid.Columns>
+                        <nixxis:NixxisDataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Visibility="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsEnabled, Converter={StaticResource VisWithCollapseConverter}}"  Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Go to definition'}" Command="local:AdminFrameSet.ShowObject" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"></MenuItem>
+                            </ContextMenu>
+                        </nixxis:NixxisDataGrid.ContextMenu>
+                    </nixxis:NixxisDataGrid>
+                </Grid>
+            </nixxis:NixxisTabItem>
+
+            <!--Resources-->
+            <nixxis:NixxisTabItem Name="Resources">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Width="25" Height="25" Source="Images\AdminSmall_Resource.png"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Resourcess'}"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+
+                <Grid Margin="10" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='The list of resources associated to this location'}"></Label>
+                    <nixxis:NixxisDataGrid local:RightsManagement.Rights="Location.Resources" IsDisabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource invertedRightsConverter}, ConverterParameter=Location.Resources}" DefaultSortOrder="Item.DisplayText" Grid.Row="1" Name="DGResources" EditMode="SingleClick" ItemsSource="{Binding CheckedResources}"  CanUserAddRows="False" HeadersVisibility="Column" RowDetailsVisibilityMode="Collapsed"  >
+                        <nixxis:NixxisDataGrid.Columns>
+                            <DataGridTemplateColumn IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image Source="Images\AdminSmall_Resource.png"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridCheckBoxColumn ElementStyle="{StaticResource DatagridCheckBox}" EditingElementStyle="{StaticResource {x:Type CheckBox}}" Binding="{Binding HasLink, UpdateSourceTrigger=PropertyChanged}"></DataGridCheckBoxColumn>
+                            <DataGridTextColumn IsReadOnly="True" EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Resource'}" Binding="{Binding Item.DisplayText}"></DataGridTextColumn>
+                        </nixxis:NixxisDataGrid.Columns>
+                        <nixxis:NixxisDataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Visibility="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsEnabled, Converter={StaticResource VisWithCollapseConverter}}"  Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Go to definition'}" Command="local:AdminFrameSet.ShowObject" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"></MenuItem>
+                            </ContextMenu>
+                        </nixxis:NixxisDataGrid.ContextMenu>
+                    </nixxis:NixxisDataGrid>
+                </Grid>
+            </nixxis:NixxisTabItem>
+
+            <!--Numbering rules-->
+            <nixxis:NixxisTabItem Name="tabNumRules">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Width="25" Height="25" Source="Images\AdminSmall_CallFlow.png"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Numbering rules'}"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <Label Margin="0,8,0,0" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Numbering rules:'}"></Label>
+
+                        <nixxis:NixxisDataGrid Grid.Row="1" Name="DGNumberingRules" DefaultSortOrder="Sequence" ItemsSource="{Binding NumberingRules}" CanUserSortColumns="False" CanUserAddRows="False" HeadersVisibility="Column" RowDetailsVisibilityMode="Collapsed" IsReadOnly="True">
+
+                            <nixxis:NixxisDataGrid.Columns>
+
+                                <DataGridTemplateColumn IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image Source="Images\AdminSmall_CallbackRule.png"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTextColumn Visibility="Hidden" EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Sequence'}" Binding="{Binding Sequence}"></DataGridTextColumn>
+                                <DataGridTextColumn EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Description'}" Binding="{Binding Explanation}"></DataGridTextColumn>
+
+                            </nixxis:NixxisDataGrid.Columns>
+
+                        </nixxis:NixxisDataGrid>
+
+                    </Grid>
+
+                    <GridSplitter IsTabStop="False" Grid.Column="1" Grid.RowSpan="10" Margin="5,0,5,0"  ResizeDirection="Columns" Width="2" VerticalAlignment="Stretch" HorizontalAlignment="Center"  ></GridSplitter>
+
+                    <ScrollViewer IsEnabled="{Binding ElementName=DGNumberingRules, Path=SelectedIndex, Converter={StaticResource IneqConverter}, ConverterParameter={StaticResource -1} }" Grid.Column="2" Grid.RowSpan="10" CanContentScroll="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+
+                        <Grid>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <Label Margin="0,8,0,0" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Description:'}"></Label>
+                            <TextBox local:RightsManagement.Rights="Location.NumberingRule.Description" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Location.NumberingRule.Description}" Grid.Row="1" Text="{Binding ElementName=DGNumberingRules, Path=SelectedItem.Description}"></TextBox>
+
+                            <GroupBox Grid.Row="2" Margin="0,8,0,0">
+                                <GroupBox.Header>
+                                    <nixxis:NixxisDetailedToggle local:RightsManagement.Rights="Location.NumberingRule.Condition" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Location.NumberingRule.Condition}" Name="ConditionDetail" DetailContent="{Binding ElementName=DGNumberingRules, Path=SelectedItem.ConditionsDescription}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Condition'}"></nixxis:NixxisDetailedToggle>
+                                </GroupBox.Header>
+
+                                <nixxis:NixxisStackPanel Visibility="{Binding ElementName=ConditionDetail, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}}">
+                                    <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Call type:'}"></Label>
+                                    <ComboBox Name="cboCallType" ItemsSource="{StaticResource numberingCallTypes}" SelectedValuePath="EnumValue" DisplayMemberPath="Description" SelectedValue="{Binding ElementName=DGNumberingRules, Path=SelectedItem.NumberingCallType}"></ComboBox>
+
+                                    <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Source:'}"></Label>
+                                    <TextBox nixxis:NixxisStackPanel.KeepNextAttached="True" Text="{Binding ElementName=DGNumberingRules, Path=SelectedItem.Source}"></TextBox>
+                                    <ToggleButton Margin="5,0,0,0" VerticalAlignment="Center" IsChecked="{Binding ElementName=DGNumberingRules, Path=SelectedItem.SourceIsRegexp}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Regexp'}"></ToggleButton>
+
+                                    <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Destination:'}"></Label>
+                                    <TextBox nixxis:NixxisStackPanel.KeepNextAttached="True" Text="{Binding ElementName=DGNumberingRules, Path=SelectedItem.Destination}"></TextBox>
+                                    <ToggleButton Margin="5,0,0,0" VerticalAlignment="Center"  IsChecked="{Binding ElementName=DGNumberingRules, Path=SelectedItem.DestinationIsRegexp}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Regexp'}"></ToggleButton>
+
+                                    <Label Visibility="{Binding ElementName=cboCarrier, Path=Visibility}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Carrier:'}"></Label>
+                                    <ComboBox Name="cboCarrier" Visibility="{Binding ElementName=cboCallType, Path=SelectedValue, Converter={StaticResource IneqCConverter}, ConverterParameter={x:Static adminlink:NumberingCallType.OutboundActivity}}"  IsSynchronizedWithCurrentItem="False"  ItemsSource="{Binding Source={StaticResource Carriers}}" DisplayMemberPath="DisplayText" SelectedValuePath="Id" SelectedValue="{Binding ElementName=DGNumberingRules, Path=SelectedItem.Carrier.TargetId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                        <ComboBox.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Go to definition'}" Command="local:AdminFrameSet.ShowObject" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"></MenuItem>
+                                            </ContextMenu>
+                                        </ComboBox.ContextMenu>
+                                    </ComboBox>
+
+
+                                </nixxis:NixxisStackPanel>
+                            </GroupBox>
+
+                            <GroupBox Grid.Row="3" Margin="0,8,0,0">
+                                <GroupBox.Header>
+                                    <nixxis:NixxisDetailedToggle local:RightsManagement.Rights="Location.NumberingRule.Action" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Location.NumberingRule.Action}" Name="ActionDetail" DetailContent="{Binding ElementName=DGNumberingRules, Path=SelectedItem.ActionDescription}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Action when rule matches'}"></nixxis:NixxisDetailedToggle>
+                                </GroupBox.Header>
+
+                                <nixxis:NixxisStackPanel Visibility="{Binding ElementName=ActionDetail, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}}">
+                                    <CheckBox Name="chkRouting" IsChecked="{Binding ElementName=DGNumberingRules, Path=SelectedItem.Allowed }" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Routing is allowed'}"></CheckBox>
+
+                                    <Label IsEnabled="{Binding ElementName=chkRouting, Path=IsChecked}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Source replacement:'}"></Label>
+                                    <TextBox IsEnabled="{Binding ElementName=chkRouting, Path=IsChecked}" Text="{Binding ElementName=DGNumberingRules, Path=SelectedItem.SourceReplace}"></TextBox>
+
+                                    <Label IsEnabled="{Binding ElementName=chkRouting, Path=IsChecked}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Destination replacement:'}"></Label>
+                                    <TextBox IsEnabled="{Binding ElementName=chkRouting, Path=IsChecked}" Text="{Binding ElementName=DGNumberingRules, Path=SelectedItem.DestinationReplace}"></TextBox>
+
+                                    <Label IsEnabled="{Binding ElementName=chkRouting, Path=IsChecked}" Visibility="{Binding ElementName=cboSelectedCarrier, Path=Visibility}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Carrier selection:'}"></Label>
+                                    <ComboBox IsEnabled="{Binding ElementName=chkRouting, Path=IsChecked}" Name="cboSelectedCarrier" Visibility="{Binding ElementName=cboCallType, Path=SelectedValue, Converter={StaticResource EqCConverter}, ConverterParameter={x:Static adminlink:NumberingCallType.InboundGeneral}}" IsSynchronizedWithCurrentItem="False"  ItemsSource="{Binding Source={StaticResource Carriers}}" DisplayMemberPath="DisplayText" SelectedValuePath="Id" SelectedValue="{Binding ElementName=DGNumberingRules, Path=SelectedItem.CarrierSelection.TargetId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                        <ComboBox.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Go to definition'}" Command="local:AdminFrameSet.ShowObject" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"></MenuItem>
+                                            </ContextMenu>
+                                        </ComboBox.ContextMenu>
+                                    </ComboBox>
+
+
+                                </nixxis:NixxisStackPanel>
+                            </GroupBox>
+
+                        </Grid>
+                    </ScrollViewer>
+
+                </Grid>
+            </nixxis:NixxisTabItem>
+
+            <!--Dynamic parameters-->
+            <nixxis:NixxisTabItem Visibility="{Binding Source={StaticResource ParamDefs}, Path=Count, Converter={StaticResource EqCConverter}, ConverterParameter={StaticResource 0}}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Width="25" Height="25" Source="Images\AdminSmall_Location.png"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Dynamic parameters'}"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                
+                <Grid Margin="10" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='The list of dynamic parameters and their values:'}"></Label>
+                    <nixxis:NixxisDataGrid local:RightsManagement.Rights="Location.DynamicParamaters" IsDisabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource invertedRightsConverter}, ConverterParameter=Location.DynamicParameters}" DefaultSortOrder="Item.DisplayText" Grid.Row="1" Name="DGDynamicParameters" EditMode="SingleClick" ItemsSource="{Binding CheckedDynamicParameters}"  CanUserAddRows="False" HeadersVisibility="Column" RowDetailsVisibilityMode="Collapsed" >
+                        <nixxis:NixxisDataGrid.Columns>
+                            <DataGridTemplateColumn IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image Source="Images\AdminSmall_Location.png"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridCheckBoxColumn ElementStyle="{StaticResource DatagridCheckBox}" EditingElementStyle="{StaticResource {x:Type CheckBox}}" Binding="{Binding HasLink, UpdateSourceTrigger=PropertyChanged}"></DataGridCheckBoxColumn>
+                            <DataGridTextColumn IsReadOnly="True" EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Parameter'}" Binding="{Binding Item.DisplayText}"></DataGridTextColumn>
+
+                            <DataGridTemplateColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Action'}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Visibility="{Binding HasLink, Converter={StaticResource VisWithCollapseConverter}}" Text="{Binding Link.Action}">
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>                                
+                                
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <ComboBox Visibility="{Binding HasLink, Converter={StaticResource VisWithCollapseConverter}}"
+                                            DisplayMemberPath="Description"  
+                                            SelectedValuePath="EnumValue" 
+                                            SelectedValue="{Binding Link.Action, UpdateSourceTrigger=PropertyChanged}"
+                                            ItemsSource="{Binding Source={StaticResource DynamicParameterActions}}"></ComboBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+
+
+                            <DataGridTemplateColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Value'}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <TextBlock Text="{Binding Link.Value, UpdateSourceTrigger=PropertyChanged}">
+                                                <TextBlock.Visibility>
+                                                    <MultiBinding Converter="{StaticResource VisWithCollapseMultiConverter }" TargetNullValue="Collapsed" >
+                                                        <Binding Path="Item.Type"  Converter="{StaticResource EqConverter}" ConverterParameter="{x:Static adminlink:DynamicParameterType.Text}"></Binding>
+                                                        <Binding Path="HasLink"></Binding>
+                                                    </MultiBinding>
+                                                </TextBlock.Visibility>
+                                            </TextBlock>
+
+                                            <TextBlock Text="{Binding Link.Value, UpdateSourceTrigger=PropertyChanged}">
+                                                <TextBlock.Visibility>
+                                                    <MultiBinding Converter="{StaticResource VisWithCollapseMultiConverter }" TargetNullValue="Collapsed" >
+                                                        <Binding Path="Item.Type"  Converter="{StaticResource EqConverter}" ConverterParameter="{x:Static adminlink:DynamicParameterType.Numeric}"></Binding>
+                                                        <Binding Path="HasLink"></Binding>
+                                                    </MultiBinding>
+                                                </TextBlock.Visibility>
+                                            </TextBlock>
+
+                                            <ContentControl HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Center">
+                                                <CheckBox IsChecked="{Binding Link.Value, UpdateSourceTrigger=PropertyChanged}" >
+                                                    <CheckBox.Visibility>
+                                                        <MultiBinding Converter="{StaticResource VisWithCollapseMultiConverter }" TargetNullValue="Collapsed" >
+                                                            <Binding Path="Item.Type"  Converter="{StaticResource EqConverter}" ConverterParameter="{x:Static adminlink:DynamicParameterType.Boolean}"></Binding>
+                                                            <Binding Path="HasLink"></Binding>
+                                                        </MultiBinding>
+                                                    </CheckBox.Visibility>
+                                                </CheckBox>
+                                            </ContentControl>
+
+                                            <TextBlock Text="{Binding Link.Queue.Target.DisplayText, UpdateSourceTrigger=PropertyChanged}" >
+                                                <TextBlock.Visibility>
+                                                    <MultiBinding Converter="{StaticResource VisWithCollapseMultiConverter }" TargetNullValue="Collapsed" >
+                                                            <Binding Path="Item.Type"  Converter="{StaticResource EqConverter}" ConverterParameter="{x:Static adminlink:DynamicParameterType.Queue}"></Binding>
+                                                            <Binding Path="HasLink"></Binding>
+                                                            <Binding Path="Link.Queue.HasTarget"></Binding>
+                                                    </MultiBinding>
+                                                </TextBlock.Visibility>
+                                            </TextBlock>
+
+                                            <TextBlock Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='&lt;None&gt;'}" >
+                                                <TextBlock.Visibility>
+                                                    <MultiBinding Converter="{StaticResource VisWithCollapseMultiConverter }" ConverterParameter="false,false,true" TargetNullValue="Collapsed" >
+                                                        <Binding Path="Item.Type"  Converter="{StaticResource EqConverter}" ConverterParameter="{x:Static adminlink:DynamicParameterType.Queue}"></Binding>
+                                                        <Binding Path="HasLink"></Binding>
+                                                        <Binding Path="Link.Queue.HasTarget"></Binding>
+                                                    </MultiBinding>
+                                                </TextBlock.Visibility>
+                                            </TextBlock>
+
+
+
+
+
+
+                                            <TextBlock Text="{Binding Link.Prompt.Target.DisplayText, UpdateSourceTrigger=PropertyChanged}" >
+                                                <TextBlock.Visibility>
+                                                    <MultiBinding Converter="{StaticResource VisWithCollapseMultiConverter }" TargetNullValue="Collapsed" >
+                                                        <Binding Path="Item.Type"  Converter="{StaticResource EqConverter}" ConverterParameter="{x:Static adminlink:DynamicParameterType.Prompt}"></Binding>
+                                                        <Binding Path="HasLink"></Binding>
+                                                        <Binding Path="Link.Prompt.HasTarget"></Binding>
+                                                    </MultiBinding>
+                                                </TextBlock.Visibility>
+                                            </TextBlock>
+
+                                            <TextBlock Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='&lt;None&gt;'}" >
+                                                <TextBlock.Visibility>
+                                                    <MultiBinding Converter="{StaticResource VisWithCollapseMultiConverter }" ConverterParameter="false,false,true" TargetNullValue="Collapsed" >
+                                                        <Binding Path="Item.Type"  Converter="{StaticResource EqConverter}" ConverterParameter="{x:Static adminlink:DynamicParameterType.Prompt}"></Binding>
+                                                        <Binding Path="HasLink"></Binding>
+                                                        <Binding Path="Link.Prompt.HasTarget"></Binding>
+                                                    </MultiBinding>
+                                                </TextBlock.Visibility>
+                                            </TextBlock>
+
+
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <TextBox Text="{Binding Link.Value, UpdateSourceTrigger=PropertyChanged}">
+                                                <TextBox.Visibility>
+                                                    <MultiBinding Converter="{StaticResource VisWithCollapseMultiConverter }" TargetNullValue="Collapsed" >
+                                                        <Binding Path="Item.Type"  Converter="{StaticResource EqConverter}" ConverterParameter="{x:Static adminlink:DynamicParameterType.Text}"></Binding>
+                                                        <Binding Path="HasLink"></Binding>
+                                                    </MultiBinding>
+                                                </TextBox.Visibility>
+                                            </TextBox>
+
+                                            <nixxis:NumericUpDown Value="{Binding Link.Value, UpdateSourceTrigger=PropertyChanged}" NumberFormat="0">
+                                                <nixxis:NumericUpDown.Visibility>
+                                                    <MultiBinding Converter="{StaticResource VisWithCollapseMultiConverter }" TargetNullValue="Collapsed" >
+                                                        <Binding Path="Item.Type"  Converter="{StaticResource EqConverter}" ConverterParameter="{x:Static adminlink:DynamicParameterType.Numeric}"></Binding>
+                                                        <Binding Path="HasLink"></Binding>
+                                                    </MultiBinding>
+                                                </nixxis:NumericUpDown.Visibility>
+                                            </nixxis:NumericUpDown>
+
+                                            <CheckBox IsChecked="{Binding Link.Value, UpdateSourceTrigger=PropertyChanged}" >
+                                                <CheckBox.Visibility>
+                                                    <MultiBinding Converter="{StaticResource VisWithCollapseMultiConverter }" TargetNullValue="Collapsed" >
+                                                        <Binding Path="Item.Type"  Converter="{StaticResource EqConverter}" ConverterParameter="{x:Static adminlink:DynamicParameterType.Boolean}"></Binding>
+                                                        <Binding Path="HasLink"></Binding>
+                                                    </MultiBinding>
+                                                </CheckBox.Visibility>
+                                            </CheckBox>
+
+                                            <ComboBox local:RightsManagement.Rights="Location.DynamicParameter.Queue" 
+                                                      IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Location.DynamicParameter.Queue}" 
+                                                      IsSynchronizedWithCurrentItem="False" 
+                                                      ItemsSource="{Binding Source={StaticResource ListQueuesNoDummies}}" DisplayMemberPath="DisplayText" SelectedValuePath="Id" 
+                                                      SelectedValue="{Binding Link.Queue.TargetId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                <ComboBox.Visibility>
+                                                    <MultiBinding Converter="{StaticResource VisWithCollapseMultiConverter }" TargetNullValue="Collapsed" >
+                                                        <Binding Path="Item.Type"  Converter="{StaticResource EqConverter}" ConverterParameter="{x:Static adminlink:DynamicParameterType.Queue}"></Binding>
+                                                        <Binding Path="HasLink"></Binding>
+                                                        <Binding Path="Link.Queue.TargetId" Converter="{StaticResource isDummyId}" ConverterParameter="true"/>
+                                                    </MultiBinding>
+                                                </ComboBox.Visibility>
+                                            </ComboBox>
+                                            <ComboBox local:RightsManagement.Rights="Location.DynamicParameter.Queue" 
+                                                      IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Location.DynamicParameter.Queue}" 
+                                                      IsSynchronizedWithCurrentItem="False" 
+                                                      ItemsSource="{Binding Source={StaticResource ListQueues}}" DisplayMemberPath="DisplayText" SelectedValuePath="Id" 
+                                                      SelectedValue="{Binding Link.Queue.TargetId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  >
+                                                <ComboBox.Visibility>
+                                                    <MultiBinding Converter="{StaticResource VisWithCollapseMultiConverter }" TargetNullValue="Collapsed" >
+                                                        <Binding Path="Item.Type"  Converter="{StaticResource EqConverter}" ConverterParameter="{x:Static adminlink:DynamicParameterType.Queue}"></Binding>
+                                                        <Binding Path="HasLink"></Binding>
+                                                        <Binding Path="Link.Queue.TargetId" Converter="{StaticResource isDummyId}"/>
+                                                    </MultiBinding>
+                                                </ComboBox.Visibility>
+
+                                            </ComboBox>
+
+                                            <ComboBox local:RightsManagement.Rights="Location.DynamicParameter.Prompt" 
+                                                      IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Location.DynamicParameter.Prompt}" 
+                                                      IsSynchronizedWithCurrentItem="False" 
+                                                      ItemsSource="{Binding Source={StaticResource ListPromptsNoDummies}}" DisplayMemberPath="DisplayText" SelectedValuePath="Id" 
+                                                      SelectedValue="{Binding Link.Prompt.TargetId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                <ComboBox.Visibility>
+                                                    <MultiBinding Converter="{StaticResource VisWithCollapseMultiConverter }" TargetNullValue="Collapsed" >
+                                                        <Binding Path="Item.Type"  Converter="{StaticResource EqConverter}" ConverterParameter="{x:Static adminlink:DynamicParameterType.Prompt}"></Binding>
+                                                        <Binding Path="HasLink"></Binding>
+                                                        <Binding Path="Link.Prompt.TargetId" Converter="{StaticResource isDummyId}" ConverterParameter="true"/>
+                                                    </MultiBinding>
+                                                </ComboBox.Visibility>
+                                            </ComboBox>
+                                            <ComboBox local:RightsManagement.Rights="Location.DynamicParameter.Prompt" 
+                                                      IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Location.DynamicParameter.Prompt}" 
+                                                      IsSynchronizedWithCurrentItem="False" 
+                                                      ItemsSource="{Binding Source={StaticResource ListPrompts}}" DisplayMemberPath="DisplayText" SelectedValuePath="Id" 
+                                                      SelectedValue="{Binding Link.Prompt.TargetId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  >
+                                                <ComboBox.Visibility>
+                                                    <MultiBinding Converter="{StaticResource VisWithCollapseMultiConverter }" TargetNullValue="Collapsed" >
+                                                        <Binding Path="Item.Type"  Converter="{StaticResource EqConverter}" ConverterParameter="{x:Static adminlink:DynamicParameterType.Prompt}"></Binding>
+                                                        <Binding Path="HasLink"></Binding>
+                                                        <Binding Path="Link.Prompt.TargetId" Converter="{StaticResource isDummyId}"/>
+                                                    </MultiBinding>
+                                                </ComboBox.Visibility>
+
+                                            </ComboBox>
+
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+
+
+
+
+
+                        </nixxis:NixxisDataGrid.Columns>
+                    </nixxis:NixxisDataGrid>
+                </Grid>
+
+            </nixxis:NixxisTabItem>
+
+
+
+        </nixxis:NixxisTabControl>
+    
+    </nixxis:PresentationGrid>
+
+</UserControl>

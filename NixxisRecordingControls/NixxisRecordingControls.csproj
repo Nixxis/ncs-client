@@ -1,0 +1,364 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8A89B009-146E-4162-A617-1B039BF8CF2D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Nixxis.Client.Recording</RootNamespace>
+    <AssemblyName>NixxisRecordingControls</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.JScript" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CallCenterControl.xaml.cs">
+      <DependentUpon>CallCenterControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CallCenterDownloadingFile.xaml.cs">
+      <DependentUpon>CallCenterDownloadingFile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CallCenterLoadingContacts.xaml.cs">
+      <DependentUpon>CallCenterLoadingContacts.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CallCenterWavFileSelector.xaml.cs">
+      <DependentUpon>CallCenterWavFileSelector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Class\Appserver.cs" />
+    <Compile Include="Class\ContactDataHelpers.cs" />
+    <Compile Include="Class\CustomerDataHelps.cs" />
+    <Compile Include="Class\DownloadManagerHelpes.cs" />
+    <Compile Include="Class\Helper.cs" />
+    <Compile Include="Class\HttpServerActions.cs" />
+    <Compile Include="Class\RecordingHelper.cs" />
+    <Compile Include="Class\SearchDataHelpers.cs" />
+    <Compile Include="Class\Tools.cs" />
+    <Compile Include="Class\TransferFile.cs" />
+    <Compile Include="OfficeControl.xaml.cs">
+      <DependentUpon>OfficeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="RecordingDownloadManager.xaml.cs">
+      <DependentUpon>RecordingDownloadManager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RecordingFrameSet.xaml.cs">
+      <DependentUpon>RecordingFrameSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StdControls\CommonConverters.cs" />
+    <Compile Include="Window1.xaml.cs">
+      <DependentUpon>Window1.xaml</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ApplicationServer\CRShared\CRShared.csproj">
+      <Project>{16dbb7b7-5760-4c7a-8171-9a391c59d418}</Project>
+      <Name>CRShared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AdminLink\AdminLink.csproj">
+      <Project>{D8A39A98-6AF4-415E-80C9-F971672F42AB}</Project>
+      <Name>AdminLink</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ConfigModel\ConfigModel.csproj">
+      <Project>{6859d73b-3410-4802-a576-22bcffe6d1da}</Project>
+      <Name>ConfigModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CrCommonTools\CrCommonTools.csproj">
+      <Project>{24fcadbd-f0bc-4fc4-b9ef-1be6e8e0fecd}</Project>
+      <Name>CrCommonTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CrRecordingConfig\CrRecordingConfig.csproj">
+      <Project>{e8783b29-20f6-46ce-8449-40e76abb3fa3}</Project>
+      <Name>CrRecordingConfig</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NixxisClientLink\NixxisClientLink.csproj">
+      <Project>{AC0298AE-6AC8-48DC-BCEE-35B916FF44F2}</Project>
+      <Name>NixxisClientLink</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NixxisControls\NixxisWpfControls.csproj">
+      <Project>{6FF8901B-0189-4B8D-BAA9-4D85F26CB34D}</Project>
+      <Name>NixxisWpfControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NixxisWpfCommonControls\NixxisWpfControlsCommon.csproj">
+      <Project>{DAE35BA5-EDFC-4DB9-BC91-C94C1A7CD5E4}</Project>
+      <Name>NixxisWpfControlsCommon</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="CallCenterControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CallCenterDownloadingFile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CallCenterLoadingContacts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CallCenterWavFileSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="OfficeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RecordingDownloadManager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RecordingFrameSet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Window1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Application\Application_Administrator.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Application\Application_Agent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Application\Application_RecordingTool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Application\Application_Supervisor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Views\BooleanOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Views\BooleanOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MediaTypes\MediaType_Chat.png" />
+    <Resource Include="Images\MediaTypes\MediaType_DirectCall.png" />
+    <Resource Include="Images\MediaTypes\MediaType_Inbound.png" />
+    <Resource Include="Images\MediaTypes\MediaType_Mail.png" />
+    <Resource Include="Images\MediaTypes\MediaType_Manual.png" />
+    <Resource Include="Images\MediaTypes\MediaType_Outbound.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MediaTypes\MediaType_Undefined.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\RecordingStates\RecordingState_Found.png" />
+    <Resource Include="Images\RecordingStates\RecordingState_Unknown.png" />
+    <Resource Include="Images\RecordingStates\RecordingState_Loading.png" />
+    <Resource Include="Images\RecordingStates\RecordingState_NotFound.png" />
+    <Resource Include="Images\RecordingStates\RecordingState_Playing.png" />
+    <Resource Include="Images\RecordingStates\RecordingState_Pause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\_Others\RecordingFile_50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MediaPlayerButtons\Player_Pause.png" />
+    <Resource Include="Images\MediaPlayerButtons\Player_Play.png" />
+    <Resource Include="Images\MediaPlayerButtons\Player_Stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\_Others\rated_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\_Others\unrated_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MediaPlayerButtons\Player_Forward.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\_Others\Closed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\_Others\Open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Toolbar\CallCenterCalls.png" />
+    <Resource Include="Images\Toolbar\OfficePbxCalls.png" />
+    <Resource Include="Images\Toolbar\Save.png" />
+    <Resource Include="Images\Toolbar\SaveAll.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Toolbar\Downloadmanager50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\_Others\DownloadFailed50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\_Others\DownloadNotFound50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\_Others\DownloadOk50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\_Others\DownloadWaiting50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\_Others\TabSearch25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\_Others\TabInfo25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\_Others\TabQualification25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\_Others\TabCustomer25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MediaTypes\MediaType_Chat25.png" />
+    <Resource Include="Images\MediaTypes\MediaType_DirectCall25.png" />
+    <Resource Include="Images\MediaTypes\MediaType_Inbound25.png" />
+    <Resource Include="Images\MediaTypes\MediaType_Mail25.png" />
+    <Resource Include="Images\MediaTypes\MediaType_Manual25.png" />
+    <Resource Include="Images\MediaTypes\MediaType_Outbound25.png" />
+    <Resource Include="Images\MediaTypes\MediaType_Undefined25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\CommentIcon\commented25.png" />
+    <Resource Include="Images\CommentIcon\uncommented25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\KeepRecording\KeepRec_Default25.png" />
+    <Resource Include="Images\KeepRecording\KeepRec_Keep25.png" />
+    <Resource Include="Images\KeepRecording\KeepRec_NotKeep25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Toolbar\UpdateContactInformation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\_Others\Remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Application\Application_Reporting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="History.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Toolbar\Search.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

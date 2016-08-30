@@ -1,0 +1,239 @@
+﻿<Window x:Class="Nixxis.Client.Admin.DlgAddPhone"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:Nixxis.Client.Admin"
+        xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+        Name="MySelf"
+        WindowStyle="ToolWindow"  ResizeMode="NoResize" ShowInTaskbar="False" SizeToContent="WidthAndHeight"        
+        Title="{Binding Source={x:Static crs:TranslationContext.Default}, Converter={x:Static nixxis:TranslationConverter.Default}, ConverterParameter='Phone creation...'}" MinHeight="360" MinWidth="300" MaxHeight="500" MaxWidth="500" WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+
+        <ResourceDictionary>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisPanel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisTabControl.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisDataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+
+            <crs:TranslationContext x:Key="tcx" Context="DlgAddPhone"  ></crs:TranslationContext>
+
+            <local:ComboListConverter x:Key="cboConverter" />
+
+            <local:ComboListConverterNoDummies x:Key="cboConverterNoDummies" />
+
+            <CollectionViewSource x:Key="LocationsNoDummies" Source="{Binding Locations, Converter={StaticResource cboConverterNoDummies}, ConverterParameter=false}"/>
+
+            <CollectionViewSource x:Key="CarriersNoDummies" Source="{Binding Carriers, Converter={StaticResource cboConverterNoDummies}, ConverterParameter=false}"/>
+
+            <CollectionViewSource x:Key="ResourcesNoDummies" Source="{Binding Resources, Converter={StaticResource cboConverterNoDummies}, ConverterParameter=false}"/>
+
+        </ResourceDictionary>
+
+    </Window.Resources>
+
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
+            <GradientStop Color="#757575" Offset="0.1"></GradientStop>
+            <GradientStop Color="#353535" Offset="0.7"></GradientStop>
+        </LinearGradientBrush>
+    </Window.Background>
+
+
+
+
+    <Grid Margin="10">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Name="AddWizard" >
+
+            <Grid Name="Start" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='What do you want to do?'}"></Label>
+
+                <RadioButton Grid.Row="1" Name="radioOnePhone" IsChecked="True" nixxis:WizardControl.NextStep="SinglePhone" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Create one phone'}"></RadioButton>
+
+                <RadioButton Grid.Row="2" nixxis:WizardControl.NextStep="PhoneRange" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Create a range of phones'}"></RadioButton>
+
+            </Grid>
+
+            <Grid Name="SinglePhone" nixxis:WizardControl.NextStep="PhonesOptions" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the settings for new phone...'}"></Label>
+
+                <Label Grid.Row="1" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Short code:'}"></Label>
+                <TextBox Name="txtShortCode" Grid.Row="2" Text="{Binding DefaultPhoneShortCode, Mode=OneWay}" nixxis:WizardControl.Required="True"></TextBox>
+
+                <Label Grid.Row="3" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Address:'}"></Label>
+                <TextBox Name="txtAddress" Grid.Row="4" ></TextBox>
+
+                <Label Grid.Row="5" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='MAC Address:'}"></Label>
+                <TextBox Name="txtMacAddress" Grid.Row="6" MaxLength="12" ></TextBox>
+
+                <Label Grid.Row="7" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Description:'}"></Label>
+                <TextBox Name="txtDescription"  Grid.Row="8"></TextBox>
+                
+            </Grid>
+
+            <Grid Name="PhoneRange" nixxis:WizardControl.NextStep="PhonesOptions" >
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label  Grid.Row="0" Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the settings for the new phones...'}"></Label>
+
+                <Label Grid.Row="1" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Range:'}"></Label>
+
+                <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Stretch">
+
+                    <nixxis:NumericUpDown  Name="txtRangeFrom" NumberFormat="0" Value="{Binding DefaultPhoneShortCode, Mode=OneWay, ValidatesOnExceptions=True, NotifyOnValidationError=True}" nixxis:WizardControl.Required="True"></nixxis:NumericUpDown>
+
+                    <Label Grid.Row="2" VerticalAlignment="Center"  Margin="5,0,5,0" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='to:'}"></Label>
+
+                    <nixxis:NumericUpDown  Name="txtRangeTo" NumberFormat="0" Value="{Binding DefaultPhoneShortCode, Mode=OneWay, ValidatesOnExceptions=True, NotifyOnValidationError=True}" nixxis:WizardControl.Required="True"></nixxis:NumericUpDown>
+
+                </StackPanel>
+
+
+                <Label Grid.Row="3" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Short code pattern:'}"></Label>
+                <TextBox  Name="txtShortCodeP" Grid.Row="4" Text="{}{0}"></TextBox>
+
+                <Label Grid.Row="5" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Address pattern:'}"></Label>
+                <TextBox Name="txtAddressP"  Grid.Row="6" Text="{}{0}" ></TextBox>
+
+                <Label Grid.Row="7" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='MAC Address pattern:'}"></Label>
+                <TextBox Name="txtMacAddressP"  Grid.Row="8" Text="{}0000000000{0:x2}" ></TextBox>
+
+                <Label  Grid.Row="9" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Description pattern:'}"></Label>
+                <TextBox Name="txtDescriptionP"  Grid.Row="10" Text="{}Extension {0}"></TextBox>
+
+            </Grid>
+
+            <Grid Name="PhonesOptions" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify phone options...'}"></Label>
+
+                <ScrollViewer Grid.Row="1" CanContentScroll="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+
+                    <nixxis:NixxisStackPanel>
+
+                        
+
+                        <!--CheckBox Name="chkRegister" IsChecked="True" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Register'}"></CheckBox-->
+
+                        <RadioButton Name="radioRegisterOnAppserver" IsChecked="True" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Registers on application server'}"></RadioButton>
+                        <RadioButton Name="radioRegisterOnResource"  Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Registers on resource'}"></RadioButton>
+                        <RadioButton Name="radioExternal" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='External'}"></RadioButton>
+
+
+                        <ComboBox Name="cboResource" Visibility="{Binding ElementName=radioRegisterOnResource, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}, ConverterParameter=true}" ItemsSource="{Binding Source={StaticResource ResourcesNoDummies}}" SelectedValuePath="Id" SelectedIndex="0" DisplayMemberPath="DisplayText"></ComboBox>
+
+                        <!--<Label Visibility="{Binding ElementName=radioRegisterOnResource, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}, ConverterParameter=false}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='On location:'}"></Label>-->
+
+                        <ComboBox Name="cboLocation" Visibility="{Binding ElementName=radioRegisterOnResource, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}, ConverterParameter=false}" ItemsSource="{Binding Source={StaticResource LocationsNoDummies}}" SelectedValuePath="Id" SelectedIndex="0" DisplayMemberPath="DisplayText"></ComboBox>
+                        
+
+                        <!--<Label Visibility="{Binding ElementName=radioExternal, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}, ConverterParameter=true}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Using carrier:'}"></Label>-->
+                        <ComboBox Name="cboCarrier" Visibility="{Binding ElementName=radioExternal, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}, ConverterParameter=true}" ItemsSource="{Binding Source={StaticResource CarriersNoDummies}}" SelectedValuePath="Id" SelectedIndex="0" DisplayMemberPath="DisplayText"></ComboBox>
+
+                        <CheckBox Name="chkExternalLine" Visibility="{Binding ElementName=radioRegisterOnAppserver, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}, ConverterParameter=false}"  Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='External line'}"></CheckBox>
+
+                        <CheckBox Name="chkKeepConnected" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Keep connected'}"></CheckBox>
+
+                        <CheckBox Name="chkAutoAnswer" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Auto answer'}"></CheckBox>
+
+
+                    </nixxis:NixxisStackPanel>
+                    
+                </ScrollViewer>
+
+
+            </Grid>
+
+            <Grid Name="End" >
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}">
+                    <Grid>
+                        <TextBlock Visibility="{Binding ElementName=radioOnePhone, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}}" Text="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Please click on finish to complete the creation of phone {0}',BindTo={Binding ElementName=txtShortCode, Path=Text}}" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Visibility="{Binding ElementName=radioOnePhone, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}, ConverterParameter=false}" Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please click on finish to complete the creation of phones'}" TextWrapping="Wrap"></TextBlock>
+                    </Grid>
+                </Label>
+
+                <GroupBox Margin="2" Grid.Row="1" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Summary:'}">
+                    <ScrollViewer CanContentScroll="False" >
+                        <Label>
+                            <TextBlock IsVisibleChanged="TextBlock_IsVisibleChanged" TextWrapping="Wrap"></TextBlock>
+                        </Label>
+                    </ScrollViewer>
+                </GroupBox>
+
+            </Grid>
+
+        </Grid>
+
+        <nixxis:WizardControl Grid.Row="1" Name="WizControl" WizardGrid="{Binding ElementName=AddWizard}" CurrentStep="Start" EndStep="End" WizardFinished="WizControl_WizardFinished" WizardStepChanging="WizControl_WizardWindowStepChanging" ></nixxis:WizardControl>
+
+    </Grid>
+</Window>

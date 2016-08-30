@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="Nixxis.Client.Agent.WaitPanelControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+             xmlns:local="clr-namespace:Nixxis.Client.Agent"
+             xmlns:n="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControlsCommon"
+             xmlns:clientLink="clr-namespace:Nixxis.Client;assembly=NixxisClientLink"
+             xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+             mc:Ignorable="d" 
+             Unloaded="MySelf_Unloaded"
+             d:DesignHeight="300" d:DesignWidth="300" 
+             Name="MySelf">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisPanel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisTabControl.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisDataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <local:DebugConverter x:Key="myDebugConverter"></local:DebugConverter>
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+            <crs:TranslationContext x:Key="tcx" Context="PausePanelControl"></crs:TranslationContext>
+            <n:ObjectCompairToVisibilityConverter x:Key="objectCompairToVisibilityConverter"></n:ObjectCompairToVisibilityConverter>
+            <n:BoolImageSourceConverter x:Key="boolImageSourceConverter"></n:BoolImageSourceConverter>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Background="{StaticResource BackgroundBrush}">
+        <!--WebBrowser x:Name="Browser" Margin="0,0,0,0" Cursor="Arrow" Loaded="Browser_Loaded"/-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Image Grid.ColumnSpan="3" Grid.RowSpan="4" Source="..\Images\AgentWaiting_Image.png" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="359" Height="359" Margin="0,0,20,20" Stretch="UniformToFill" />
+        <Label Grid.Row="1" Grid.Column="1" FontSize="30" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='You are waiting for contact'}" HorizontalAlignment="Center" FontWeight="Bold">
+            <Label.Effect>
+                <DropShadowEffect/>
+            </Label.Effect>
+        </Label>
+
+        <StackPanel Name="ReadyStateStackPanel" Grid.Column="1" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Image Height="25" Width="25" Source="{Binding ElementName=MySelf, Path=ClientLink.Commands.WaitForCall.Active, Mode=OneWay, Converter={StaticResource boolImageSourceConverter}, ConverterParameter=../Images/ReadyVoiceIndication}"></Image>
+            <Image Visibility="{Binding ElementName=MySelf, Path=ParentForm.Version, Converter={StaticResource objectCompairToVisibilityConverter}, ConverterParameter=NCS}" Height="25" Width="25" Source="{Binding ElementName=MySelf, Path=ClientLink.Commands.WaitForChat.Active, Mode=OneWay, Converter={StaticResource boolImageSourceConverter}, ConverterParameter=../Images/ReadyChatIndication}"></Image>
+            <Image Visibility="{Binding ElementName=MySelf, Path=ParentForm.Version, Converter={StaticResource objectCompairToVisibilityConverter}, ConverterParameter=NCS}" Height="25" Width="25" Source="{Binding ElementName=MySelf, Path=ClientLink.Commands.WaitForMail.Active, Mode=OneWay, Converter={StaticResource boolImageSourceConverter}, ConverterParameter=../Images/ReadyMailIndication}"></Image>
+        </StackPanel>
+        
+        <Canvas Name="drawingCanvas" Grid.ColumnSpan="3" Grid.RowSpan="4">
+            
+        </Canvas>
+
+    </Grid>
+</UserControl>

@@ -1,0 +1,184 @@
+﻿<Window x:Class="Nixxis.Client.Admin.DlgAddLocation"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:Nixxis.Client.Admin"
+        xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+        Name="MySelf"
+        xmlns:adminlink="clr-namespace:Nixxis.Client.Admin;assembly=AdminLink"
+        WindowStyle="ToolWindow"  ResizeMode="NoResize" ShowInTaskbar="False" SizeToContent="Width" Height="500"        
+        Title="{Binding Source={x:Static crs:TranslationContext.Default}, Converter={x:Static nixxis:TranslationConverter.Default}, ConverterParameter='Location creation...'}" MinHeight="300" MinWidth="300" MaxHeight="400" MaxWidth="500" WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+
+        <ResourceDictionary>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisPanel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisTabControl.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisDataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+
+            <crs:TranslationContext x:Key="tcx" Context="DlgAddLocation" ></crs:TranslationContext>
+
+            <local:ComboListConverter x:Key="cboConverter" />
+
+            <local:ComboListConverterNoDummies x:Key="cboConverterNoDummies" />
+
+            <CollectionViewSource x:Key="Carriers" Source="{Binding Carriers, Converter={StaticResource cboConverterNoDummies}, ConverterParameter=false}"/>
+
+            <adminlink:NumberingCallTypesHelper x:Key="numberingCallTypes"></adminlink:NumberingCallTypesHelper>
+
+
+        </ResourceDictionary>
+
+    </Window.Resources>
+
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
+            <GradientStop Color="#757575" Offset="0.1"></GradientStop>
+            <GradientStop Color="#353535" Offset="0.7"></GradientStop>
+        </LinearGradientBrush>
+    </Window.Background>
+
+
+
+    <Grid Margin="10">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Name="AddWizard" >
+
+            <Grid Name="StartChoice">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='What do you want to do?'}"></Label>
+                <RadioButton Name="RadioAddLoc" Grid.Row="1" IsChecked="True" nixxis:WizardControl.NextStep="Start" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Add a new location'}"></RadioButton>
+                <RadioButton Name="RadioAddNumRule" Grid.Row="2" nixxis:WizardControl.NextStep="NumberingRuleSettings" Content="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Add a new numbering rule for location {0}',BindTo={Binding ElementName=WizControl, Path=Context.DisplayText}}"/>
+
+            </Grid>
+            
+            <Grid Name="Start" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the settings for new location...'}"></Label>
+
+
+                <Label Grid.Row="1" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Description:'}"></Label>
+                <TextBox Name="txtLocDescription" Grid.Row="2" nixxis:WizardControl.Required="True" ></TextBox>
+
+            </Grid>
+
+            <Grid Name="NumberingRuleSettings" nixxis:WizardControl.NextStep="Second">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label  Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the settings for new numbering rule...'}"></Label>
+
+                <nixxis:NixxisStackPanel Grid.Row="1">
+
+                    <Label  Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Description:'}"></Label>
+                    <TextBox Name="txtDescription" ></TextBox>
+
+                    <Label  Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Call type:'}"></Label>
+                    <ComboBox Name="CboCallType"  ItemsSource="{StaticResource numberingCallTypes}" SelectedValuePath="EnumValue" DisplayMemberPath="Description" nixxis:WizardControl.Required="True"></ComboBox>
+
+                    <Label  Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Source:'}"></Label>
+                    <TextBox Name="txtSource"  nixxis:NixxisStackPanel.KeepNextAttached="True" Text="*"></TextBox>
+                    <ToggleButton Name="toggleSourceIsRegexp" Margin="5,0,0,0" VerticalAlignment="Center" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Regexp'}"></ToggleButton>
+
+                    <Label  Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Destination:'}"></Label>
+                    <TextBox Name="txtDestination" nixxis:NixxisStackPanel.KeepNextAttached="True" Text="*"></TextBox>
+                    <ToggleButton Name="toggleDestinationIsRegexp" Margin="5,0,0,0" VerticalAlignment="Center"  Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Regexp'}"></ToggleButton>
+
+                    <Label Visibility="{Binding ElementName=cboCarrier, Path=Visibility}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Carrier:'}"></Label>
+                    <ComboBox SelectedIndex="0" Visibility="{Binding ElementName=CboCallType, Path=SelectedValue, Converter={StaticResource IneqCConverter}, ConverterParameter={x:Static adminlink:NumberingCallType.OutboundActivity}}" Name="cboCarrier" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Source={StaticResource Carriers}}" DisplayMemberPath="DisplayText" SelectedValuePath="Id" ></ComboBox>
+
+
+                </nixxis:NixxisStackPanel>
+
+            </Grid>
+
+            <Grid Name="Second">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the actions taken when the new rule matches...'}"></Label>
+
+                <nixxis:NixxisStackPanel Grid.Row="1">
+
+                    <CheckBox Name="chkAllowed" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Routing is allowed'}"></CheckBox>
+
+                    <Label IsEnabled="{Binding ElementName=chkAllowed, Path=IsChecked}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Source replacement:'}"></Label>
+                    <TextBox IsEnabled="{Binding ElementName=chkAllowed, Path=IsChecked}" Name="txtSourceReplace" ></TextBox>
+
+                    <Label IsEnabled="{Binding ElementName=chkAllowed, Path=IsChecked}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Destination replacement:'}"></Label>
+                    <TextBox IsEnabled="{Binding ElementName=chkAllowed, Path=IsChecked}" Name="txtDestinationReplace"></TextBox>
+
+                    <Label IsEnabled="{Binding ElementName=chkAllowed, Path=IsChecked}" Visibility="{Binding ElementName=cboSelectedCarrier, Path=Visibility}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Carrier selection:'}"></Label>
+                    <ComboBox IsEnabled="{Binding ElementName=chkAllowed, Path=IsChecked}" Visibility="{Binding ElementName=CboCallType, Path=SelectedValue, Converter={StaticResource EqCConverter}, ConverterParameter={x:Static adminlink:NumberingCallType.InboundGeneral}}" SelectedIndex="0" Name="cboSelectedCarrier" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Source={StaticResource Carriers}}" DisplayMemberPath="DisplayText" SelectedValuePath="Id" ></ComboBox>
+
+                </nixxis:NixxisStackPanel>
+            </Grid>
+
+            <Grid Name="End" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}">
+                    <Grid>
+                        <TextBlock Visibility="{Binding ElementName=RadioAddLoc, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}}" Text="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Please click on finish to complete the creation of location {0}',BindTo={Binding ElementName=txtDescription, Path=Text}}" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Visibility="{Binding ElementName=RadioAddNumRule, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}}" Text="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Please click on finish to complete the creation of numbering rule {0}',BindTo={Binding ElementName=txtDescription, Path=Text}}" TextWrapping="Wrap"></TextBlock>
+                    </Grid>
+                </Label>
+
+                <GroupBox Margin="2" Grid.Row="1" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Summary:'}">
+                    <ScrollViewer CanContentScroll="False" >
+                        <Label>
+                            <TextBlock IsVisibleChanged="TextBlock_IsVisibleChanged" TextWrapping="Wrap"></TextBlock>
+                        </Label>
+                    </ScrollViewer>
+                </GroupBox>
+
+            </Grid>
+
+        </Grid>
+
+        <nixxis:WizardControl Grid.Row="1" Name="WizControl" WizardGrid="{Binding ElementName=AddWizard}" CurrentStep="Start" EndStep="End" WizardFinished="WizControl_WizardFinished" ></nixxis:WizardControl>
+        
+    </Grid>
+</Window>

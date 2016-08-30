@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="Nixxis.StartPageControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="1000" d:DesignWidth="1200"
+             Name="MySelf">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisPanel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisTabControl.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisDataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Name="ImgContainer" Background="{StaticResource BackgroundBrush}" >
+        <!--<Image Source="Images/00_LoginPageLogo.jpg" Stretch="None"></Image>-->
+        <!--Image Source="Images/NewBackground.2.1.png" Height="300" Width="300" /-->
+        <Image Name="ImgLanding" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Image.Source>
+                <BitmapImage  UriSource="/ApplicationHost;component/Images/NewBackground.2.1.png">
+                </BitmapImage>
+            </Image.Source>
+        </Image>
+    </Grid>
+</UserControl>

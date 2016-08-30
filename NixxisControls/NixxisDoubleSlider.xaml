@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="Nixxis.Client.Controls.NixxisDoubleSlider"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             Name="MySelf"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Border Visibility="{Binding ElementName=MySelf, Path=IsEnabled, Converter={StaticResource visConverter}}" VerticalAlignment="Center" Margin="0" x:Name="Border" Height="4" CornerRadius="2" Background="#3b3b3b" BorderBrush="#595959" BorderThickness="1,1,1,1" />
+        <Border Visibility="{Binding ElementName=MySelf, Path=IsEnabled, Converter={StaticResource visConverter}, ConverterParameter=false}" Opacity="0.2" VerticalAlignment="Center" Margin="0" x:Name="BorderDisabled" Height="4" CornerRadius="2" Background="#3b3b3b" BorderBrush="#595959" BorderThickness="1,1,1,1" />
+        <Slider IsEnabled="{Binding ElementName=MySelf, Path=IsEnabled}" AutoToolTipPlacement="BottomRight" Style="{StaticResource DoubleSlider}" x:Name="LowerSlider" VerticalAlignment="Center" Minimum="{Binding ElementName=MySelf, Path=Minimum}"  Maximum="{Binding ElementName=MySelf, Path=Maximum}" Value="{Binding ElementName=MySelf, Path=Value.Start, UpdateSourceTrigger=PropertyChanged}" />
+        <Slider IsEnabled="{Binding ElementName=MySelf, Path=IsEnabled}" AutoToolTipPlacement="BottomRight" Style="{StaticResource DoubleSlider}" x:Name="UpperSlider" VerticalAlignment="Center"  Minimum="{Binding ElementName=MySelf, Path=Minimum}"  Maximum="{Binding ElementName=MySelf, Path=Maximum}"  Value="{Binding ElementName=MySelf, Path=Value.End, UpdateSourceTrigger=PropertyChanged}" />        
+    </Grid>
+</UserControl>

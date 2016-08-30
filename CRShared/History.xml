@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<modules>
+  <module name="CrShared">
+
+    <version build="2.0.0.8" date="09/05/2012">
+      <note type="Improvement">(FR-348)New contact state "MaxDialAttempts"</note>
+    </version>
+   </module>
+</modules>

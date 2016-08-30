@@ -1,0 +1,96 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
+                    xmlns:local="clr-namespace:Nixxis.Client.Supervisor"
+                    xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:n="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControlsCommon"
+                    xmlns:Toolkit="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+                    xmlns:ToolkitChart="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+                    xmlns:ToolkitChartPrim="clr-namespace:System.Windows.Controls.DataVisualization.Charting.Primitives;assembly=System.Windows.Controls.DataVisualization.Toolkit">
+
+    <sys:Double x:Key="designGridThickness">0.5</sys:Double>
+
+    <Color x:Key="defaultTextColor">LightGray</Color>
+    <Color x:Key="darkTextColor">Black</Color>
+    <Color x:Key="lightBackgroundColor">#FF4F4F4F</Color>
+    <Color x:Key="darkBackgroundColor">#FF3E3E3E</Color>
+    <Color x:Key="borderColor">#FF8B8B8B</Color>
+    <Color x:Key="designGridColor">#FFC5C5C5</Color>
+
+    <SolidColorBrush x:Key="defaultTextBrush" Color="{StaticResource defaultTextColor}"></SolidColorBrush>
+    <SolidColorBrush x:Key="darkTextBrush" Color="{StaticResource darkTextColor}"></SolidColorBrush>
+    <SolidColorBrush x:Key="lightBackgroundBrush" Color="{StaticResource lightBackgroundColor}"></SolidColorBrush>
+    <SolidColorBrush x:Key="darkBackgroundBrush" Color="{StaticResource darkBackgroundColor}"></SolidColorBrush>
+    <SolidColorBrush x:Key="borderBrush" Color="{StaticResource borderColor}"></SolidColorBrush>
+    <SolidColorBrush x:Key="designGridBrush" Color="{StaticResource designGridColor}"></SolidColorBrush>
+
+    <x:ArrayExtension x:Key="{x:Static local:DashboardWidgetPalette.DefaultHorizontalPaletteName}" Type="{x:Type Brush}">
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#FF006300" Offset="0"/>
+            <GradientStop Color="#FF00F900" Offset="0.1"/>
+            <GradientStop Color="#FF00F900" Offset="0.2"/>
+            <GradientStop Color="#FF006300" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#FF630000" Offset="0"/>
+            <GradientStop Color="#FFF90000" Offset="0.1"/>
+            <GradientStop Color="#FFF90000" Offset="0.2"/>
+            <GradientStop Color="#FF630000" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#FF000063" Offset="0"/>
+            <GradientStop Color="#FF0000F9" Offset="0.1"/>
+            <GradientStop Color="#FF0000F9" Offset="0.2"/>
+            <GradientStop Color="#FF000063" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#FF636300" Offset="0"/>
+            <GradientStop Color="#FFF9F900" Offset="0.1"/>
+            <GradientStop Color="#FFF9F900" Offset="0.2"/>
+            <GradientStop Color="#FF636300" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#FF632D00" Offset="0"/>
+            <GradientStop Color="#FFF98000" Offset="0.1"/>
+            <GradientStop Color="#FFF98000" Offset="0.2"/>
+            <GradientStop Color="#FF632D00" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#FF0000F9" Offset="0"/>
+            <GradientStop Color="#FF0080F9" Offset="0.1"/>
+            <GradientStop Color="#FF0080F9" Offset="0.2"/>
+            <GradientStop Color="#FF0000F9" Offset="1"/>
+        </LinearGradientBrush>
+
+    </x:ArrayExtension>
+
+    <x:ArrayExtension x:Key="{x:Static local:DashboardWidgetPalette.DefaultRadialPaletteName}" Type="{x:Type Brush}">
+        <RadialGradientBrush RadiusX="0.8" RadiusY="0.8" Center="0.1,0.1" GradientOrigin="0.1,0.1" MappingMode="RelativeToBoundingBox" SpreadMethod="Pad">
+            <GradientStop Offset="0" Color="White" ></GradientStop>
+            <GradientStop Offset="1" Color="Green"></GradientStop>
+        </RadialGradientBrush>
+        <RadialGradientBrush RadiusX="0.8" RadiusY="0.8" Center="0.1,0.1" GradientOrigin="0.1,0.1" MappingMode="RelativeToBoundingBox" SpreadMethod="Pad">
+            <GradientStop Offset="0" Color="White" ></GradientStop>
+            <GradientStop Offset="1" Color="Red"></GradientStop>
+        </RadialGradientBrush>
+        <RadialGradientBrush RadiusX="0.8" RadiusY="0.8" Center="0.1,0.1" GradientOrigin="0.1,0.1" MappingMode="RelativeToBoundingBox" SpreadMethod="Pad">
+            <GradientStop Offset="0" Color="White" ></GradientStop>
+            <GradientStop Offset="1" Color="Blue"></GradientStop>
+        </RadialGradientBrush>
+        <RadialGradientBrush RadiusX="0.8" RadiusY="0.8" Center="0.1,0.1" GradientOrigin="0.1,0.1" MappingMode="RelativeToBoundingBox" SpreadMethod="Pad">
+            <GradientStop Offset="0" Color="White" ></GradientStop>
+            <GradientStop Offset="1" Color="Yellow"></GradientStop>
+        </RadialGradientBrush>
+        <RadialGradientBrush RadiusX="0.8" RadiusY="0.8" Center="0.1,0.1" GradientOrigin="0.1,0.1" MappingMode="RelativeToBoundingBox" SpreadMethod="Pad">
+            <GradientStop Offset="0" Color="White" ></GradientStop>
+            <GradientStop Offset="1" Color="Orange"></GradientStop>
+        </RadialGradientBrush>
+        <RadialGradientBrush RadiusX="0.8" RadiusY="0.8" Center="0.1,0.1" GradientOrigin="0.1,0.1" MappingMode="RelativeToBoundingBox" SpreadMethod="Pad">
+            <GradientStop Offset="0" Color="White" ></GradientStop>
+            <GradientStop Offset="1" Color="Purple"></GradientStop>
+        </RadialGradientBrush>
+    </x:ArrayExtension>
+
+
+</ResourceDictionary>

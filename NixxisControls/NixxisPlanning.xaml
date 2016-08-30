@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="Nixxis.Client.Controls.NixxisPlanning"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             Name="MySelf"
+             MinHeight="200"
+             MinWidth="450"
+             Background="Transparent"
+             MouseLeftButtonDown="DrawingCanvas_MouseLeftButtonDown"  
+             MouseLeftButtonUp="DrawingCanvas_MouseLeftButtonUp"
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+
+    <Canvas Name="DrawingCanvas">
+        
+        <Canvas.Resources>
+            <Style TargetType="{x:Type Border}">
+                <Setter Property="Margin" Value="3"></Setter>
+                <Setter Property="CornerRadius" Value="2"></Setter>
+                <Setter Property="BorderThickness" Value="1"></Setter>
+                <Setter Property="BorderBrush" Value="#767676"></Setter>
+                <Setter Property="Background" Value="#f9f9fc"></Setter>
+            </Style>
+
+        </Canvas.Resources>
+
+    </Canvas>
+       
+    
+
+</UserControl>

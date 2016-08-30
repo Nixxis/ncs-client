@@ -1,0 +1,223 @@
+﻿<Window x:Class="Nixxis.Client.Supervisor.DashboardWidgetDatasourceDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+        xmlns:local="clr-namespace:Nixxis.Client.Supervisor"
+        xmlns:clientLink="clr-namespace:Nixxis.Client;assembly=NixxisClientLink"
+        xmlns:nixxiscommon="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControlsCommon"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+        Title="{Binding Source={x:Static crs:TranslationContext.Default}, Converter={x:Static nixxis:TranslationConverter.Default}, ConverterParameter='Datasource...'}"
+        WindowStyle="ToolWindow" ResizeMode="NoResize" ShowInTaskbar="False"
+        Name="MySelf"
+        Height="500" Width="300" WindowStartupLocation="CenterOwner">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisPanel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisDataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+
+            <crs:TranslationContext Context="DashboardWidgetDatasourceDialog" x:Key="tcx"></crs:TranslationContext>
+
+
+            <local:SupervisionTypeConverter x:Key="supervisionTypeConverter"></local:SupervisionTypeConverter>
+            
+            <local:ObjectSelector x:Key="objectSelector"></local:ObjectSelector>
+            
+            <local:PropertySelector x:Key="propertySelector"></local:PropertySelector>
+
+            <local:DescriptionSelector x:Key="descriptionSelector"></local:DescriptionSelector>
+
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid Name="MainGrid" Background="{StaticResource BackgroundBrush}">
+        <Grid.Resources>
+            <Style TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
+                <Setter Property="Margin" Value="15,8,15,2"></Setter>
+            </Style>
+            <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
+                <Setter Property="Margin" Value="15,0,15,0"></Setter>
+            </Style>
+            <Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource {x:Type GroupBox}}">
+                <Setter Property="Margin" Value="15,10,15,0"></Setter>
+            </Style>
+        </Grid.Resources>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Type:'}"></Label>
+        <ComboBox Grid.Row="1" Name="cboType" local:ComboBoxItemsSourceDecorator.ItemsSource="{Binding Converter={StaticResource supervisionTypeConverter}}" SelectedValue="{Binding ElementName=MySelf, Path=ObjType}" DisplayMemberPath="Item2" SelectedValuePath="Item1" >
+            <ComboBox.IsEnabled>
+                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                    <Binding ElementName="lbObjects" Path="Items.Count" Converter="{StaticResource EqConverter}">
+                        <Binding.ConverterParameter>
+                            <sys:Int32>0</sys:Int32>
+                        </Binding.ConverterParameter>
+                    </Binding>
+                    <Binding ElementName="lbProperties" Path="Items.Count" Converter="{StaticResource EqConverter}">
+                        <Binding.ConverterParameter>
+                            <sys:Int32>0</sys:Int32>
+                        </Binding.ConverterParameter>
+                    </Binding>
+                </MultiBinding>
+            </ComboBox.IsEnabled>
+        </ComboBox>
+
+        <GroupBox Grid.Row="2" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Objects:'}">           
+            
+            <Grid Margin="2,5,2,2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <ListBox x:Name="lbObjects" Margin="0,0,5,0" ItemsSource="{Binding ElementName=MySelf, Path=Objects}" DisplayMemberPath="{Binding ElementName=MySelf, Path=ObjectDescriptionProperty}" IsEnabled="{Binding ElementName=chkAll, Path=IsChecked, Converter={StaticResource BoolInverter}}">
+                </ListBox>
+                <StackPanel Grid.Column="1"  Orientation="Vertical" VerticalAlignment="Top">
+                    <Button ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Add object'}" Click="AddObject">
+                        <Button.IsEnabled>
+                            <MultiBinding Converter="{StaticResource BoolMultiAndConverter}" ConverterParameter="true,false">
+                                <Binding ElementName="cboType" Path="SelectedItem" Converter="{StaticResource IneqConverter}" ConverterParameter="{x:Null}"></Binding>
+                                <Binding ElementName="chkAll" Path="IsChecked"></Binding>
+                            </MultiBinding>
+                        </Button.IsEnabled>
+                        <Image Width="20" Height="20" Source="Images\SupervisionViews\Action_Add.png"/>
+                    </Button>
+                    <Button ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Remove object'}" Click="RemoveObject">
+                        <Button.IsEnabled>
+                            <MultiBinding Converter="{StaticResource BoolMultiAndConverter}" ConverterParameter="true,false">
+                                <Binding ElementName="lbObjects" Path="SelectedItem" Converter="{StaticResource IneqConverter}" ConverterParameter="{x:Null}"></Binding>
+                                <Binding ElementName="chkAll" Path="IsChecked"></Binding>
+                            </MultiBinding>
+                        </Button.IsEnabled>
+
+                        <Image Width="20" Height="20" Source="Images\SupervisionViews\Action_Delete.png"/>
+                    </Button>
+                </StackPanel>
+                <StackPanel  Grid.Column="1"  Orientation="Vertical" VerticalAlignment="Bottom">
+                    <Button ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Move up'}" Click="ObjectMoveUp">
+                        <Image Width="20" Height="20" Source="Images\SupervisionViews\Action_MoveUp.png"/>
+                        <Button.IsEnabled>
+                            <MultiBinding Converter="{StaticResource BoolMultiAndConverter}" ConverterParameter="true,false">
+                                <Binding ElementName="lbObjects" Path="SelectedItem" Converter="{StaticResource IneqConverter}" ConverterParameter="{x:Null}"></Binding>
+                                <Binding ElementName="chkAll" Path="IsChecked"></Binding>
+                            </MultiBinding>
+                        </Button.IsEnabled>
+
+                    </Button>
+                    <Button ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Move down'}" Click="ObjectMoveDown">
+                        <Image Width="20" Height="20" Source="Images\SupervisionViews\Action_MoveDown.png"/>
+                        <Button.IsEnabled>
+                            <MultiBinding Converter="{StaticResource BoolMultiAndConverter}" ConverterParameter="true,false">
+                                <Binding ElementName="lbObjects" Path="SelectedItem" Converter="{StaticResource IneqConverter}" ConverterParameter="{x:Null}"></Binding>
+                                <Binding ElementName="chkAll" Path="IsChecked"></Binding>
+                            </MultiBinding>
+                        </Button.IsEnabled>
+                    </Button>
+                </StackPanel>
+                <CheckBox Margin="0,2,0,0" Grid.Row="1" Name="chkAll" Checked="chkAll_Checked">All</CheckBox>
+                <Button Name="helper" Visibility="Collapsed">
+                    <Button.IsEnabled>
+                        <MultiBinding Converter="{StaticResource BoolMultiOrConverter}">
+                            <Binding ElementName="lbObjects" Path="Items.Count" Converter="{StaticResource IneqCConverter}">
+                                <Binding.ConverterParameter>
+                                    <sys:Int32>0</sys:Int32>
+                                </Binding.ConverterParameter>
+                            </Binding>
+                            <Binding ElementName="chkAll" Path="IsChecked"></Binding>
+                        </MultiBinding>
+                    </Button.IsEnabled>
+                </Button>
+            </Grid>
+
+        </GroupBox>
+        
+            
+        <GroupBox Grid.Row="3" Header="Properties">
+
+            <Grid Margin="2,5,2,2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <ListBox  x:Name="lbProperties" Margin="0,0,5,0" ItemsSource="{Binding ElementName=MySelf, Path=Properties}" DisplayMemberPath="Description" ></ListBox>
+                <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Top">
+                    <Button ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Add property'}" Click="PropertyAdd">
+                        <Image Width="20" Height="20" Source="Images\SupervisionViews\Action_Add.png"/>
+                        <Button.IsEnabled>
+                            <Binding ElementName="cboType" Path="SelectedItem" Converter="{StaticResource IneqConverter}" ConverterParameter="{x:Null}"></Binding>
+                        </Button.IsEnabled>
+                    </Button>
+                    <Button ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Remove property'}" Click="PropertyRemove" IsEnabled="{Binding ElementName=lbProperties, Path=SelectedItem, Converter={StaticResource IneqConverter}, ConverterParameter={x:Null}}">
+                        <Image Width="20" Height="20" Source="Images\SupervisionViews\Action_Delete.png"/>
+                    </Button>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Bottom">
+                    <Button ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Move up'}" Click="PropertyMoveUp" IsEnabled="{Binding ElementName=lbProperties, Path=SelectedItem, Converter={StaticResource IneqConverter}, ConverterParameter={x:Null}}">
+                        <Image Width="20" Height="20" Source="Images\SupervisionViews\Action_MoveUp.png"/>
+                    </Button>
+                    <Button ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Move down'}" Click="PropertyMoveDown" IsEnabled="{Binding ElementName=lbProperties, Path=SelectedItem, Converter={StaticResource IneqConverter}, ConverterParameter={x:Null}}">
+                        <Image Width="20" Height="20" Source="Images\SupervisionViews\Action_MoveDown.png"/>
+                    </Button>
+                </StackPanel>
+
+            </Grid>
+        </GroupBox>
+        
+
+        <Grid Grid.Row="4" Margin="0,10,0,10">
+            <Grid.Resources>
+                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                    <Setter Property="Margin" Value="2"></Setter>
+                    <Setter Property="Padding" Value="10,5,10,5"></Setter>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                    <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+                </Style>
+            </Grid.Resources>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="A"></ColumnDefinition>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="A"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1" IsDefault="True" Click="OK_Click" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='OK'}">
+                <Button.IsEnabled>
+                    <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                        <Binding ElementName="helper" Path="IsEnabled">
+                        </Binding>
+
+                        <Binding ElementName="lbProperties" Path="Items.Count" Converter="{StaticResource IneqCConverter}">
+                            <Binding.ConverterParameter>
+                                <sys:Int32>0</sys:Int32>
+                            </Binding.ConverterParameter>
+                        </Binding>
+
+                    </MultiBinding>
+                </Button.IsEnabled>
+            </Button>
+            <Button Grid.Column="2" IsCancel="True" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Cancel'}"></Button>
+        </Grid>
+
+    </Grid>
+</Window>

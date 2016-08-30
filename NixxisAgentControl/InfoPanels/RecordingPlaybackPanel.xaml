@@ -1,0 +1,197 @@
+﻿<n:NixxisPanelSelectorItem x:Class="Nixxis.Client.Agent.RecordingPlaybackPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+             xmlns:n="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControlsCommon"
+             xmlns:local="clr-namespace:Nixxis.Client.Agent"
+             xmlns:clientLink="clr-namespace:Nixxis.Client;assembly=NixxisClientLink"
+             xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" 
+             x:Name="MySelf">
+    
+    <n:NixxisPanelSelectorItem.Resources>
+        <ResourceDictionary>
+            <local:DebugConverter x:Key="myDebugConverter"></local:DebugConverter>
+            <local:ObjectToBoolConverter x:Key="objectToBoolConverter"></local:ObjectToBoolConverter>
+            
+            <n:InfoPanelSetColor x:Key="infoPanelSetColor"></n:InfoPanelSetColor>
+            <n:InfoPanelPriorityBackground x:Key="infoPanelPriorityBackground"></n:InfoPanelPriorityBackground>
+            <n:BoolToVisibilityCollapsedConverter x:Key="boolToVisibilityCollapsedConverter"></n:BoolToVisibilityCollapsedConverter>
+            
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+            <crs:TranslationContext x:Key="tcx" Context="RecordingPlaybackPanel"></crs:TranslationContext>
+        </ResourceDictionary>
+    </n:NixxisPanelSelectorItem.Resources>
+    
+    <Border CornerRadius="3" Padding="5" BorderThickness="4">
+        <Border.BorderBrush>
+            <SolidColorBrush>
+                <SolidColorBrush.Color>
+                    <MultiBinding Converter="{StaticResource infoPanelPriorityBackground}">
+                        <Binding ElementName="MySelf" Path="ClientLink.Queues.WaitingContacts" Mode="OneWay"></Binding>
+                        <Binding ElementName="MySelf" Path="ClientLink.Queues.HighPriorityContacts" Mode="OneWay"></Binding>
+                    </MultiBinding>
+                </SolidColorBrush.Color>
+            </SolidColorBrush>
+        </Border.BorderBrush>
+        <Border.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#7c7c7c" Offset="0"/>
+                <GradientStop Color="#aeaeae" Offset="1"></GradientStop>
+            </LinearGradientBrush>
+        </Border.Background>
+
+        <Grid>
+            <Grid x:Name="LayoutRoot" IsEnabled="{Binding ElementName=MySelf, Path=HistoryItem, Converter={StaticResource objectToBoolConverter}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <!--Contact info bar-->
+                <Grid Grid.Column="0" Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Column="0" Grid.Row="0" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Date:'}" Margin="0,0,5,0"></Label>
+                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding ElementName=MySelf, Path=HistoryItem.ContactTime}" Margin="0,0,5,0"></TextBlock>
+
+                    <Label Grid.Column="2" Grid.Row="0" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Duration:'}" Margin="0,0,5,0"></Label>
+                    <TextBlock Grid.Column="3" Grid.Row="0" Text="{Binding ElementName=MySelf, Path=HistoryItem.TalkTime}"></TextBlock>
+
+                    <Label Grid.Column="0" Grid.Row="1" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Qualification:'}" Margin="0,0,5,0"></Label>
+                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding ElementName=MySelf, Path=HistoryItem.Qualification}" Margin="0,0,5,0"></TextBlock>
+
+                    <Label Grid.Column="2" Grid.Row="1" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Qualified by:'}" Margin="0,0,5,0"></Label>
+                    <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding ElementName=MySelf, Path=HistoryItem.QualifiedBy}"></TextBlock>
+                </Grid>
+
+                <!--file selector-->
+                <Grid Grid.Column="0" Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" Grid.Row="0" Content="file count :" Margin="0,0,5,0"></Label>
+                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding ElementName=MySelf, Path=FileList.Count}" Margin="0,0,5,0"></TextBlock>
+                    <ListBox Name="lstFiles" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Stretch" ItemsSource="{Binding FileList, Mode=TwoWay}"
+                            SelectedItem="{Binding ElementName=MySelf, Path=SelectedFile}">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                </StackPanel>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical" MaxWidth="100">
+                                    <Image Width="20" Height="20" Source="../Images/RecordingFile_50.png"></Image>
+                                    <Label VerticalAlignment="Center" Padding="2,0,0,0" FontSize="10" Content="{Binding DispalyFileName}"></Label>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+
+                <!--Recoridng info bar-->
+                <Grid Grid.Column="0" Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Grid.Row="0" Name="lblCurrentTime" Text="00:00:00" Margin="2,0"></TextBlock>
+                    <Slider Grid.Column="1" Grid.Row="0" Name="slTimeProgress"  Margin="2,0"
+                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ValueChanged="slTimeProgress_ValueChanged"
+                        Minimum="0" >
+                    </Slider>
+                    <TextBlock Grid.Column="2" Grid.Row="0" Name="lblTotalTime" Text="00:00:00"  Margin="2,0"></TextBlock>
+                </Grid>
+                <!--Recording Button bar-->
+                <Grid Grid.Column="0" Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" IsEnabled="{Binding ElementName=lstFiles, Path=SelectedItem, Converter={StaticResource objectToBoolConverter}}">
+                        <Button Name="btnPlay" Click="btnPlay_Click" Margin="2,0">
+                            <Border Height="20" Width="20">
+                                <Path ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Play'}" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M0.5,0.5 L5.5,3 L0.5,5.5 Z" Fill="{DynamicResource GlyphBrush}" Stroke="{DynamicResource GlyphBrush}" Margin="6,0,6,0" Height="11" StrokeThickness="2" Stretch="Fill" />
+                            </Border>
+                        </Button>
+
+                        <Button Name="btnStop" Click="btnStop_Click" Margin="2,0">
+                            <Border Height="20" Width="20">
+                                <Path ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Stop'}" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M0.5,1 V5 H5.5 V1 Z" Fill="{DynamicResource GlyphBrush}" Stroke="{DynamicResource GlyphBrush}" Margin="6,0,6,0" Height="11" StrokeThickness="2" Stretch="Fill" />
+                            </Border>
+                        </Button>
+                    </StackPanel>
+
+                    <ToggleButton Name="btnMute" Grid.Column="1" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=mute}" Margin="2,0" Click="btnMute_Click"></ToggleButton>
+                    <Slider Grid.Column="2" Grid.Row="0" Name="slVolume" Margin="2,0" Width="100" Minimum="0" Maximum="1" Value="0.5" ValueChanged="slVolume_ValueChanged"></Slider>
+                </Grid>
+                <!--<ListBox 
+                VerticalAlignment="Stretch"
+                x:Name="lstMsg"
+                Height="{Binding ElementName=LayoutRoot, Path=ActualHeight}"
+                ItemsSource="{Binding ElementName=MySelf, Path=ParentForm.AgtWarningMsg}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Images/AgtWarningMsg.png" Height="16"></Image>
+                            <TextBlock Text="{Binding Text, Mode=OneWay}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+            </ListBox>-->
+            </Grid>
+
+            <Rectangle Opacity=".75" Fill="#7c7c7c"
+                       Visibility="{Binding ElementName=MySelf, Path=Working, Converter={StaticResource boolToVisibilityCollapsedConverter}}">
+                <Rectangle.Effect>
+                    <BlurEffect Radius="10" />
+                </Rectangle.Effect>
+            </Rectangle>
+
+            <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Looking for recordings ...'}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Visibility="{Binding ElementName=MySelf, Path=Working, Converter={StaticResource boolToVisibilityCollapsedConverter}}"></Label>
+
+            <Rectangle Opacity=".75" Fill="#7c7c7c"
+                       Visibility="{Binding ElementName=MySelf, Path=Downloading, Converter={StaticResource boolToVisibilityCollapsedConverter}}">
+                <Rectangle.Effect>
+                    <BlurEffect Radius="10" />
+                </Rectangle.Effect>
+            </Rectangle>
+
+            <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Downloading file ...'}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Visibility="{Binding ElementName=MySelf, Path=Downloading, Converter={StaticResource boolToVisibilityCollapsedConverter}}"></Label>
+
+            <MediaElement Grid.Row="3"  Name="mediaPlayer" Visibility="Collapsed" Width="150" Height="100"
+                          Stretch="Fill"                             
+                          LoadedBehavior="Manual"                       
+                          UnloadedBehavior="Stop"
+                          MediaOpened="mediaPlayer_MediaOpened"                      
+                          MediaEnded="mediaPlayer_MediaEnded"
+                      />
+        </Grid>
+    </Border>
+</n:NixxisPanelSelectorItem>

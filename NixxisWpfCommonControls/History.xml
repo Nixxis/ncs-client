@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<modules>
+  <module name="NixxisWpfControlsCommon">
+    <version build="2.0.0.3" date="21/02/2012">
+      <note type="Improvement">Added exception handling in getting style "NixxisChartBarPieceStyle"</note>
+    </version>
+    <version build="2.0.0.2" date="26/09/2011">
+      <note type="Fix">Null ref exception on m_SelectedItemsList</note>
+    </version>
+    <version build="2.0.0.1" date="20/09/2011">
+      <note type="">First release</note>
+    </version>
+  </module>
+</modules>

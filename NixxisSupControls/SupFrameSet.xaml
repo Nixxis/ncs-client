@@ -1,0 +1,333 @@
+﻿<UserControl x:Class="Nixxis.Client.Supervisor.SupFrameSet"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+             xmlns:n="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControlsCommon"
+             xmlns:local="clr-namespace:Nixxis.Client.Supervisor"
+             xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             Focusable="True"
+             Name="MySelf">
+
+    <UserControl.CommandBindings>
+        <CommandBinding Command="local:SupFrameSet.DoNewCall" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:SupFrameSet.ShowCategory" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:SupFrameSet.SupViewShowcolumnSelectorOperation" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:SupFrameSet.SupViewAgentSendMsg" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:SupFrameSet.SupWorkspaceOpen" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:SupFrameSet.SupWorkspaceSave" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+    </UserControl.CommandBindings>
+    
+    <UserControl.Resources>
+
+        <ResourceDictionary>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisPanel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisDataGrid.xaml"/>
+
+                <ResourceDictionary Source="NixxisSupervisionTileItems.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControlsCommon;component/Themes/NixxisChart.Bar.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+            <crs:TranslationContext x:Key="tcx" Context="SupFrameSet"></crs:TranslationContext>
+            <local:DebugConverter x:Key="myDebugConverter"></local:DebugConverter>
+            <n:ObjectToBoolConverter x:Key="objectToBoolConverter"></n:ObjectToBoolConverter>
+            <!--<local:StateConverter x:Key="myStateConverter"></local:StateConverter>
+            <local:AggregationConverter x:Key="myAggregationConverter"></local:AggregationConverter>
+            <local:AbsoluteToRelativeConverter x:Key="myAbsoluteToRelativeConverter"></local:AbsoluteToRelativeConverter>-->
+
+            <DataTemplate x:Key="InfoPanelFullView">
+                <n:NixxisPanelSelector ClientLink="{Binding ClientLink}" ParentForm="{Binding}" Margin="5">
+                    <n:NixxisPanelSelector.Controls>
+                        <Grid>
+                            <local:AgentWarningMessages NixxisPanelDescription="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Warning messages'}" NixxisPanelKey="Panel2"></local:AgentWarningMessages>
+                        </Grid>
+                    </n:NixxisPanelSelector.Controls>
+                </n:NixxisPanelSelector>
+            </DataTemplate>
+
+
+            <nixxis:NixxisExpandCoverFlowPanel 
+                x:Key="InfoPanelStatusView" 
+                Title="Test third" 
+                nixxis:NixxisGrid.Panel="Right"
+                ItemsSource="{Binding}"
+                ItemTemplate="{StaticResource InfoPanelFullView}" >
+            </nixxis:NixxisExpandCoverFlowPanel>
+
+            <DataTemplate x:Key="FullView">
+                <!--<nixxis:CoverflowElement Margin="5" IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPresenter}}, Path=(nixxis:NixxisCoverFlowPanel.IsSelected), Mode=TwoWay}">-->
+                <nixxis:CoverflowElement Margin="5" IsChecked="True">
+                    <StackPanel Orientation="Vertical" Background="AliceBlue">
+                        <TextBlock FontWeight="Bold" FontSize="9" Text="{Binding Account}"></TextBlock>
+                        <TextBlock FontSize="8" Text="{Binding State}"></TextBlock>
+                        <TextBlock FontSize="8" Text="{Binding LastName}"></TextBlock>
+                    </StackPanel>
+                </nixxis:CoverflowElement>
+            </DataTemplate>
+
+            <DataTemplate x:Key="NotCovered">
+                <nixxis:CoverflowElement  Margin="5" IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPresenter}}, Path=(nixxis:NixxisCoverFlowPanel.IsSelected), Mode=TwoWay}">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock FontSize="9" Text="{Binding Account}"></TextBlock>
+                        <TextBlock FontSize="8" Text="{Binding State}"></TextBlock>
+                        <TextBlock FontSize="8" Text="{Binding LastName}"></TextBlock>
+                    </StackPanel>
+                </nixxis:CoverflowElement>
+            </DataTemplate>
+
+            <DataTemplate x:Key="CoveredOnTop">
+                <nixxis:CoverflowElement  Margin="5" Padding="0,0,0,-10" IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPresenter}}, Path=(nixxis:NixxisCoverFlowPanel.IsSelected), Mode=TwoWay}">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock FontSize="8" Text="{Binding LastName}"></TextBlock>
+                        <TextBlock FontSize="10" Text="{Binding Account}"></TextBlock>
+                    </StackPanel>
+                </nixxis:CoverflowElement>
+            </DataTemplate>
+
+            <DataTemplate x:Key="CoveredOnBottom">
+                <nixxis:CoverflowElement  Margin="5" Padding="0,-10,0,0" IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPresenter}}, Path=(nixxis:NixxisCoverFlowPanel.IsSelected), Mode=TwoWay}">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock FontSize="10" Text="{Binding Account}"></TextBlock>
+                        <TextBlock FontSize="8" Text="{Binding LastName}"></TextBlock>
+                    </StackPanel>
+
+                </nixxis:CoverflowElement>
+            </DataTemplate>
+
+            
+            
+            <nixxis:NixxisCoverFlowPanelDefaultTemplateSelector x:Key="testSelector" FullView="{StaticResource FullView}" CoveredOnBottom="{StaticResource CoveredOnBottom}" NotCovered="{StaticResource NotCovered}" CoveredOnTop="{StaticResource CoveredOnTop}"/>
+            <nixxis:NixxisExpandCoverFlowPanel x:Key="SupPanel1" Name="SupCoverflow" Title="Test third" nixxis:NixxisGrid.Panel="CenterRight" ItemTemplateSelector="{StaticResource testSelector}" ItemsSource="{Binding Agents}"></nixxis:NixxisExpandCoverFlowPanel>
+            <!--=================================-->
+            <!--    Default Panel Templates      -->
+            <!--=================================-->            
+            <!-- Main Toolbar -->
+            <nixxis:NixxisExpandPanel x:Key="MainMenuPanel" Name="SupMain" Title="General Sup" nixxis:NixxisGrid.Panel="Left"  MinimumNumberOfVerticalItems="2">
+                <nixxis:NixxisButton DropDownReplaceContent="False" KeepDropDownButton="True" ClickMeansDropDown="True" nixxis:NixxisBasePanel.Priority="4" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application\Application_Supervisor.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Supervisor'}">
+                    <nixxis:NixxisButton.DropDown>
+                        <nixxis:NixxisContextMenu>
+                            <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" IsEnabled="True" Command="nixxis:GeneralCommands.ShowApplication" CommandParameter="agt" nixxis:NixxisButton.DropDownCloser="True" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application\Application_Agent.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Agent'}"></nixxis:NixxisButton>
+                            <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="5" IsEnabled="True" Command="nixxis:GeneralCommands.ShowApplication" CommandParameter="sup" nixxis:NixxisButton.DropDownCloser="True" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application\Application_Supervisor.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Supervisor'}"></nixxis:NixxisButton>
+                            <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" IsEnabled="True" Command="nixxis:GeneralCommands.ShowApplication" CommandParameter="adm" nixxis:NixxisButton.DropDownCloser="True" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application\Application_Administrator.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Administrator'}"></nixxis:NixxisButton>
+                            <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" IsEnabled="True" Command="nixxis:GeneralCommands.ShowApplication" CommandParameter="rec" nixxis:NixxisButton.DropDownCloser="True" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application\Application_RecordingTool.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Recording'}"></nixxis:NixxisButton>
+                            <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" IsEnabled="True" Command="nixxis:GeneralCommands.ShowApplication" CommandParameter="rpt" nixxis:NixxisButton.DropDownCloser="True" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application\Application_Reporting.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Reporting Tool'}"></nixxis:NixxisButton>
+                        </nixxis:NixxisContextMenu>
+                    </nixxis:NixxisButton.DropDown>
+                </nixxis:NixxisButton>
+
+                <nixxis:NixxisButton IsToggleButton="True" IsChecked="{Binding Source={x:Static local:SupFrameSet.ShowCategory}, Path=State, Mode=TwoWay, Converter={StaticResource EqConverter}, ConverterParameter=agents}" nixxis:NixxisBasePanel.Priority="5" Command="local:SupFrameSet.ShowCategory" CommandParameter="agents" CommandTarget="{Binding}" Foreground="{StaticResource GreenGradient}" ImageSource="Images\SupervisionViews\Admin_Agent.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Agents'}">
+                    <!--<nixxis:NixxisButton.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Detach'}" Command="local:SupFrameSet.DetachWindow" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"></MenuItem>
+                        </ContextMenu>
+                    </nixxis:NixxisButton.ContextMenu>-->
+                </nixxis:NixxisButton>
+                <nixxis:NixxisButton IsToggleButton="True" IsChecked="{Binding Source={x:Static local:SupFrameSet.ShowCategory}, Path=State, Mode=TwoWay, Converter={StaticResource EqConverter}, ConverterParameter=inbounds}" nixxis:NixxisBasePanel.Priority="5" Command="local:SupFrameSet.ShowCategory" CommandParameter="inbounds" CommandTarget="{Binding}" Foreground="{StaticResource GreenGradient}" ImageSource="Images\SupervisionViews\Activities_Inbound.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Inbounds'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton IsToggleButton="True" IsChecked="{Binding Source={x:Static local:SupFrameSet.ShowCategory}, Path=State, Mode=TwoWay, Converter={StaticResource EqConverter}, ConverterParameter=outbounds}" nixxis:NixxisBasePanel.Priority="5" Command="local:SupFrameSet.ShowCategory" CommandParameter="outbounds" CommandTarget="{Binding}" Foreground="{StaticResource GreenGradient}" ImageSource="Images\SupervisionViews\Activities_Outbound.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Outbounds'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton IsToggleButton="True" IsChecked="{Binding Source={x:Static local:SupFrameSet.ShowCategory}, Path=State, Mode=TwoWay, Converter={StaticResource EqConverter}, ConverterParameter=queues}" nixxis:NixxisBasePanel.Priority="5" Command="local:SupFrameSet.ShowCategory" CommandParameter="queues" CommandTarget="{Binding}" Foreground="{StaticResource GreenGradient}" ImageSource="Images\SupervisionViews\Admin_Queue.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Queues'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton IsToggleButton="True" IsChecked="{Binding Source={x:Static local:SupFrameSet.ShowCategory}, Path=State, Mode=TwoWay, Converter={StaticResource EqConverter}, ConverterParameter=campaigns}" nixxis:NixxisBasePanel.Priority="5" Command="local:SupFrameSet.ShowCategory" CommandParameter="campaigns" CommandTarget="{Binding}" Foreground="{StaticResource GreenGradient}" ImageSource="Images\SupervisionViews\Admin_Campaign.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Campaigns'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton IsToggleButton="True" IsChecked="{Binding Source={x:Static local:SupFrameSet.ShowCategory}, Path=State, Mode=TwoWay, Converter={StaticResource EqConverter}, ConverterParameter=dashboards}" nixxis:NixxisBasePanel.Priority="5" Command="local:SupFrameSet.ShowCategory" CommandParameter="dashboards" CommandTarget="{Binding}" Foreground="{StaticResource GreenGradient}" ImageSource="Images\SupervisionViews\Dashboard.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Dashboards'}">
+                    
+                </nixxis:NixxisButton>
+
+                <!--nixxis:NixxisButton DropDownReplaceContent="False" KeepDropDownButton="True" ClickMeansDropDown="False" nixxis:NixxisBasePanel.Priority="5" Name="Dashboards" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\SupervisionViews\Dashboard.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Dashboards}">
+                    <nixxis:NixxisButton.DropDown>
+                        <nixxis:NixxisContextMenu>
+                            <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" Name="DashboardsTest" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\SupervisionViews\Dashboard.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Test'}"></nixxis:NixxisButton>
+                        </nixxis:NixxisContextMenu>
+                    </nixxis:NixxisButton.DropDown>
+                </-->
+
+
+                <nixxis:NixxisButton IsToggleButton="True" IsChecked="{Binding Source={x:Static local:SupFrameSet.ShowCategory}, Path=State, Mode=TwoWay, Converter={StaticResource EqConverter}, ConverterParameter=alerts}" nixxis:NixxisBasePanel.Priority="5" Command="local:SupFrameSet.ShowCategory" CommandParameter="alerts" CommandTarget="{Binding}" Foreground="{StaticResource GreenGradient}" ImageSource="Images\SupervisionViews\AlertFunction.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Alerts'}"></nixxis:NixxisButton>
+
+                <nixxis:NixxisButton DropDownReplaceContent="True" KeepDropDownButton="True" ClickMeansDropDown="True" nixxis:NixxisBasePanel.Priority="5" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Toolbars\phone.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Telephony'}">
+                    <nixxis:NixxisButton.DropDown>
+                        <nixxis:NixxisContextMenu>
+                            <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="5" Command="local:SupFrameSet.DoNewCall" CommandParameter="myParam" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Toolbars\VoiceNewCall.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Manual dial'}"></nixxis:NixxisButton>
+                            <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="5" Name="VoiceHold" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Toolbars\AgentTel_Hold.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Hold'}"></nixxis:NixxisButton>
+                            <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="5" Name="VoiceRetrieve" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Toolbars\AgentTel_Retrieve.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Retrieve'}"></nixxis:NixxisButton>
+                            
+                            <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="5" Name="VoiceHangup" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Toolbars\Agent_Hangup.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Hangup'}"></nixxis:NixxisButton>
+                        
+                        </nixxis:NixxisContextMenu>
+                    </nixxis:NixxisButton.DropDown>
+                </nixxis:NixxisButton>
+
+                <nixxis:NixxisButton DropDownReplaceContent="True" KeepDropDownButton="True" ClickMeansDropDown="True" nixxis:NixxisBasePanel.Priority="5" Foreground="{StaticResource RedGradient}" ImageSource="Images\Toolbars\Tools.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Options'}">
+                    <nixxis:NixxisButton.DropDown>
+                        <nixxis:NixxisContextMenu>
+                            <nixxis:NixxisButton IsToggleButton="False" nixxis:NixxisBasePanel.Priority="5" Command="local:SupFrameSet.SupWorkspaceOpen" CommandParameter="" CommandTarget="{Binding}" Foreground="{StaticResource RedGradient}" ImageSource="Images\Toolbars\Open.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Open workspace'}"></nixxis:NixxisButton>
+                            <nixxis:NixxisButton IsToggleButton="False" nixxis:NixxisBasePanel.Priority="5" Command="local:SupFrameSet.SupWorkspaceSave" CommandParameter="" CommandTarget="{Binding}" Foreground="{StaticResource RedGradient}" ImageSource="Images\Toolbars\Supervisor_Save.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Save workspace'}"></nixxis:NixxisButton>
+                            <nixxis:NixxisButton IsEnabled="False" nixxis:NixxisBasePanel.Priority="5" Command="" CommandParameter="" CommandTarget="{Binding}" Foreground="{StaticResource RedGradient}" ImageSource="Images\Toolbars\Supervisor_Help.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Help'}"></nixxis:NixxisButton>
+                        </nixxis:NixxisContextMenu>
+                    </nixxis:NixxisButton.DropDown>
+                </nixxis:NixxisButton>
+            </nixxis:NixxisExpandPanel>
+            
+            <!-- Agent Toolbar -->
+            <nixxis:NixxisExpandPanel x:Key="SupervisionAgentToolbarPanel" Title="Agent toolbar" nixxis:NixxisGrid.Panel="CenterLeft"  MinimumNumberOfVerticalItems="2">
+                <nixxis:NixxisButton Command="local:SupFrameSet.SupViewShowcolumnSelectorOperation" CommandParameter="agents" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Toolbars\Supervisor_SelectionColumn.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Column Selection'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton Command="" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Toolbars\Supervisor_CustomColumns.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Custom Columns'}"></nixxis:NixxisButton>
+
+                <nixxis:NixxisButton IsToggleButton="True" IsThreeState="True" Name="VoiceListen" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource RedGradient}" ImageSource="Images\Toolbars\Supervisor_Listen.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Listen'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton IsToggleButton="True" IsThreeState="True" Name="VoiceRecord" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource RedGradient}" ImageSource="Images\Toolbars\Supervisor_Recording.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Record'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton IsToggleButton="True" IsThreeState="True" Name="ViewScreen" IsChecked="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command.Active}" Foreground="{StaticResource RedGradient}" ImageSource="Images\Toolbars\Supervisor_Viewer.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='View'}"></nixxis:NixxisButton>
+
+                <nixxis:NixxisButton IsEnabled="True" IsToggleButton="False" Command="local:SupFrameSet.SupViewAgentSendMsg"      CommandTarget="{Binding}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" Foreground="{StaticResource RedGradient}" ImageSource="Images\Toolbars\SendMsg.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Send message'}"></nixxis:NixxisButton>
+            </nixxis:NixxisExpandPanel>
+            <CollectionViewSource x:Key="CoverflowAgentSource" Source="{Binding tileView1, Converter={StaticResource myDebugConverter}, ConverterParameter=c2}"></CollectionViewSource>
+            <nixxis:NixxisExpandCoverFlowPanel x:Key="CoverflowAgent" ItemsSource="{Binding Source={StaticResource CoverflowAgentSource}, Path=SelectedItem, Converter={StaticResource myDebugConverter}, ConverterParameter=c1}" Title="Details" nixxis:NixxisGrid.Panel="CenterRight" ItemTemplate="{StaticResource FullView}" ItemsWidth="350"/>
+
+            <!-- Inbound Toolbar -->
+            <nixxis:NixxisExpandPanel x:Key="SupervisionInboundToolbarPanel" Title="Inbound toolbar" nixxis:NixxisGrid.Panel="CenterLeft"  MinimumNumberOfVerticalItems="2">
+                <nixxis:NixxisButton Command="local:SupFrameSet.SupViewShowcolumnSelectorOperation" CommandParameter="inbounds" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Toolbars\Supervisor_SelectionColumn.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Column Selection'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton Command="" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Toolbars\Supervisor_CustomColumns.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Custom Columns'}"></nixxis:NixxisButton>
+            </nixxis:NixxisExpandPanel>
+
+            <!-- Outbound Toolbar -->
+            <nixxis:NixxisExpandPanel x:Key="SupervisionOutboundToolbarPanel" Title="Outbound toolbar" nixxis:NixxisGrid.Panel="CenterLeft"  MinimumNumberOfVerticalItems="2">
+                <nixxis:NixxisButton Command="local:SupFrameSet.SupViewShowcolumnSelectorOperation" CommandParameter="outbounds" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Toolbars\Supervisor_SelectionColumn.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Column Selection'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton Command="" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Toolbars\Supervisor_CustomColumns.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Custom Columns'}"></nixxis:NixxisButton>
+            </nixxis:NixxisExpandPanel>
+
+            <!-- Queue Toolbar -->
+            <nixxis:NixxisExpandPanel x:Key="SupervisionQueueToolbarPanel" Title="Queue toolbar" nixxis:NixxisGrid.Panel="CenterLeft" MinimumNumberOfVerticalItems="2">
+                <nixxis:NixxisButton Command="local:SupFrameSet.SupViewShowcolumnSelectorOperation" CommandParameter="queues" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Toolbars\Supervisor_SelectionColumn.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Column Selection'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton Command="" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Toolbars\Supervisor_CustomColumns.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Custom Columns'}"></nixxis:NixxisButton>
+            </nixxis:NixxisExpandPanel>
+
+            <!-- Campaign Toolbar -->
+            <nixxis:NixxisExpandPanel x:Key="SupervisionCampaignToolbarPanel" Title="Campaign toolbar" nixxis:NixxisGrid.Panel="CenterLeft" MinimumNumberOfVerticalItems="2">
+                <nixxis:NixxisButton Command="local:SupFrameSet.SupViewShowcolumnSelectorOperation" CommandParameter="campaigns" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Toolbars\Supervisor_SelectionColumn.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Column Selection'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton Command="" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Toolbars\Supervisor_CustomColumns.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Custom Columns'}"></nixxis:NixxisButton>
+            </nixxis:NixxisExpandPanel>
+
+            <!-- Alert Toolbar -->
+            <nixxis:NixxisExpandPanel x:Key="SupervisionAlertToolbarPanel" Title="Alert toolbar" nixxis:NixxisGrid.Panel="CenterLeft" MinimumNumberOfVerticalItems="2">
+                <nixxis:NixxisButton Command="local:SupFrameSet.SupViewShowcolumnSelectorOperation" CommandParameter="alerts" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Toolbars\Supervisor_SelectionColumn.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Column Selection'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton Command="" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Toolbars\Supervisor_CustomColumns.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Custom Columns'}"></nixxis:NixxisButton>
+            </nixxis:NixxisExpandPanel>
+
+            <!-- Dashboard Toolbar -->
+            <nixxis:NixxisExpandPanel x:Key="SupervisionDashboardToolbarPanel" Title="Dashboard toolbar" nixxis:NixxisGrid.Panel="CenterLeft" MinimumNumberOfVerticalItems="2">
+                <nixxis:NixxisButton Command="local:SupFrameSet.SupViewShowcolumnSelectorOperation" CommandParameter="dashboard" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Toolbars\Supervisor_SelectionColumn.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Column Selection'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton Command="" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Toolbars\Supervisor_CustomColumns.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Custom Columns'}"></nixxis:NixxisButton>
+            </nixxis:NixxisExpandPanel>
+
+        </ResourceDictionary>
+
+    </UserControl.Resources>
+
+    <Grid Name="MainSupGrid" Background="#FF333333">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <n:NixxisTileView Grid.Column="0"
+                              x:Name="tileView1"
+                              LargeCommandImage="Images/SupervisionViews/tileViewMedium.png"
+                              MediumCommandImage="Images/SupervisionViews/tileViewSmall.png"
+                              SmallCommandImage="Images/SupervisionViews/tileViewLarge.png"
+                              MediumModeReverseOrder="True"
+                              ViewStateChanged="tileView1_ViewStateChanged">
+            <n:NixxisTileView.HeaderTemplate>
+                <ControlTemplate TargetType="{x:Type n:NixxisTileViewHeader}">
+                    <Grid Background="{StaticResource ItemPanelBackgroundBrush}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="16"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Source="{TemplateBinding TileIcon}" Width="16" Height="16" Stretch="Fill"></Image>
+                        <TextBlock Grid.Column="1" Text="{TemplateBinding Title}" FontSize="11" Padding="3,0,0,0" FontWeight="Bold" HorizontalAlignment="Stretch" VerticalAlignment="Center" Foreground="#4D4D4D">
+                            <TextBlock.Effect>
+                                <DropShadowEffect ShadowDepth="2" BlurRadius="0" Direction="-40" Color="White" Opacity="0.5"></DropShadowEffect>
+                            </TextBlock.Effect>
+                        </TextBlock>
+                    </Grid>
+                </ControlTemplate>
+            </n:NixxisTileView.HeaderTemplate>
+
+            <local:NixxisSupervisionTileAgent
+                x:Name="SupAgentPanel" 
+                Id="agents" 
+                ToolbarPanelKey="SupervisionAgentToolbarPanel" 
+                RightClickShowColumnSelector="false"
+                TileIcon="Images/SupervisionViews/AdminSmall_Agent.png"
+                HeaderVisibleLarge="Collapsed"   
+                SelectionChanged="SelectionChanged"
+                Title="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Agent}"></local:NixxisSupervisionTileAgent>
+            
+            <local:NixxisSupervisionTileInbound 
+                x:Name="SupInboundPanel" 
+                Id="inbounds" 
+                ToolbarPanelKey="SupervisionInboundToolbarPanel" 
+                RightClickShowColumnSelector="false"
+                TileIcon="Images/SupervisionViews/Activities_Inbound.png"
+                HeaderVisibleLarge="Collapsed"
+                SelectionChanged="SelectionChanged"
+                Title="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Inbound}"></local:NixxisSupervisionTileInbound>
+            
+            <local:NixxisSupervisionTileOutbound 
+                x:Name="SupOutboundPanel" 
+                Id="outbounds" 
+                ToolbarPanelKey="SupervisionOutboundToolbarPanel" 
+                RightClickShowColumnSelector="false"
+                TileIcon="Images/SupervisionViews/Activities_Outbound.png"
+                HeaderVisibleLarge="Collapsed"
+                SelectionChanged="SelectionChanged"
+                Title="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Outbound}"></local:NixxisSupervisionTileOutbound>
+            
+            <local:NixxisSupervisionTileQueue 
+                x:Name="SupQueuePanel" 
+                Id="queues" 
+                ToolbarPanelKey="SupervisionQueueToolbarPanel" 
+                RightClickShowColumnSelector="false"
+                TileIcon="Images/SupervisionViews/AdminSmall_Queue.png"
+                HeaderVisibleLarge="Collapsed"
+                SelectionChanged="SelectionChanged"
+                Title="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Queue}"></local:NixxisSupervisionTileQueue>
+            
+            <local:NixxisSupervisionTileCampaign 
+                x:Name="SupCampaignPanel"
+                Id="campaigns" 
+                ToolbarPanelKey="SupervisionCampaignToolbarPanel" 
+                RightClickShowColumnSelector="false"
+                TileIcon="Images/SupervisionViews/AdminSmall_Campaign.png"
+                HeaderVisibleLarge="Collapsed"
+                SelectionChanged="SelectionChanged"
+                Title="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Campaign}"></local:NixxisSupervisionTileCampaign>
+
+            <local:NixxisSupervisionTileAlert 
+                x:Name="SupAlertPanel" 
+                Id="alerts" 
+                ToolbarPanelKey="SupervisionAlertToolbarPanel" 
+                RightClickShowColumnSelector="false"
+                TileIcon="Images/SupervisionViews/AlertFunctionSmall.png"
+                HeaderVisibleLarge="Collapsed"
+                Title="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Alerts}"></local:NixxisSupervisionTileAlert>
+            
+            <local:NixxisSupervisionTileDashboard 
+                x:Name="SupDashboardPanel" 
+                Id="dashboards" 
+                ToolbarPanelKey="SupervisionDashboardToolbarPanel" 
+                RightClickShowColumnSelector="false"
+                TileIcon="Images/SupervisionViews/DashboardSmall.png"
+                HeaderVisibleLarge="Collapsed"
+                Title="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Dashboard}"></local:NixxisSupervisionTileDashboard>
+
+        </n:NixxisTileView>
+    </Grid>
+
+</UserControl>

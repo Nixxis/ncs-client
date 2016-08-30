@@ -1,0 +1,149 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Nixxis.Client.Controls">
+    
+    <!--<local:ConvertPieceBackgroundBrush x:Key="convertPieceBackgroundBrush" />
+
+    <local:ConvertRelativeSize x:Key="convertRelativeSize"></local:ConvertRelativeSize>-->
+
+    <!--<DataTemplate DataType="{x:Type local:NixxisChartPiece}">
+        <Label Content="{Binding Path=Label}" Foreground="Beige" Margin="0,0,0,0" Padding="0,0,0,0" BorderThickness="0"> 
+            <Label.Width>
+                <MultiBinding Converter="{StaticResource myMultiSpecialBrol}">
+                    <Binding Path="ValueObject"></Binding>
+                    <Binding Path="Owner"></Binding>
+                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type local:NixxisChartSingleLineBar}}"></Binding>
+                </MultiBinding>
+            </Label.Width>
+        </Label>
+    </DataTemplate>-->
+    
+    <!--<Style TargetType="{x:Type local:NixxisChartSingleLineBarTest2}">        
+        <Setter Property="BorderThickness" Value="0"></Setter>
+        <Setter Property="Padding" Value="0,0,0,0"></Setter>
+        <Setter Property="Margin" Value="0,0,0,0"></Setter>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal">
+                    </StackPanel>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Label Margin="0,0,0,0" Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type StackPanel}}}">
+                        <Label.Background>
+                            <MultiBinding Converter="{StaticResource convertPieceBackgroundBrush}">
+                                <Binding Path="Color"></Binding>
+                                <Binding Path="Fill"></Binding>
+                                <Binding Path="ChartFillType" RelativeSource="{RelativeSource AncestorType={x:Type local:NixxisChartSingleLineBar}}"></Binding>
+                            </MultiBinding>
+                        </Label.Background>
+                        <Label.Width>
+                            <MultiBinding Converter="{StaticResource convertRelativeSize}">
+                                <Binding Path="ValueObject"></Binding>
+                                <Binding Path="Owner"></Binding>
+                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type StackPanel}}"></Binding>
+                                <Binding RelativeSource="{RelativeSource AncestorType={x:Type StackPanel}}"></Binding>
+                                <Binding RelativeSource="{RelativeSource AncestorType={x:Type local:NixxisChartSingleLineBar}}"></Binding>
+                            </MultiBinding>
+                        </Label.Width>
+                    </Label>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>-->
+    
+    <!--<ControlTemplate x:Key="NixxisChartDefaultTemplate" TargetType="{x:Type local:NixxisChart}">
+        <Grid  Margin="1,4,1,4" Height="50" HorizontalAlignment="Left" VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="310"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0"  Margin="1,4,1,4" Height="50" Width="300" HorizontalAlignment="Left" VerticalAlignment="Stretch">
+                <Grid.BitmapEffect>
+                    <DropShadowBitmapEffect ShadowDepth="5" Softness="0.3"/>
+                </Grid.BitmapEffect>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10"></ColumnDefinition>
+                    <ColumnDefinition Width="10"></ColumnDefinition>
+                    <ColumnDefinition Width="10"></ColumnDefinition>
+                    <ColumnDefinition Width="10"></ColumnDefinition>
+                    <ColumnDefinition Width="10"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Canvas Grid.Column="0" Background="#f84343" Opacity="0.5" Margin="0,3,0,3"/>
+                <Canvas Grid.Column="1" Background="#fa9654" Opacity="0.5" Margin="0,3,0,3"/>
+                <Canvas Grid.Column="2" Background="#b4e93c" Opacity="0.5" Margin="0,3,0,3"/>
+                <Canvas Grid.Column="3" Background="#fff564" Opacity="0.5" Margin="0,3,0,3"/>
+                <Canvas Grid.Column="4" Background="#2ccdf2" Opacity="0.5" Margin="0,3,0,3"/>
+
+            </Grid>
+
+            <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Left">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Canvas Width="8" Height="8" Background="#f84343" Opacity="0.7"/>
+                    <TextBlock Text="Pause" Padding="3,0,0,0" Width="50"></TextBlock>
+                    <Canvas Margin="10,0,0,0" Width="8" Height="8" Background="#fa9654" Opacity="0.7"/>
+                    <TextBlock Text="Waiting" Padding="3,0,0,0"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Canvas Width="8" Height="8" Background="#b4e93c" Opacity="0.7"/>
+                    <TextBlock Text="Online" Padding="3,0,0,0" Width="50"></TextBlock>
+                    <Canvas Margin="10,0,0,0" Width="8" Height="8" Background="#fff564" Opacity="0.7"/>
+                    <TextBlock Text="Wrapup" Padding="3,0,0,0"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Canvas Width="8" Height="8" Background="#2ccdf2" Opacity="0.7"/>
+                    <TextBlock Text="Preview" Padding="3,0,0,0"></TextBlock>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </ControlTemplate>-->
+    
+    <Style x:Key="NixxisChartMainBarStyle" TargetType="{x:Type Grid}">
+        <Setter Property="Margin" Value="1,4,1,4"/>
+        <Setter Property="BitmapEffect">
+            <Setter.Value>
+                <DropShadowBitmapEffect Color="White" Opacity="0.5" Direction="45" ShadowDepth="5" Softness="20" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="NixxisChartBarLegendStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Foreground" Value="White"></Setter>
+        <Setter Property="Margin" Value="3,0,6,0"></Setter>
+    </Style>
+    
+    <Style x:Key="NixxisChartBarPieceStyle" TargetType="{x:Type Canvas}">
+        <Setter Property="Margin" Value="0,2,0,2"/>
+        <Setter Property="Opacity" Value="0.95"/>
+        <!--<Setter Property="ToolTip">
+            <Setter.Value>
+                <StackPanel Width="250" TextBlock.FontSize="12">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontWeight="Bold" Text="{Binding Path=Label}" />
+                        <TextBlock Text=": " />
+                        <TextBlock FontWeight="Bold" Text="{Binding Path=ValueObject}" />
+                    </StackPanel>
+                </StackPanel>
+            </Setter.Value>
+        </Setter>-->
+    </Style>
+    
+    <Style x:Key="NixxisChartDefaultStyle" TargetType="{x:Type local:NixxisChart}">
+        <Setter Property="Background" Value="Black"/>
+
+    </Style>
+
+    <Style TargetType="{x:Type local:NixxisChart}" BasedOn="{StaticResource NixxisChartDefaultStyle}"/>
+</ResourceDictionary>

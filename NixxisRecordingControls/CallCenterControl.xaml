@@ -1,0 +1,842 @@
+﻿<UserControl  x:Class="Nixxis.Client.Recording.CallCenterControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+             xmlns:adminlink="clr-namespace:Nixxis.Client.Admin;assembly=AdminLink"
+             xmlns:n="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControlsCommon"
+              xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+             xmlns:local="clr-namespace:Nixxis.Client.Recording"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             Name="MySelf">
+
+    <!--<UserControl.CommandBindings>
+        <CommandBinding Command="local:AdminFrameSet.AdminObjectAddOperation" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+    </UserControl.CommandBindings>-->
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisTreeView.xaml"/>
+                
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControlsCommon;component/Themes/TimePicker.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+            <crs:TranslationContext x:Key="tcx" Context="CallCenterControl"></crs:TranslationContext>
+            
+            <n:FormatDateTimeConverter x:Key="formatDateTimeConverter"/>
+            <n:ObjectToBoolConverter x:Key="objectToBoolConverter"/>
+            <n:BoolToVisibilityCollapsedConverter x:Key="boolToVisibilityCollapsedConverter"/>
+            <n:ObjectToVisibilityConverter x:Key="objectToVisibilityConverter"/>            
+            <n:ObjectCompairToVisibilityConverter x:Key="objectCompairToVisibilityConverter"/>
+            <nixxis:InequalityConverter x:Key="IneqConverter"/>
+
+            <local:NixxisTreeComboPadding x:Key="nixxisTreeComboPadding" />
+            <local:ParameterArguedToDescription x:Key="parameterArguedToDescription" />
+            <local:ParameterPositiveToDescription x:Key="parameterPositiveToDescription" />
+            <local:GetQualificationListConverter x:Key="getQualificationListConverter" />
+            <local:PlayerEnableButtonConverter x:Key="playerEnableButtonConverter" />
+            <local:DataGridFormatDataTimeConverter x:Key="dataGridFormatDataTimeConverter" />
+            <local:DataGridFormatTimeConverter x:Key="dataGridFormatTimeConverter" />
+            <local:CommentIcon x:Key="commentIcon"/>
+            <local:KeepRecordingIcon x:Key="keepRecordingIcon"/>
+            <local:MediaTypeIcon x:Key="mediaTypeIcon"/>
+            <local:RecordingStateIcon x:Key="recordingStateIcon"/>
+            <local:AllowSearchIsCheckedConverter x:Key="allowSearchIsCheckedConverter"/>
+            <local:DebugConverter x:Key="myDebugConverter"/>
+            <local:ConverterForUpdateCommand x:Key="converterForUpdateCommandConverter"/>
+            
+            <CollectionViewSource x:Key="List" Source="{Binding ElementName=MySelf, Path=Contacts}"></CollectionViewSource>
+            <CollectionViewSource x:Key="TeamList" Source="{Binding ElementName=MySelf, Path=TeamList}"></CollectionViewSource>
+            <CollectionViewSource x:Key="AgentList" Source="{Binding ElementName=MySelf, Path=AgentList}"></CollectionViewSource>
+            <CollectionViewSource x:Key="CampaignList" Source="{Binding ElementName=MySelf, Path=CampaignList}"></CollectionViewSource>
+            <CollectionViewSource x:Key="ActivityList" Source="{Binding ElementName=MySelf, Path=ActivityList}"></CollectionViewSource>
+
+            <HierarchicalDataTemplate DataType="{x:Type adminlink:AdminObjectLight}" ItemsSource="{Binding Children}" >
+                <TextBlock VerticalAlignment="Center" Grid.Column="1" Margin="3" Text="{Binding Description}"/>
+            </HierarchicalDataTemplate>
+            <!--Enum MediaSubTypes-->
+            <local:MediaSubTypes x:Key="MediaSubTypes_Undefined">Undefined</local:MediaSubTypes>
+            <local:MediaSubTypes x:Key="MediaSubTypes_DirectCall">DirectCall</local:MediaSubTypes>
+            <local:MediaSubTypes x:Key="MediaSubTypes_Inbound">Inbound</local:MediaSubTypes>
+            <local:MediaSubTypes x:Key="MediaSubTypes_ManualCall">ManualCall</local:MediaSubTypes>
+            <local:MediaSubTypes x:Key="MediaSubTypes_Outbound">Outbound</local:MediaSubTypes>
+            <local:MediaSubTypes x:Key="MediaSubTypes_Chat">Chat</local:MediaSubTypes>
+            <!--Enum MediaSubTypes-->
+            <local:MediaTypes x:Key="MediaTypes_Voice">Voice</local:MediaTypes>
+            <local:MediaTypes x:Key="MediaTypes_Chat">Chat</local:MediaTypes>
+            <local:MediaTypes x:Key="MediaTypes_Mail">Mail</local:MediaTypes>
+
+            <!-- CallCenter Toolbar -->
+            <nixxis:NixxisExpandPanel x:Key="RecCallCenterToolbarPanel" Title="Recording toolbar" nixxis:NixxisGrid.Panel="CenterLeft">
+                <nixxis:NixxisButton Click="btnSearchRecordings_Click" 
+                                     Command="" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" 
+                                     ImageSource="Images\Toolbar\Search.png"
+                                     Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Search}">
+
+                </nixxis:NixxisButton>
+
+                <nixxis:NixxisButton Click="btnSaveRecording_Click" 
+                                     Command="" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" 
+                                     ImageSource="Images\Toolbar\Save.png"
+                                     IsEnabled="{Binding Path=SelectedItem, Converter={StaticResource objectToVisibilityConverter}}"
+                                     Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Save}">
+                    
+                </nixxis:NixxisButton>
+                <nixxis:NixxisButton Click="btnSaveAllRecordings_Click" 
+                                     Command="" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" 
+                                     ImageSource="Images\Toolbar\SaveAll.png"
+                                     IsEnabled="{Binding Path=SelectedItem, Converter={StaticResource objectToVisibilityConverter}}"
+                                     Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Save All'}">
+                    
+                </nixxis:NixxisButton>
+                <nixxis:NixxisButton Click="btnPlayRecording_Click" Command="" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\MediaPlayerButtons\Player_Play.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Play}">
+                    <nixxis:NixxisButton.IsEnabled>
+                        <MultiBinding Converter="{StaticResource playerEnableButtonConverter}" ConverterParameter="play">
+                            <Binding Path="SelectedItem"></Binding>
+                            <Binding Path="PlayerState"></Binding>
+                            <!--<Binding Path="PlayerItem"></Binding>-->
+                        </MultiBinding>
+                    </nixxis:NixxisButton.IsEnabled>
+                </nixxis:NixxisButton>
+                <nixxis:NixxisButton Click="btnPauseRecording_Click" Command="" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\MediaPlayerButtons\Player_Pause.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Pause}">
+                    <nixxis:NixxisButton.IsEnabled>
+                        <MultiBinding Converter="{StaticResource playerEnableButtonConverter}" ConverterParameter="pause">
+                            <Binding Path="SelectedItem"></Binding>
+                            <Binding Path="PlayerState"></Binding>
+                            <!--<Binding Path="PlayerItem"></Binding>-->
+                        </MultiBinding>
+                    </nixxis:NixxisButton.IsEnabled>
+                </nixxis:NixxisButton>
+                <nixxis:NixxisButton Click="btnStopRecording_Click" Command="" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\MediaPlayerButtons\Player_Stop.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Stop}">
+                    <nixxis:NixxisButton.IsEnabled>
+                        <MultiBinding Converter="{StaticResource playerEnableButtonConverter}" ConverterParameter="stop">
+                            <Binding Path="SelectedItem"></Binding>
+                            <Binding Path="PlayerState"></Binding>
+                            <!--<Binding Path="PlayerItem"></Binding>-->
+                        </MultiBinding>
+                    </nixxis:NixxisButton.IsEnabled>
+                </nixxis:NixxisButton>
+                <nixxis:NixxisButton IsEnabled="{Binding Path=SelectedItem, Converter={StaticResource converterForUpdateCommandConverter}}" Click="btnUpdateContactInfo_Click" Command="" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Toolbar\UpdateContactInformation.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Update contact information'}"></nixxis:NixxisButton>
+            </nixxis:NixxisExpandPanel>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="0"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <nixxis:NixxisDataGrid 
+            Name="MainGrid" 
+            Grid.Row="0"
+            DataContext="{Binding ElementName=MySelf, Path=Config.Data}"
+            ItemsSource="{Binding Source={StaticResource List}}"
+            SelectedItem="{Binding ElementName=MySelf, Path=SelectedItem}"
+            CanUserAddRows="False" 
+            CanUserDeleteRows="False"
+            HeadersVisibility="Column" 
+            RowDetailsVisibilityMode="Collapsed" 
+            IsReadOnly="True"
+            SelectionChanged="MainGrid_SelectionChanged">
+            <nixxis:NixxisDataGrid.Columns>
+                <DataGridTemplateColumn Header="">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Playback state'}" RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding RecodingState, Converter={StaticResource recordingStateIcon}}"></Image>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Media type state'}" RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding MediaSubType, Converter={StaticResource mediaTypeIcon}, ConverterParameter=small}"></Image>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header=""
+                                        Visibility="{Binding DataContext.KeepRecordingAvailable, RelativeSource={x:Static RelativeSource.Self}, Converter={StaticResource boolToVisibilityCollapsedConverter}}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Keep Recording'}" RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding KeepRecording, Converter={StaticResource keepRecordingIcon}}"></Image>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Comment}" RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding Comment, Converter={StaticResource commentIcon}}"></Image>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='#'}" Binding="{Binding NbOfFiles}"
+                                    Visibility="{Binding DataContext.PreLoadFileNames, RelativeSource={x:Static RelativeSource.Self}, Converter={StaticResource boolToVisibilityCollapsedConverter}}"/>
+                <DataGridTextColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Date time'}" Binding="{Binding LocalDateTime, Converter={StaticResource dataGridFormatDataTimeConverter}}"/>
+                <DataGridTextColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Originator}" Binding="{Binding Originator}"/>
+                <DataGridTextColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Destination}" Binding="{Binding Destination}"/>
+                <DataGridTextColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Campaign}" Binding="{Binding CampDescription}"/>
+                <DataGridTextColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Activity}" Binding="{Binding Description}"/>
+                <DataGridTextColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=EndReason}" Binding="{Binding EndReason}"/>
+                <DataGridTextColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Com Dur(sec)'}" Binding="{Binding ComDuration}"/>
+                <DataGridTextColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Type}" Binding="{Binding MediaTypeDescription}"/>
+                <DataGridTextColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=FirstName}" Binding="{Binding FirstName}"/>
+                <DataGridTextColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=LastName}" Binding="{Binding LastName}"/>
+                <DataGridTextColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Account}" Binding="{Binding Account}"/>
+                <DataGridTextColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Extension}" Binding="{Binding Extension}"/>
+                <DataGridTextColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Qualification}" Binding="{Binding QualificationDescription}"/>
+                <DataGridTextColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Positive}" Binding="{Binding Positive}"/>
+                <DataGridTextColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Argued}" Binding="{Binding Argued}"/>
+                <DataGridTextColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Setup duration}" Binding="{Binding SetupDuration}"/>
+                <DataGridTextColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Total duration}" Binding="{Binding Duration}"/>
+                <DataGridTextColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=RecordingId}" Binding="{Binding RecordingId}"
+                                    Visibility="{Binding DataContext.RecordingIdVisible, RelativeSource={x:Static RelativeSource.Self}, Converter={StaticResource boolToVisibilityCollapsedConverter}}"/>
+                <DataGridTextColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=ContactListId}" Binding="{Binding ContactListId}"
+                                    Visibility="{Binding DataContext.ContactListIdVisible, RelativeSource={x:Static RelativeSource.Self}, Converter={StaticResource boolToVisibilityCollapsedConverter}}"/>
+                <DataGridTextColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=ContactId}" Binding="{Binding ContactId}"
+                                    Visibility="{Binding DataContext.DebugAllMsg, RelativeSource={x:Static RelativeSource.Self}, Converter={StaticResource boolToVisibilityCollapsedConverter}}"/>
+                <DataGridTextColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=CustomerId}" Binding="{Binding CustomerId}"
+                                    Visibility="{Binding DataContext.DebugAllMsg, RelativeSource={x:Static RelativeSource.Self}, Converter={StaticResource boolToVisibilityCollapsedConverter}}"/>
+            </nixxis:NixxisDataGrid.Columns>
+        </nixxis:NixxisDataGrid>
+
+        <GridSplitter Grid.Row="1" ResizeDirection="Rows" Height="2" HorizontalAlignment="Stretch" Background="#0e0e0e"></GridSplitter>
+
+        <nixxis:NixxisTabControl Grid.Row="2" DataContext="{Binding Source={StaticResource List}}" IsEnabled="True">
+            <!--Search Parameters-->
+            <nixxis:NixxisTabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Width="25" Height="25" Source="Images\_Others\TabSearch25.png"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Search Parameters'}"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <ScrollViewer Margin="10" CanContentScroll="False" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Stretch">
+                    <Grid HorizontalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <!--Button Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" VerticalAlignment="Center" Margin="2" Padding="5" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Search}" Click="btnSearchRecordings_Click"></Button-->
+                        
+                        <nixxis:NixxisStackPanel Grid.Column="0" Grid.Row="1" Margin="0,0,5,0"  HorizontalAlignment="Stretch">
+                            <Label VerticalAlignment="Center" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Date/Time range:'}"></Label>
+                            <StackPanel Orientation="Horizontal">
+                                <Label VerticalAlignment="Center" Margin="0,0,2,0" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=From}"></Label>
+                                <DatePicker Width="110" SelectedDateFormat="Short" VerticalAlignment="Center" Margin="2,0" SelectedDate="{Binding ElementName=MySelf, Path=SearchParameters.FromDate}"></DatePicker>
+                                <n:TimePicker Width="100" HorizontalAlignment="Left" Margin="2,0" SelectedTime="{Binding ElementName=MySelf, Path=SearchParameters.FromTime}"/>
+
+                                <Label VerticalAlignment="Center" Margin="5,0" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=To}"></Label>
+                                <DatePicker Width="110" SelectedDateFormat="Short" Margin="2,0" VerticalAlignment="Center" SelectedDate="{Binding ElementName=MySelf, Path=SearchParameters.ToDate}"></DatePicker>
+                                <n:TimePicker Width="100" HorizontalAlignment="Left" Margin="2,0" SelectedTime="{Binding ElementName=MySelf, Path=SearchParameters.ToTime}"/>
+                            </StackPanel>
+
+                            <Label VerticalAlignment="Center" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Team}"></Label>
+                            <ComboBox VerticalAlignment="Center"
+                                    ItemsSource="{Binding Source={StaticResource TeamList}}"
+                                    DisplayMemberPath="Description" 
+                                    SelectedIndex="0"
+                                    SelectedItem="{Binding ElementName=MySelf, Path=SearchParameters.TeamItem}"
+                                    SelectionChanged="ComboBoxTeam_SelectionChanged"></ComboBox>
+
+                            <Label VerticalAlignment="Center" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Agent}"></Label>
+                            <ComboBox VerticalAlignment="Center"
+                                    ItemsSource="{Binding Source={StaticResource AgentList}}"
+                                    DisplayMemberPath="Description" 
+                                    SelectedIndex="0" 
+                                    SelectedItem="{Binding ElementName=MySelf, Path=SearchParameters.AgentItem}"></ComboBox>
+
+                            <Label VerticalAlignment="Center" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Extension}"></Label>
+                            <TextBox VerticalAlignment="Center" Text="{Binding ElementName=MySelf, Path=SearchParameters.Extension}"></TextBox>
+
+                            <Label VerticalAlignment="Center" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Campaign}"></Label>
+                            <ComboBox VerticalAlignment="Center"
+                                    ItemsSource="{Binding Source={StaticResource CampaignList}}"
+                                    DisplayMemberPath="Description" 
+                                    SelectedIndex="0"
+                                    SelectedItem="{Binding ElementName=MySelf, Path=SearchParameters.CampaignItem}"
+                                    SelectionChanged="ComboBoxCampaign_SelectionChanged"></ComboBox>
+
+                            <Label VerticalAlignment="Center" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Activity}"></Label>
+                            <ComboBox VerticalAlignment="Center"
+                                    ItemsSource="{Binding Source={StaticResource ActivityList}}"
+                                    DisplayMemberPath="Description" 
+                                    SelectedIndex="0"
+                                    SelectedItem="{Binding ElementName=MySelf, Path=SearchParameters.ActivityItem}"
+                                    SelectionChanged="ComboBoxActivity_SelectionChanged"></ComboBox>
+
+                            <Label VerticalAlignment="Center" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Originator}"></Label>
+                            <TextBox VerticalAlignment="Center" Text="{Binding ElementName=MySelf, Path=SearchParameters.Originator}"></TextBox>
+
+                            <Label VerticalAlignment="Center" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Destination}"></Label>
+                            <TextBox VerticalAlignment="Center" Text="{Binding ElementName=MySelf, Path=SearchParameters.Destination}"></TextBox>
+                        </nixxis:NixxisStackPanel>
+
+                        <GridSplitter Grid.Column="1" Grid.Row="1" ResizeDirection="Columns" Width="2" VerticalAlignment="Stretch" HorizontalAlignment="Center"></GridSplitter>
+
+                        <nixxis:NixxisStackPanel Grid.Column="2" Grid.Row="1" Margin="5,0,5,0"  HorizontalAlignment="Stretch">
+                            
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Filter on media'}"></TextBlock>
+                                <ToggleButton Name="btnParameterContactType" Margin="5,0,0,0" Cursor="Hand" 
+                                              Content="{Binding ElementName=MySelf, Path=SearchParameters.FilterOnContactTypeDescription}">
+                                    <ToggleButton.Effect>
+                                        <DropShadowEffect></DropShadowEffect>
+                                    </ToggleButton.Effect>
+
+                                    <ToggleButton.Style>
+                                        <Style TargetType="{x:Type ToggleButton}" BasedOn="{x:Null}" >
+                                            <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Foreground" Value="{StaticResource CheckedGreenBackgroundBrush}"/>
+                                                </Trigger>
+                                                <Trigger Property="IsChecked" Value="True">
+                                                    <Setter Property="Foreground" Value="{StaticResource CheckedGreenBackgroundBrush}"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ToggleButton.Style>
+
+                                    <ToggleButton.Template>
+                                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                            <Grid >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                                </Grid.ColumnDefinitions>
+                                                <ContentPresenter Name="cp" Content="{TemplateBinding Content}"></ContentPresenter>
+                                                <Path Margin="3,0,0,0" Grid.Column="1" Visibility="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsChecked, Converter={StaticResource visConverter}, ConverterParameter=false }" HorizontalAlignment="Center" Name="Up_Arrow" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M 0 0 L 4 4 L 8 0 Z" />
+                                                <Path Margin="3,0,0,0" Grid.Column="1" Visibility="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsChecked, Converter={StaticResource visConverter} }" HorizontalAlignment="Center" Name="Down_Arrow" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M 0 4 L 4 0 L 8 4 Z" />
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </ToggleButton.Template>
+
+                                </ToggleButton>
+                            </StackPanel>
+                            <GroupBox Margin="20,0,0,0" Visibility="{Binding ElementName=btnParameterContactType, Path=IsChecked, Converter={StaticResource boolToVisibilityCollapsedConverter}}">
+                                <StackPanel>
+                                    <CheckBox Margin="0,1" IsChecked="{Binding ElementName=MySelf, Path=SearchParameters.IncludeInbound}" Visibility="{Binding ElementName=MySelf, Path=IsAllowedMediaTypeInbound, Converter={StaticResource boolToVisibilityCollapsedConverter}}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Inbound}"></CheckBox>
+                                    <CheckBox Margin="0,1" IsChecked="{Binding ElementName=MySelf, Path=SearchParameters.IncludeOutbound}" Visibility="{Binding ElementName=MySelf, Path=IsAllowedMediaTypeOutbound, Converter={StaticResource boolToVisibilityCollapsedConverter}}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Outbound}"></CheckBox>
+                                    <CheckBox Margin="0,1" IsChecked="{Binding ElementName=MySelf, Path=SearchParameters.IncludeChat}" Visibility="{Binding ElementName=MySelf, Path=IsAllowedMediaTypeChat, Converter={StaticResource boolToVisibilityCollapsedConverter}}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Chat}"></CheckBox>
+                                    <CheckBox Margin="0,1" IsChecked="{Binding ElementName=MySelf, Path=SearchParameters.IncludeManual}" Visibility="{Binding ElementName=MySelf, Path=IsAllowedMediaTypeManuel, Converter={StaticResource boolToVisibilityCollapsedConverter}}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Manuel}"></CheckBox>
+                                    <CheckBox Margin="0,1" IsChecked="{Binding ElementName=MySelf, Path=SearchParameters.IncludeDirect}" Visibility="{Binding ElementName=MySelf, Path=IsAllowedMediaTypeDirect, Converter={StaticResource boolToVisibilityCollapsedConverter}}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Direct calls'}"></CheckBox>
+                                </StackPanel>
+                            </GroupBox>
+
+                            <nixxis:NixxisDetailedCheckBox Name="chkParameterPositive" VerticalAlignment="Center" 
+                                                           IsChecked="{Binding ElementName=MySelf, Path=SearchParameters.PositiveCheck}"
+                                                           DetailContent="{Binding ElementName=MySelf, Path=SearchParameters.Positive, Converter={StaticResource parameterPositiveToDescription}}"
+                                                           DetailVisibility="{Binding ElementName=chkParameterPositive, Path=IsChecked, Converter={StaticResource boolToVisibilityCollapsedConverter}}"
+                                                           Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Filter on qualification \'Value\''}">
+                                
+                            </nixxis:NixxisDetailedCheckBox>
+                            <GroupBox Margin="20,0,0,0" Visibility="{Binding ElementName=chkParameterPositive, Path=IsDetailChecked, Converter={StaticResource boolToVisibilityCollapsedConverter}}">
+                                <StackPanel Margin="0,3,0,0">
+                                    <RadioButton Name="RadioPositive" IsChecked="{Binding ElementName=MySelf, Path=SearchParameters.IsQualificationValuePositive}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Postive}"></RadioButton>
+                                    <RadioButton Name="RadioNeutral" IsChecked="{Binding ElementName=MySelf, Path=SearchParameters.IsQualificationValueNeutral}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Neutral}"></RadioButton>
+                                    <RadioButton Name="RadioNegative" IsChecked="{Binding ElementName=MySelf, Path=SearchParameters.IsQualificationValueNegative}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Negative}"></RadioButton>
+                                </StackPanel>
+                            </GroupBox>
+
+                            <nixxis:NixxisDetailedCheckBox Name="chkParameterArgued" VerticalAlignment="Center"
+                                                           IsChecked="{Binding ElementName=MySelf, Path=SearchParameters.ArguedCheck}"
+                                                           DetailContent="{Binding ElementName=MySelf, Path=SearchParameters.Argued, Converter={StaticResource parameterArguedToDescription}}"
+                                                           DetailVisibility="{Binding ElementName=chkParameterArgued, Path=IsChecked, Converter={StaticResource boolToVisibilityCollapsedConverter}}"
+                                                           Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Filter on qualification \'Argued\''}">
+                                
+                            </nixxis:NixxisDetailedCheckBox>
+                            <GroupBox Margin="20,0,0,0" Visibility="{Binding ElementName=chkParameterArgued, Path=IsDetailChecked, Converter={StaticResource boolToVisibilityCollapsedConverter}}">
+                                <StackPanel Margin="0,3,0,0">
+                                    <CheckBox Margin="0,1" IsChecked="{Binding ElementName=MySelf, Path=SearchParameters.Argued}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Argued'}"></CheckBox>
+                                </StackPanel>
+                            </GroupBox>
+                            
+                            <nixxis:NixxisDetailedCheckBox Name="chkParameterQualification" VerticalAlignment="Center" 
+                                                           IsChecked="{Binding ElementName=MySelf, Path=SearchParameters.IncludeQualification}"
+                                                           DetailContent="{Binding ElementName=MySelf, Path=SearchParameters.QualificationDescription, Converter={StaticResource parameterPositiveToDescription}}"
+                                                           DetailVisibility="{Binding ElementName=chkParameterQualification, Path=IsChecked, Converter={StaticResource boolToVisibilityCollapsedConverter}}"
+                                                           Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Filter on Qualification'}">
+                            </nixxis:NixxisDetailedCheckBox>
+                            <GroupBox Margin="20,0,0,0" Visibility="{Binding ElementName=chkParameterQualification, Path=IsDetailChecked, Converter={StaticResource boolToVisibilityCollapsedConverter}}">
+                                <StackPanel Margin="0,3,0,0">
+                                    <n:NixxisComboBox x:Name="qualtest" 
+                                                      ItemListChildrenProperty="Children"
+                                                      ItemListDescriptionProperty="Description"
+                                                      ItemListIdProperty="Id"
+                                                      SelectedText="{Binding ElementName=MySelf, Path=SearchParameters.QualificationDescription}"
+                                                      SelectedItemsId="{Binding ElementName=MySelf, Path=SearchParameters.Qualification}"
+                                                      CollapseImage="Images\_Others\Closed.png"
+                                                      ExpandImage="Images\_Others\Open.png">
+                                        <n:NixxisComboBox.ItemList>
+                                            <MultiBinding Converter="{StaticResource getQualificationListConverter}">
+                                                <Binding ElementName="MySelf" Path="DataContext"></Binding>
+                                                <Binding ElementName="MySelf" Path="SearchParameters.CampaignItem.Id"></Binding>
+                                                <Binding ElementName="MySelf" Path="SearchParameters.ActivityItem.Id"></Binding>
+                                            </MultiBinding>
+                                        </n:NixxisComboBox.ItemList>
+                                    </n:NixxisComboBox>
+                                </StackPanel>
+                            </GroupBox>
+                        </nixxis:NixxisStackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </nixxis:NixxisTabItem>
+            <!--General info-->  <!--<nixxis:NixxisTabItem Visibility="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource objectToVisibilityConverter}}">-->
+            <nixxis:NixxisTabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Width="25" Height="25" Source="Images\_Others\TabInfo25.png"/>
+                        <TextBlock VerticalAlignment="Center" Padding="2,0,0,0" Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='General info'}"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                      Visibility="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource objectToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <!--General Info zone -->
+                    <ScrollViewer Grid.Column="0" Grid.Row="0" Margin="0,0,5,0" CanContentScroll="False" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Stretch">
+                            <StackPanel HorizontalAlignment="Stretch">
+                                <Grid HorizontalAlignment="Stretch">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                                    <Image Width="50" Height="50" Source="{Binding MediaSubType, Converter={StaticResource mediaTypeIcon}}"></Image>
+                                    <Label VerticalAlignment="Center" Padding="2,0,0,0" FontSize="18" Content="{Binding MediaTypeDescription}"></Label>
+                                </StackPanel>
+
+                                <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Campaign:'}"></Label>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="2" Text="{Binding CampDescription}"></TextBlock>
+
+                                <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Activity:'}"></Label>
+                                <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="2" Text="{Binding Description}"></TextBlock>
+
+                                <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Type:'}"></Label>
+                                <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="2" Text="{Binding MediaTypeDescription}"></TextBlock>
+
+                                <Label Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Qualification:'}"></Label>
+                                <TextBlock Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="2" Text="{Binding QualificationDescription}"></TextBlock>
+
+                                <Label Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Local start date/time:'}"></Label>
+                                <TextBlock Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="2" Text="{Binding LocalDateTime}"></TextBlock>
+
+                                <Label Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Originator:'}"></Label>
+                                <TextBlock Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="2" Text="{Binding Originator}"></TextBlock>
+
+                                <Label Grid.Row="7" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Destination:'}"></Label>
+                                <TextBlock Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="2" Text="{Binding Destination}"></TextBlock>
+
+                                <Label Grid.Row="8" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Total duration:'}"></Label>
+                                <TextBlock Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="2" Text="{Binding Duration}"></TextBlock>
+
+                                <Label Grid.Row="9" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Communication duration:'}"></Label>
+                                <TextBlock Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="2" Text="{Binding ComDuration}"></TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <GridSplitter Grid.Column="1" Grid.Row="0" ResizeDirection="Columns" Width="2" VerticalAlignment="Stretch" HorizontalAlignment="Center"></GridSplitter>
+                    
+                    <!--General Palyback info -->
+                    <ScrollViewer Grid.Column="2" Grid.Row="0" Margin="5,0,0,0" CanContentScroll="False" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Stretch">
+                        <StackPanel>
+                            <!--Voice Info zone -->
+                            <StackPanel Visibility="{Binding MediaType, Converter={StaticResource objectCompairToVisibilityConverter}, ConverterParameter={StaticResource MediaTypes_Voice}}">
+                                <StackPanel Name="pnlGeneralInfoVoice" DataContext="{x:Null}">
+                                    <!--<Button Content="Play" Click="btnPlayRecording_Click"></Button>
+                                    <Button Content="Stop" Click="btnStopRecording_Click"></Button>-->
+
+                                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Sound file:'}"></Label>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="2" Text="{Binding Filename}"></TextBlock>
+                                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='File extention:'}"></Label>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="2" Text="{Binding Extension}"></TextBlock>
+                                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Size:'}"></Label>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="2" Text="{Binding FileSize}"></TextBlock>
+                                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Server type:'}"></Label>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="2" Text="{Binding DownloadServer.Type}"></TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                            <!--Chat Info zone -->
+                            <StackPanel Visibility="{Binding MediaType, Converter={StaticResource objectCompairToVisibilityConverter}, ConverterParameter={StaticResource MediaTypes_Chat}}">
+                                <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Chat recording'}"></Label>
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                    
+                    <!--General wave file info -->
+                    <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="10,5" 
+                          Visibility="{Binding MediaType, Converter={StaticResource objectCompairToVisibilityConverter}, ConverterParameter={StaticResource MediaTypes_Voice}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Grid.Row="0" Name="lblCurrentTime" Text="00:00:00" Margin="2,0"></TextBlock>
+                        <Slider Grid.Column="1" Grid.Row="0" Name="slTimeProgress"  Margin="2,0"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ValueChanged="slTimeProgress_ValueChanged"
+                                Minimum="0" >
+                        </Slider>
+                        <TextBlock Grid.Column="2" Grid.Row="0" Name="lblTotalTime" Text="00:00:00"  Margin="2,0"></TextBlock>
+                        <ToggleButton Grid.Column="3" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=mute}" Margin="2,0" Click="ToggleButton_Click"></ToggleButton>
+                        <Slider Grid.Column="4" Grid.Row="0" Name="slVolume" Margin="2,0" Width="100"></Slider>
+                    </Grid>
+                </Grid>
+            </nixxis:NixxisTabItem>
+            <!--Score & comments-->
+            <nixxis:NixxisTabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Width="25" Height="25" Source="Images\_Others\TabSearch25.png"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Score comments'}"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="10" HorizontalAlignment="Stretch"  
+                      Visibility="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource objectToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Grid.Row="0" Grid.Column="0" Margin="0,0,5,0" HorizontalAlignment="Stretch">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" ></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" FontSize="18" Margin="2,0" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Score'}"></Label>
+
+                            <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="10,0" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='User:'}"></Label>
+                            <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="5,0" Text="{Binding ScoreAgentName}"></TextBlock>
+
+                            <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="10,0" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Date/Time:'}"></Label>
+                            <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="5,0" Text="{Binding ScoreLocalDatetime, Converter={StaticResource formatDateTimeConverter}, ConverterParameter=1}"></TextBlock>
+
+                            <!--<ScrollViewer Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" CanContentScroll="False" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Stretch">-->
+                            <n:NixxisScoreList Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" 
+                                               Margin="10" 
+                                               Name="nixxisScoreList1"
+                                               ActiveImageSource="Images/_Others/rated_16.png"
+                                               InactiveImageSource="Images/_Others/unrated_16.png"
+                                               HorizontalAlignment="Stretch"
+                                               VerticalAlignment="Stretch"
+                                               Labels="{Binding ElementName=MySelf, Path=Config.Data.ScoreList}"
+                                               Score="{Binding Score, Mode=TwoWay}"
+                                               MinHeight="100"
+                                               Length="5"/>
+                            <!--</ScrollViewer>-->
+                        </Grid>
+                    </GroupBox>
+                    
+                    <GridSplitter Grid.Column="1" Grid.Row="0" ResizeDirection="Columns" Width="2" VerticalAlignment="Stretch" HorizontalAlignment="Center"></GridSplitter>
+                    
+                    <GroupBox Grid.Row="0" Grid.Column="2" Margin="5,0,0,0" HorizontalAlignment="Stretch">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" ></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" FontSize="18" Margin="2,0" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Comments'}"></Label>
+
+                            <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="10,0" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='User:'}"></Label>
+                            <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="5,0" Text="{Binding CommentAgentName}"></TextBlock>
+
+                            <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="10,0" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Date/Time:'}"></Label>
+                            <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="5,0" Text="{Binding CommentLocalDatetime, Converter={StaticResource formatDateTimeConverter}, ConverterParameter=1}"></TextBlock>
+                            
+                            <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" 
+                                     Margin="10"
+                                     Text="{Binding Comment}" 
+                                     VerticalScrollBarVisibility="Auto" 
+                                     TextWrapping="Wrap" 
+                                     AcceptsReturn="True" HorizontalAlignment="Stretch"></TextBox>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </nixxis:NixxisTabItem>
+            <!--Qualification-->
+            <nixxis:NixxisTabItem Name="QualificationsTab">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Width="25" Height="25" Source="Images\_Others\TabQualification25.png"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Qualifications}"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="10" Visibility="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource objectToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.Resources>
+                        <Style d:IsControlPart="True" TargetType="{x:Type TreeViewItem}">
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Foreground">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="{DynamicResource BlackColor}"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Padding" Value="1,0,0,0" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type TreeViewItem}">
+                                        <ControlTemplate.Resources>
+                                            <Storyboard x:Key="HoverOn">
+                                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="HoverBorder" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                                    <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0.3"/>
+                                                </DoubleAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                            <Storyboard x:Key="HoverOff">
+                                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="HoverBorder" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                                    <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0"/>
+                                                </DoubleAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                            <Storyboard x:Key="SelectedOn">
+                                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="SelectionBorder" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                                    <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1"/>
+                                                </DoubleAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                            <Storyboard x:Key="SelectedOff">
+                                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="SelectionBorder" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                                    <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0"/>
+                                                </DoubleAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </ControlTemplate.Resources>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition MinWidth="19" Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="30" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <ToggleButton x:Name="Expander" Style="{DynamicResource NuclearTreeViewItemToggleButton}" IsChecked="{Binding Path=IsExpanded, RelativeSource={RelativeSource TemplatedParent}}" ClickMode="Press" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" />
+                                            <Border Grid.Column="1" x:Name="Selection_Border" BorderThickness="1,1,1,1" CornerRadius="3,3,3,3">
+                                                <Grid Width="Auto" Height="Auto">
+                                                    <Border x:Name="SelectionBorder" Opacity="0" Background="{DynamicResource SelectedBackgroundBrush}" CornerRadius="2,2,2,2"/>
+                                                    <Border x:Name="HoverBorder" Opacity="0" Background="{StaticResource SelectedBackgroundBrush}" CornerRadius="2,2,2,2"/>
+                                                    <ContentPresenter x:Name="PART_Header" ContentSource="Header" d:LayoutOverrides="Width" Height="Auto" Margin="2,0,2,0" />
+                                                </Grid>
+                                            </Border>
+
+                                            <Line Grid.Column="2" Stroke="{DynamicResource SelectedBackgroundBrush}" StrokeThickness="10" X1="0" Y1="12" X2="19" Y2="12" StrokeStartLineCap="Flat"  Visibility="{Binding Path=IsSelected, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource visConverter}}" ></Line>
+                                            <Line Grid.Column="2" Stroke="{DynamicResource SelectedBackgroundBrush}" StrokeThickness="20" X1="19" Y1="12" X2="20" Y2="12" StrokeEndLineCap="Triangle" Visibility="{Binding Path=IsSelected, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource visConverter}}" ></Line>
+                                            <ItemsPresenter Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" x:Name="ItemsHost" />
+                                        </Grid>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsExpanded" Value="false">
+                                                <Setter Property="Visibility" Value="Collapsed" TargetName="ItemsHost" />
+                                            </Trigger>
+                                            <Trigger Property="HasItems" Value="false">
+                                                <Setter Property="Visibility" Value="Hidden" TargetName="Expander" />
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="true">
+                                                <Trigger.ExitActions>
+                                                    <BeginStoryboard Storyboard="{StaticResource SelectedOff}" x:Name="SelectedOn_BeginStoryboard1"/>
+                                                </Trigger.ExitActions>
+                                                <Trigger.EnterActions>
+                                                    <BeginStoryboard Storyboard="{StaticResource SelectedOn}" x:Name="SelectedOn_BeginStoryboard"/>
+                                                </Trigger.EnterActions>
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsSelected" Value="true" />
+                                                    <Condition Property="IsSelectionActive" Value="false" />
+                                                </MultiTrigger.Conditions>
+                                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+                                                <Setter Property="Background" TargetName="Selection_Border" Value="{DynamicResource SelectedBackgroundBrush}" />
+                                                <Setter Property="Opacity" TargetName="Selection_Border" Value="0.8" />
+                                                <Setter Property="BorderBrush" TargetName="Selection_Border" Value="{DynamicResource NormalBorderBrush}" />
+                                            </MultiTrigger>
+                                            <Trigger Property="IsEnabled" Value="false">
+                                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.ExitActions>
+                                                    <BeginStoryboard Storyboard="{StaticResource HoverOff}" x:Name="HoverOff_BeginStoryboard"/>
+                                                </MultiTrigger.ExitActions>
+                                                <MultiTrigger.EnterActions>
+                                                    <BeginStoryboard Storyboard="{StaticResource HoverOn}"/>
+                                                </MultiTrigger.EnterActions>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" SourceName="Selection_Border" Value="True" />
+                                                    <Condition Property="IsSelected" Value="False" />
+                                                </MultiTrigger.Conditions>
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsSelected" Value="true" />
+                                                    <Condition Property="IsMouseOver" Value="true" SourceName="Selection_Border" />
+                                                </MultiTrigger.Conditions>
+                                                <Setter Property="Background" TargetName="Selection_Border" Value="{DynamicResource SelectedBackgroundBrush}" />
+                                                <Setter Property="Opacity" TargetName="Selection_Border" Value="0.8" />
+                                                <Setter Property="BorderBrush" TargetName="Selection_Border" Value="{DynamicResource NormalBorderBrush}" />
+                                            </MultiTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Grid.Resources>
+
+                    <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0"  Orientation="Horizontal">
+                        <Label Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Current qualification:'}"></Label>
+                        <TextBlock Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="2" Text="{Binding QualificationFullDescription}"></TextBlock>
+                    </StackPanel>
+
+                    <Grid Grid.Column="0" Grid.Row="1" Margin="0,0,5,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <Button Name="btnKeepCurrentQualification" VerticalAlignment="Center" Margin="2" Padding="5" Click="btnKeepCurrentQualification_Click" Grid.Row="0" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Keep current qualification'}" HorizontalAlignment="Stretch"></Button>
+
+                        <nixxis:NixxisTreeView Grid.Row="1" Name="QualificationTree" Grid.IsSharedSizeScope="True">
+                            <nixxis:NixxisTreeView.ItemsSource>
+                                <MultiBinding Converter="{StaticResource getQualificationListConverter}">
+                                    <Binding ElementName="MySelf" Path="DataContext"></Binding>
+                                    <Binding Path="CampaignId"></Binding>
+                                    <Binding Path="ActivityId"></Binding>
+                                </MultiBinding>
+                            </nixxis:NixxisTreeView.ItemsSource>
+                        </nixxis:NixxisTreeView>
+                    </Grid>
+                    
+                    <GridSplitter Grid.Column="1" Grid.Row="1" ResizeDirection="Columns" Width="2" VerticalAlignment="Stretch" HorizontalAlignment="Center"></GridSplitter>
+
+                    <ScrollViewer Grid.Column="2" Grid.Row="1" Margin="5,0,0,0" CanContentScroll="False" 
+                                  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                                  DataContext="{Binding ElementName=QualificationTree, Path=SelectedItem}">
+                        <StackPanel>
+
+                            <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Description:'}"></Label>
+                            <TextBox Text="{Binding Description}" IsHitTestVisible="False" Focusable="False"></TextBox>
+
+                            <GroupBox Margin="0,5,0,0" >
+                                <GroupBox.Header>
+                                    <TextBlock Text="{nixxis:FormatString FormatString='Value ({0})',BindTo={Binding Positive},TranslationContext={StaticResource tcx}}"></TextBlock>
+                                </GroupBox.Header>
+
+                                <StackPanel Orientation="Vertical">
+                                    <Label VerticalAlignment="Center" Margin="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Value:'}"></Label>
+                                    <TextBox VerticalAlignment="Center" Margin="2" Text="{Binding Positive}" IsHitTestVisible="False" Focusable="False"></TextBox>
+                                </StackPanel>
+                            </GroupBox>
+
+                            <GroupBox  Margin="0,5,0,0" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Argued}">
+                                <StackPanel Orientation="Vertical">
+                                    <RadioButton IsChecked="{Binding Argued, Mode=OneWay}" IsHitTestVisible="False" Focusable="False" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Argued}"></RadioButton>
+                                    <RadioButton IsChecked="{Binding Argued, Converter={StaticResource BoolInverter}, Mode=OneWay}" IsHitTestVisible="False" Focusable="False" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Not argued'}"></RadioButton>
+                                </StackPanel>
+                            </GroupBox>
+                            
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </nixxis:NixxisTabItem>
+            <!--Customer Data-->
+            <nixxis:NixxisTabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Width="25" Height="25" Source="Images\_Others\TabCustomer25.png"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Customer data'}"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <ListBox Name="lstCustomerData">
+                    <ListBox.Resources>
+                        <Style d:IsControlPart="True" TargetType="{x:Type ListBox}">
+                            <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}" />
+                            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+                            <Setter Property="ItemTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal"
+                                                    HorizontalAlignment="Center">
+                                            <Label Content="{Binding FieldName}"></Label>
+                                            <Label Content=": "></Label>
+                                            <TextBlock Text="{Binding DisplayValue}"></TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.Resources>
+                </ListBox>
+            </nixxis:NixxisTabItem>
+        </nixxis:NixxisTabControl>
+
+        <MediaElement Grid.Row="3"  Name="mediaPlayer" Visibility="Collapsed"
+                      LoadedBehavior="Manual" 
+                      UnloadedBehavior="Stop"
+                      MediaOpened="mediaPlayer_MediaOpened" 
+                      MediaEnded="mediaPlayer_MediaEnded"
+                      Volume="1"
+                      />
+    </Grid>
+</UserControl>

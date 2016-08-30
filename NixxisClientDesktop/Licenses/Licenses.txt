@@ -1,0 +1,12 @@
+﻿This document provides information on open source projects that have been used to build modules of the Nixxis client application.
+
+
+Nixxis Assembly	           | Project name                         | Copyrigt notice                                  | License
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+MediaProviderPlugins       | facebook-csharp-sdk                  | Copyright (c) 2011, The Outercurve Foundation.   | Apache license
+SocialMediaPanelControl    | json.Net                             | Copyright (c) 2007 James Newton-King             | MIT License
+WpfPropertyGrid            | Wpf PropertyGrid Control             | Copyright (c) 2010, Denys Vuika                  | Apache license
+NixxisRfbServer            | NVNC - The .NET VNC Server           | Copyright (C) 2014 T!T@N                         | GNU GPL
+NixxisRfbClient            | VncSharp - .NET VNC Client Library   | Copyright (C) 2008 David Humphrey                | GNU GPL
+NixxisWpfControls          | ExpressionDark theme                 | Copyright (c) Trevor Webster                     | Microsoft Public License (Ms-PL)
+--------------------------------------------------------------------------------------------------------------------------------------------------------

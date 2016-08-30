@@ -1,0 +1,596 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D246B426-7D00-4078-B4AD-15719621FC7F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Nixxis.Client.Agent</RootNamespace>
+    <AssemblyName>NixxisAgentControl</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.JScript" />
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="UIAutomationClient" />
+    <Reference Include="UIAutomationClientsideProviders" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AgentFrameSet.xaml.cs">
+      <DependentUpon>AgentFrameSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BrowserExternalV1\BrowserExternal.cs" />
+    <Compile Include="Common\Collections.cs" />
+    <Compile Include="Common\MailHelpers.cs" />
+    <Compile Include="Controls\AttachmentControl.xaml.cs">
+      <DependentUpon>AttachmentControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ContactHistoryControl.xaml.cs">
+      <DependentUpon>ContactHistoryControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DtmfSelectorControl.xaml.cs">
+      <DependentUpon>DtmfSelectorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MailForwardControl.xaml.cs">
+      <DependentUpon>MailForwardControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PredefinedTextControl.xaml.cs">
+      <DependentUpon>PredefinedTextControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TeamSelectionControl.xaml.cs">
+      <DependentUpon>TeamSelectionControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="InfoPanels\AgentWarningMessages.xaml.cs">
+      <DependentUpon>AgentWarningMessages.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="InfoPanels\ContactInfoPanel.xaml.cs">
+      <DependentUpon>ContactInfoPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="InfoPanels\DtmfSelectorPanel.xaml.cs">
+      <DependentUpon>DtmfSelectorPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="InfoPanels\RecordingPlaybackPanel.xaml.cs">
+      <DependentUpon>RecordingPlaybackPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="InfoPanels\StatusView.xaml.cs">
+      <DependentUpon>StatusView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="InfoPanels\WallboardView.xaml.cs">
+      <DependentUpon>WallboardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MediaPanels\ChatPanelControl.xaml.cs">
+      <DependentUpon>ChatPanelControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\CommonConverters.cs" />
+    <Compile Include="MediaPanels\IMediaPanel.cs" />
+    <Compile Include="MediaPanels\LoginPanelControl.xaml.cs">
+      <DependentUpon>LoginPanelControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MediaPanels\MailPanelControl.xaml.cs">
+      <DependentUpon>MailPanelControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\VoiceNewCallControl.xaml.cs">
+      <DependentUpon>VoiceNewCallControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MediaPanels\PausePanelControl.xaml.cs">
+      <DependentUpon>PausePanelControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MediaPanels\WaitPanelControl.xaml.cs">
+      <DependentUpon>WaitPanelControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ContactHistoryWindow.xaml.cs">
+      <DependentUpon>ContactHistoryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ChatForwardWindow.xaml.cs">
+      <DependentUpon>ChatForwardWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\MailForwardWindow.xaml.cs">
+      <DependentUpon>MailForwardWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\TeamSelectionWindow.xaml.cs">
+      <DependentUpon>TeamSelectionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\VoiceNewCallWindow.xaml.cs">
+      <DependentUpon>VoiceNewCallWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PauseControl.xaml.cs">
+      <DependentUpon>PauseControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\PauseWindow.xaml.cs">
+      <DependentUpon>PauseWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Controls\QualificationControl.xaml.cs">
+      <DependentUpon>QualificationControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\QualificationWindow.xaml.cs">
+      <DependentUpon>QualificationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SearchModeControl.xaml.cs">
+      <DependentUpon>SearchModeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SearchModeWindow.xaml.cs">
+      <DependentUpon>SearchModeWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MediaPanels\VoicePanelControl.xaml.cs">
+      <DependentUpon>VoicePanelControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WebScriptControl.xaml.cs">
+      <DependentUpon>WebScriptControl.xaml</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Resource Include="Fonts\scoreboard.ttf" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="AgentFrameSet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\AttachmentControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ContactHistoryControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DtmfSelectorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MailForwardControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PredefinedTextControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TeamSelectionControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InfoPanels\AgentWarningMessages.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InfoPanels\ContactInfoPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InfoPanels\DtmfSelectorPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InfoPanels\RecordingPlaybackPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InfoPanels\StatusView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InfoPanels\WallboardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MediaPanels\ChatPanelControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MediaPanels\LoginPanelControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MediaPanels\MailPanelControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\VoiceNewCallControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MediaPanels\PausePanelControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MediaPanels\WaitPanelControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ContactHistoryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ChatForwardWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\MailForwardWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\TeamSelectionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\VoiceNewCallWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PauseControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\PauseWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\QualificationControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\QualificationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SearchModeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\SearchModeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MediaPanels\VoicePanelControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\WebScriptControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ApplicationServer\CRShared\CRShared.csproj">
+      <Project>{16dbb7b7-5760-4c7a-8171-9a391c59d418}</Project>
+      <Name>CRShared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ConfigModel\ConfigModel.csproj">
+      <Project>{6859d73b-3410-4802-a576-22bcffe6d1da}</Project>
+      <Name>ConfigModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CrRecordingConfig\CrRecordingConfig.csproj">
+      <Project>{e8783b29-20f6-46ce-8449-40e76abb3fa3}</Project>
+      <Name>CrRecordingConfig</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NixxisClientLink\NixxisClientLink.csproj">
+      <Project>{AC0298AE-6AC8-48DC-BCEE-35B916FF44F2}</Project>
+      <Name>NixxisClientLink</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NixxisControls\NixxisWpfControls.csproj">
+      <Project>{6FF8901B-0189-4B8D-BAA9-4D85F26CB34D}</Project>
+      <Name>NixxisWpfControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NixxisRecordingControls\NixxisRecordingControls.csproj">
+      <Project>{8A89B009-146E-4162-A617-1B039BF8CF2D}</Project>
+      <Name>NixxisRecordingControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NixxisWpfCommonControls\NixxisWpfControlsCommon.csproj">
+      <Project>{DAE35BA5-EDFC-4DB9-BC91-C94C1A7CD5E4}</Project>
+      <Name>NixxisWpfControlsCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NixxisWpfControlsEditor\NixxisWpfControlsEditor.csproj">
+      <Project>{737CC8B0-DBDA-4998-A579-BD22C388C67D}</Project>
+      <Name>NixxisWpfControlsEditor</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AdminSmall_Agent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AdminSmall_Appointment.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AdminSmall_Phone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AdminSmall_Preprocessor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AgentTel_Forward.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Application_Administrator.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Application_Agent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Application_Choose.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Application_RecordingTool.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Application_Reporting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Application_Supervisor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\CloseScript.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Pause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\PriorityPickup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ReadyChat.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ReadyGlobal.png" />
+    <Resource Include="Images\ReadyMail.png" />
+    <Resource Include="Images\ReadyVoice.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SearchMode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Selectqual.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\TeamSelection.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\VoiceConference.png" />
+    <Resource Include="Images\VoiceHangup.png" />
+    <Resource Include="Images\VoiceHold.png" />
+    <Resource Include="Images\VoiceNewCall.png" />
+    <Resource Include="Images\VoiceRetrieve.png" />
+    <Resource Include="Images\VoiceTransfer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ChatHangup.png" />
+    <Resource Include="Images\ChatHold.png" />
+    <Resource Include="Images\ChatRetrieve.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MailForward.png" />
+    <Resource Include="Images\MailReply.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NewVoiceControl\btnPad_0.png" />
+    <Resource Include="Images\NewVoiceControl\btnPad_1.png" />
+    <Resource Include="Images\NewVoiceControl\btnPad_2.png" />
+    <Resource Include="Images\NewVoiceControl\btnPad_3.png" />
+    <Resource Include="Images\NewVoiceControl\btnPad_4.png" />
+    <Resource Include="Images\NewVoiceControl\btnPad_5.png" />
+    <Resource Include="Images\NewVoiceControl\btnPad_6.png" />
+    <Resource Include="Images\NewVoiceControl\btnPad_7.png" />
+    <Resource Include="Images\NewVoiceControl\btnPad_8.png" />
+    <Resource Include="Images\NewVoiceControl\btnPad_9.png" />
+    <Resource Include="Images\NewVoiceControl\btnPad_Hash.png" />
+    <Resource Include="Images\NewVoiceControl\btnPad_Star.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NewVoiceControl\textbox_BackgroundScreen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NewVoiceControl\btnPadOver_Clear.png" />
+    <Resource Include="Images\NewVoiceControl\btnPadOver_Dial.png" />
+    <Resource Include="Images\NewVoiceControl\btnPad_Clear.png" />
+    <Resource Include="Images\NewVoiceControl\btnPad_Dial.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Chat_Agent.png" />
+    <Resource Include="Images\Chat_customer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ico\SearchMode.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ico\ManualCall.ico" />
+    <Resource Include="Images\Ico\Pause.ico" />
+    <Resource Include="Images\Ico\Qualification.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AlertFunction.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AddAttachment_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ReadyChat_Dis.png" />
+    <Resource Include="Images\ReadyMail_Dis.png" />
+    <Resource Include="Images\ReadyVoice_Dis.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ReadyChatIndication.png" />
+    <Resource Include="Images\ReadyChatIndication_Dis.png" />
+    <Resource Include="Images\ReadyMailIndication.png" />
+    <Resource Include="Images\ReadyMailIndication_Dis.png" />
+    <Resource Include="Images\ReadyVoiceIndication.png" />
+    <Resource Include="Images\ReadyVoiceIndication_Dis.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AgtWarningMsg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ContactHistory.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MediaTypes\MediaType_Chat.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MediaTypes\MediaType_Undefined25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MediaTypes\MediaType_Chat25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MediaTypes\MediaType_DirectCall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MediaTypes\MediaType_DirectCall25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MediaTypes\MediaType_Inbound.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MediaTypes\MediaType_Inbound25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MediaTypes\MediaType_Mail.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MediaTypes\MediaType_Mail25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MediaTypes\MediaType_Manual.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MediaTypes\MediaType_Manual25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MediaTypes\MediaType_Outbound.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MediaTypes\MediaType_Outbound25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MediaTypes\MediaType_Undefined.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="History.xml" />
+    <Resource Include="Images\RecordingFile_50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AgentPause_Image.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AgentWaiting_Image.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

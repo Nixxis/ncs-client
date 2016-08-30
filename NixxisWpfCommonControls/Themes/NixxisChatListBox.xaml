@@ -1,0 +1,164 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Nixxis.Client.Controls">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/NixxisWpfControlsCommon;component/Themes/ExpressionDarkPlus.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <local:ObjectCompairToVisibilityConverter x:Key="objectCompairToVisibilityConverter" />
+    <local:DebugConverter x:Key="debugConverter" />
+    <!--<local:ChatLineToVisibilityConverter x:Key="chatLineToVisibilityConverter" />-->
+    <local:ChatLineToHeaderConverter x:Key="chatLineToHeaderConverter" />
+    <local:ChatLineToOneLineConverter x:Key="chatLineToOneLineConverter" />
+
+    
+
+
+    <!--****************** -->
+    <!--Nixxis Adv Textbox  -->
+    <!--*************************** -->
+    <!--The goal is to have a textblock where you can select the text. But replacing it white a textbox is not very preformand. Number of elmenet of a text box is much higher  -->
+    <!--This style will show a textblock but when on mouse over and focus it will change into a textbox reducing a lot the number of elements   -->
+
+    <Style x:Key="BasicTextBlock" TargetType="{x:Type TextBox}">
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}"></Setter>
+        <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
+        <Setter Property="IsReadOnly" Value="True"></Setter>
+        <Setter Property="IsTabStop" Value="False"></Setter>
+        <Setter Property="BorderThickness" Value="0"></Setter>
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="False" />
+                    <Condition Property="IsFocused" Value="False" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <TextBlock 
+                                Padding="3,1,3,1" 
+                                Text="{TemplateBinding Text}" 
+                                TextWrapping="{TemplateBinding TextWrapping}"
+                                Background="{TemplateBinding Background}"
+                                Foreground="{TemplateBinding Foreground}"
+                                VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                FontSize="{TemplateBinding FontSize}"
+                                />
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+    
+    <Style TargetType="{x:Type local:NixxisChatListBox}" BasedOn="{StaticResource {x:Type ListBox}}">
+        <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"></Setter>
+        <!--Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:NixxisChatListBox, AncestorLevel=1}, Path=AgentImageSource, Converter={StaticResource debugConverter}}"-->
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <StackPanel 
+                        Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid, AncestorLevel=2}, Path=ActualWidth}">
+                        <!--Msg type 770 Agent is talking -->
+                        <StackPanel
+                            Visibility="{Binding Path=LineType, Converter={StaticResource objectCompairToVisibilityConverter}, ConverterParameter=770, Mode=OneWay}"
+                            HorizontalAlignment="Stretch">
+                            <Grid HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="62"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
+
+                                <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"  Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:NixxisChatListBox, AncestorLevel=1}, Path=AgentImageSource}" Width="62"></Image>
+
+                                <TextBox Grid.Column="1" Grid.Row="0" 
+                                         Style="{StaticResource BasicTextBlock}" 
+                                         Foreground="#9ea09f" 
+                                         Background="#4b4b4b"
+                                         Text="{Binding Converter={StaticResource chatLineToHeaderConverter}, Mode=OneWay}"
+                                         FontSize="11"
+                                         HorizontalAlignment="Stretch"></TextBox>
+                                <TextBox Grid.Column="1" Grid.Row="1" 
+                                         Style="{StaticResource BasicTextBlock}" 
+                                         Foreground="#fff"
+                                         Background="#4b4b4b"
+                                         Text="{Binding Message, Mode=OneWay}"
+                                         FontSize="14"
+                                         TextWrapping="Wrap"
+                                         HorizontalAlignment="Stretch"></TextBox>
+                            </Grid>
+                        </StackPanel>
+                        <!--Msg type 5 system start message-->
+                        <StackPanel Visibility="{Binding Path=LineType, Converter={StaticResource objectCompairToVisibilityConverter}, ConverterParameter=5, Mode=OneWay}">
+                            <TextBox Style="{StaticResource BasicTextBlock}" 
+                                     Foreground="red"
+                                     Background="Transparent"
+                                     FontSize="12"
+                                     FontWeight="Bold"
+                                     Text="{Binding Converter={StaticResource chatLineToOneLineConverter}, Mode=OneWay}"></TextBox>
+                        </StackPanel>
+                        <!--Msg type 1 system info message-->
+                        <StackPanel Orientation="Horizontal" Visibility="{Binding Path=LineType, Converter={StaticResource objectCompairToVisibilityConverter}, ConverterParameter=1, Mode=OneWay}">
+                            <TextBox Style="{StaticResource BasicTextBlock}" 
+                                     Foreground="red" 
+                                     Background="Transparent"
+                                     FontSize="12"
+                                     FontWeight="Bold"
+                                     Text="{Binding Converter={StaticResource chatLineToOneLineConverter}, Mode=OneWay}"></TextBox>
+                        </StackPanel>
+                        <!--Msg type 2 customer is talking -->
+                        <StackPanel
+                            Visibility="{Binding Path=LineType, Converter={StaticResource objectCompairToVisibilityConverter}, ConverterParameter=2, Mode=OneWay}"
+                            HorizontalAlignment="Stretch">
+                            <Grid HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="62"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
+
+                                <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"  Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:NixxisChatListBox, AncestorLevel=1}, Path=CustomerImageSource}" Width="62"></Image>
+                                
+                                <TextBox Grid.Column="1" Grid.Row="0" 
+                                         Style="{StaticResource BasicTextBlock}" 
+                                         Foreground="#9ea09f" 
+                                         Background="#000000"
+                                         Text="{Binding Converter={StaticResource chatLineToHeaderConverter}, Mode=OneWay}"
+                                         FontSize="11"
+                                         HorizontalAlignment="Stretch"></TextBox>
+                                <TextBox Grid.Column="1" Grid.Row="1" 
+                                         Style="{StaticResource BasicTextBlock}" 
+                                         Foreground="#fff"
+                                         Background="#000000"
+                                         Text="{Binding Message, Mode=OneWay}"
+                                         FontSize="14"
+                                         TextWrapping="Wrap"
+                                         HorizontalAlignment="Stretch"></TextBox>
+                            </Grid>
+                        </StackPanel>
+                    </StackPanel>
+                    <!--<local:NixxisScoreElement Label="{Binding Path=Label}"
+                                              Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}, Path=Width}"
+                                              Background="Transparent"
+                                              HorizontalAlignment="Stretch"
+                                              Length="{Binding Path=Length}"
+                                              Value="{Binding Path=Value, Mode=TwoWay}" 
+                                              ActiveImageSource="{Binding Path=ActiveImageSource}" 
+                                              InactiveImageSource="{Binding Path=InactiveImageSource}">
+                    </local:NixxisScoreElement>-->
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

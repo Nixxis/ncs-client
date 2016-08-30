@@ -1,0 +1,456 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CRShared</name>
+    </assembly>
+    <members>
+        <member name="T:ContactRoute.DistributionMethod">
+            <summary>
+            Defines the methods that can be used for distributing items waiting in queue.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.DistributionMethod.LongestIdle">
+            <summary>
+            Gives the item to agent waiting for the longest time.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.DistributionMethod.MostIdle">
+            <summary>
+            Gives the item to agent with biggest total wait duration.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.DistributionMethod.MostIdleRatio">
+            <summary>
+            Gives the item to agent with bigger ratio total wait duration / total session time.
+            </summary>
+        </member>
+        <member name="T:ContactRoute.QualificationAction">
+            <summary>
+            Defines actions that can be linked with qualifications.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.QualificationAction.None">
+            <summary>
+            No action is executed.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.QualificationAction.DoNotRetry">
+            <summary>
+            The record corresponding to the current contatct will not be called anymore.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.QualificationAction.RetryAt">
+            <summary>
+            The record corresponding to the current contact will be called back at a particular moment.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.QualificationAction.RetryNotBefore">
+            <summary>
+            The record corresponding to the current contact will be called again but not before some delay.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.QualificationAction.Callback">
+            <summary>
+            The record corresponding to the current contact will be associated to a callback.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.QualificationAction.TargetedCallback">
+            <summary>
+            The record corresponding to the current contact will be associated to a targeted callback.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.QualificationAction.ChangeActivity">
+            <summary>
+            The record corresponding to the current contact will be associated to an activity change.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.QualificationAction.BlackList">
+            <summary>
+            The record corresponding to the current contact will be black listed.
+            </summary>
+        </member>
+        <member name="T:ContactRoute.AbandonRateMode">
+            <summary>
+            Defines how the adbandon rate must be computed.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.AbandonRateMode.Standard">
+            <summary>
+            The abandon rate is the ratio of abandoned calls in regard to the sum of abandoned calls and calls handled by agents.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.AbandonRateMode.AnsweringMachineIncluded">
+            The abandon rate is the ratio of abandoned calls in regard to the sum of abandoned calls, calls handled by agents and calls considered to be answering machines.
+        </member>
+        <member name="F:ContactRoute.AbandonRateMode.EveryDialedIncluded">
+            <summary>
+            The abandon rate is the ratio of abandoned calls in regard to the total number of dialed calls.
+            </summary>
+        </member>
+        <member name="T:ContactRoute.VoiceAllowedActions">
+            <summary>
+            Defines the voice allowed agents actions.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.VoiceAllowedActions.None">
+            <summary>
+            No action can be performed.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.VoiceAllowedActions.Hangup">
+            <summary>
+            Hangup can be performed.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.VoiceAllowedActions.Hold">
+            <summary>
+            Hold can be performed.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.VoiceAllowedActions.Retrieve">
+            <summary>
+            Retrieve an held call can be performed.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.VoiceAllowedActions.Transfer">
+            <summary>
+            Transfer can be performed.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.VoiceAllowedActions.Forward">
+            <summary>
+            Forward can be performed.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.VoiceAllowedActions.Conference">
+            <summary>
+            Conference can be performed.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.VoiceAllowedActions.NewCall">
+            <summary>
+            New call can be performed.
+            </summary>
+        </member>
+        <member name="T:ContactRoute.MediaType">
+            <summary>
+            Defines the media types.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.MediaType.None">
+            <summary>
+            No media.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.MediaType.Voice">
+            <summary>
+            Voice media.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.MediaType.Chat">
+            <summary>
+            Chat media.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.MediaType.Mail">
+            <summary>
+            Mail media.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.MediaType.Custom1">
+            <summary>
+            Reserved for integrations.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.MediaType.Custom2">
+            <summary>
+            Reserved for integrations.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.MediaType.All">
+            <summary>
+            All medias.
+            </summary>
+        </member>
+        <member name="T:ContactRoute.ContactState">
+            <summary>
+            Defines the contact states.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.ContactState.None">
+            <summary>
+            None or unknown state.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.ContactState.Fax">
+            <summary>
+            A fax has been detected.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.ContactState.Disturbed">
+            <summary>
+            A wrong number has been detected.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.ContactState.NoAnswer">
+            <summary>
+            The dial attempt was not answered.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.ContactState.AnsweringMachine">
+            <summary>
+            An answering machine has been detected.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.ContactState.Busy">
+            <summary>
+            The dial attempt ended in a busy signal.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.ContactState.Abandoned">
+            <summary>
+            The dial attempt was connected but was dropped while waiting in queue.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.ContactState.ValidityEllapsed">
+            <summary>
+            The callback validity was elapsed.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.ContactState.NormalClearing">
+            <summary>
+            The call was dropped by a normal clearing.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.ContactState.Agent">
+            <summary>
+            The call was handled by an agent.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.ContactState.AgentUnavailable">
+            <summary>
+            The agent did not dial the previewed record.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.ContactState.Congestion">
+            <summary>
+            The dialing ended in a congestion.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.ContactState.NegativePlus">
+            <summary>
+            Not used anymore. Kept by backward compatibility.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.ContactState.NegativeMinus">
+            <summary>
+            Not used anymore. Kept by backward compatibility.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.ContactState.Locked">
+            <summary>
+            The record is locked by the dialer in order to be dialed.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.ContactState.Callback">
+            <summary>
+            A callback is associated to the record.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.ContactState.Preview">
+            <summary>
+            The contact has been previewed.
+            </summary>
+        </member>
+        <member name="T:ContactRoute.DialingState">
+            <summary>
+            Defines dialing states.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.DialingState.Disconnected">
+            <summary>
+            Not connected (terminated).
+            </summary>
+        </member>
+        <member name="F:ContactRoute.DialingState.Progressing">
+            <summary>
+            Dialing has been launched.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.DialingState.Ringing">
+            <summary>
+            Ringing.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.DialingState.Connected">
+            <summary>
+            Answered but not yet connected to agent.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.DialingState.Agent">
+            <summary>
+            Talking with agent.
+            </summary>
+        </member>
+        <member name="T:ContactRoute.DialDisconnectionReason">
+            <summary>
+            Defines the dial attempts disconnection reasons.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.DialDisconnectionReason.None">
+            <summary>
+            None or unknown state.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.DialDisconnectionReason.Fax">
+            <summary>
+            A fax has been detected.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.DialDisconnectionReason.Disturbed">
+            <summary>
+            A wrong number has been detected.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.DialDisconnectionReason.NoAnswer">
+            <summary>
+            The dial attempt was not answered.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.DialDisconnectionReason.AnsweringMachine">
+            <summary>
+            An answering machine has been detected.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.DialDisconnectionReason.Busy">
+            <summary>
+            The dial attempt ended in a busy signal.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.DialDisconnectionReason.Abandoned">
+            <summary>
+            The dial attempt was connected but was dropped while waiting in queue.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.DialDisconnectionReason.ValidityEllapsed">
+            <summary>
+            The callback validity was elapsed.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.DialDisconnectionReason.NormalClearing">
+            <summary>
+            The call was dropped by a normal clearing.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.DialDisconnectionReason.Agent">
+            <summary>
+            The call was handled by an agent.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.DialDisconnectionReason.AgentUnavailable">
+            <summary>
+            The agent did not dial the previewed record.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.DialDisconnectionReason.Congestion">
+            <summary>
+            The dialing ended in a congestion.
+            </summary>
+        </member>
+        <member name="T:ContactRoute.ContactDestinationType">
+            <summary>
+            Defines the contact destination types.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.ContactDestinationType.Unknown">
+            <summary>
+            The destination type is unknown.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.ContactDestinationType.MobilePhone">
+            <summary>
+            The destination is a mobile phone.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.ContactDestinationType.FixedPhone">
+            <summary>
+            The destination is a fixed phone.
+            </summary>
+        </member>
+        <member name="T:ContactRoute.ContactDestinationRole">
+            <summary>
+            Defines the destination roles.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.ContactDestinationRole.Unknown">
+            <summary>
+            The destination role is unknown.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.ContactDestinationRole.Residential">
+            <summary>
+            The destination is private.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.ContactDestinationRole.Business">
+            <summary>
+            The destination is work related.
+            </summary>
+        </member>
+        <member name="T:ContactRoute.Frequency">
+            <summary>
+            Defines frequencies used when prompting information in a loop.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.Frequency.Never">
+            <summary>
+            The prompt never happens.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.Frequency.Once">
+            <summary>
+            The prompt happens once at the begining of the loop.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.Frequency.WhenChanged">
+            <summary>
+            The prompt happens each time when the prompted value is changing.
+            </summary>
+        </member>
+        <member name="F:ContactRoute.Frequency.Continuously">
+            <summary>
+            The prompt happens at the begining of each loop.
+            </summary>
+        </member>
+        <member name="T:ContactRoute.DialogTypeAttribute">
+            <summary>
+            Specify the type implenting the configuration dialog related to the processor configuration class.
+            </summary>
+        </member>
+        <member name="P:ContactRoute.DialogTypeAttribute.Type">
+            <summary>
+            Specify the fully qualified name of the type implementing the configuration dialog.
+            </summary>
+        </member>
+        <member name="T:ContactRoute.ServerAddonTypeAttribute">
+            <summary>
+            Specify the type implenting the server addon related to the processor configuration class. 
+            </summary>
+        </member>
+        <member name="P:ContactRoute.ServerAddonTypeAttribute.Type">
+            <summary>
+            Specify the fully qualified name of the type implementing the server addon.
+            </summary>
+        </member>
+        <member name="T:ContactRoute.IMohAddon">
+            <summary>
+            Defines the method needed to implement a custom "Music On Hold" provider.
+            </summary>
+        </member>
+        <member name="P:ContactRoute.IMohAddon.Entries">
+            <summary>
+            Returns the list of identifiers and description of available "Music On Hold".
+            </summary>
+        </member>
+    </members>
+</doc>

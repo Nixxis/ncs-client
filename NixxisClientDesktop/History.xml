@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<modules>
+  <module name="NixxisClientDesktop">
+    
+    <version build="2.0.2.12" date="13/03/2013">
+      <note type="Bug">BUG-419</note>
+    </version>
+
+    <version build="2.0.2.11" date="28/01/2013">
+      <note type="Improvement">Translations related</note>
+    </version>
+    <version build="2.0.0.8" date="08/11/2011">
+      <note type="">Stand alone mode improvement.</note>
+    </version>
+
+    <version build="2.0.0.7" date="26/10/2011">
+      <note type="">Stand alone mode is allowed.</note>
+    </version>
+    <version build="2.0.0.6" date="28/09/2011">
+      <note type="">Fixed bug when changing from default to user-entered server address</note>
+    </version>
+    <version build="2.0.0.5" date="22/09/2011">
+      <note type="">Fixed exception when right-clicking the splash screen</note>
+      <note type="">Added information about libraries in shutdown traces</note>
+    </version>
+    <version build="2.0.0.3" date="21/09/2011">
+      <note type="">Copies traces to the clipboard in case of unexpected shutdown</note>
+    </version>
+    <version build="2.0.0.1" date="20/09/2011">
+      <note type="">First release</note>
+    </version>
+  </module>
+</modules>

@@ -1,0 +1,118 @@
+﻿<Window x:Class="Nixxis.Client.Admin.DlgAddDemo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:Nixxis.Client.Admin"
+        xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+        Name="MySelf"
+        WindowStyle="ToolWindow"  ResizeMode="NoResize" ShowInTaskbar="False" SizeToContent="WidthAndHeight"        
+        Title="{Binding Source={x:Static crs:TranslationContext.Default}, Converter={x:Static nixxis:TranslationConverter.Default}, ConverterParameter='Demo creation...'}" MinHeight="300" MinWidth="300" MaxHeight="400" MaxWidth="500" WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+
+        <ResourceDictionary>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisPanel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisTabControl.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisDataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+
+            <crs:TranslationContext x:Key="tcx" Context="DlgAddPause" ></crs:TranslationContext>
+
+            <local:ComboListConverterNoDummies x:Key="cboConverterNoDummies" />
+            
+            <CollectionViewSource x:Key="NumberingPlanEntries" Source="{Binding NumberingPlanEntries, Converter={StaticResource cboConverterNoDummies}, ConverterParameter=false}" Filter="CollectionViewSource_Filter" ></CollectionViewSource>
+
+        </ResourceDictionary>
+
+    </Window.Resources>
+
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
+            <GradientStop Color="#757575" Offset="0.1"></GradientStop>
+            <GradientStop Color="#353535" Offset="0.7"></GradientStop>
+        </LinearGradientBrush>
+    </Window.Background>
+
+
+
+    <Grid Margin="10">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Name="AddWizard" >
+
+            <Grid Name="Start">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the settings for new demo objects...'}"></Label>
+
+
+                <Label Grid.Row="1" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Description:'}"></Label>
+                <TextBox Name="txtDescription" Grid.Row="2" nixxis:WizardControl.Required="True" >Demo</TextBox>
+
+                <Label Grid.Row="3" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Inbound number:'}"></Label>
+
+                <ComboBox IsTabStop="True" Grid.Row="4" Name="cboDestination" nixxis:WizardControl.Required="True" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Source={StaticResource NumberingPlanEntries}}" DisplayMemberPath="DisplayText" SelectedValuePath="Id">
+                    <!-- This should be editable only if SuperUser or NotCloud -->
+                    <ComboBox.IsEditable>
+                        <Binding Source="{x:Static local:AdminFrameSet.Settings}" Path="IsNotCloudOrSuperUser"></Binding>
+                    </ComboBox.IsEditable>
+                </ComboBox>
+
+                <Label Grid.Row="5" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Outbound number:'}"></Label>
+                <TextBox Name="txtOutbound" Grid.Row="6" nixxis:WizardControl.Required="True" ></TextBox>
+
+            </Grid>
+
+            <Grid Name="End" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}">
+                    <TextBlock Text="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Please click on finish to complete the creation of demo objects {0}',BindTo={Binding ElementName=txtDescription, Path=Text}}" TextWrapping="Wrap"></TextBlock>                        
+                </Label>
+
+                <GroupBox Margin="2" Grid.Row="1" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Summary:'}">
+                    <ScrollViewer CanContentScroll="False" >
+                        <Label>
+                            <TextBlock IsVisibleChanged="TextBlock_IsVisibleChanged" TextWrapping="Wrap"></TextBlock>
+                        </Label>
+                    </ScrollViewer>
+                </GroupBox>
+
+                <Label Grid.Row="3">
+                    <TextBlock  Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Warning, this operation is implicitly committing your changes...'}" TextWrapping="Wrap" Foreground="Red"></TextBlock>
+                </Label>
+
+
+            </Grid>
+
+        </Grid>
+
+        <nixxis:WizardControl Grid.Row="1" Name="WizControl" WizardGrid="{Binding ElementName=AddWizard}" CurrentStep="Start" EndStep="End" WizardFinished="WizControl_WizardFinished" ></nixxis:WizardControl>
+        
+    </Grid>
+</Window>

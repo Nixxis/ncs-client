@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<modules>
+  <module name="NixxisAdminControls">
+
+    <version build="2.0.2.1" date="06/03/2013">
+      <note type="Bug">BUG-417</note>
+    </version>
+
+  </module>
+</modules>

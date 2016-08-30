@@ -1,0 +1,244 @@
+﻿<UserControl x:Class="Nixxis.Client.Supervisor.DashboardWidget"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Nixxis.Client.Supervisor"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             Name="MySelf"
+             DataContextChanged="MySelf_DataContextChanged"
+             d:DesignHeight="100" d:DesignWidth="100">
+
+    <UserControl.Resources>
+
+        <local:DashboardPropertyConverter x:Key="dashboardPropertyConverter"></local:DashboardPropertyConverter>
+
+        <local:SelectorConverter x:Key="selectorConverter"></local:SelectorConverter>
+        
+        <local:VisibilityConverter x:Key="visConv"></local:VisibilityConverter>
+
+    </UserControl.Resources>
+    
+    <Grid UseLayoutRounding="False">      
+        
+        <Grid Name="MainGrid" Margin="{Binding ElementName=MySelf, Path=ContentMargin}" >
+            <Grid.Opacity>
+                <MultiBinding Converter="{StaticResource selectorConverter}" >
+                    <MultiBinding.ConverterParameter>
+                        <x:ArrayExtension Type="{x:Type sys:Double}">
+                            <sys:Double>1.0</sys:Double>
+                            <sys:Double>0.5</sys:Double>
+                            <sys:Double>1.0</sys:Double>
+                            <sys:Double>0.0</sys:Double>
+                        </x:ArrayExtension>
+                    </MultiBinding.ConverterParameter>
+                    <Binding Path="Widget" ElementName="MySelf" Converter="{StaticResource dashboardPropertyConverter}" ConverterParameter="DisplayMode"></Binding>
+                    <Binding  Source="{x:Static local:WidgetDisplayMode.Run}" ></Binding>
+                    <Binding  Source="{x:Static local:WidgetDisplayMode.Design}" ></Binding>
+                    <Binding  Source="{x:Static local:WidgetDisplayMode.Icon}" ></Binding>
+                </MultiBinding>
+            </Grid.Opacity>
+        </Grid>
+
+        <!--Region Move and resize-->
+        
+        <Thumb Name="MoveThumb" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ToolTip="Move" PreviewMouseLeftButtonDown="MoveThumb_PreviewMouseLeftButtonDown" MouseMove="MoveThumb_MouseMove" Cursor="Hand" >
+            <Thumb.Visibility>
+                <MultiBinding Converter="{StaticResource selectorConverter}" >
+                    <MultiBinding.ConverterParameter>
+                        <x:ArrayExtension Type="{x:Type Visibility}">
+                            <Visibility>Collapsed</Visibility>
+                            <Visibility>Visible</Visibility>
+                            <Visibility>Collapsed</Visibility>
+                            <Visibility>Collapsed</Visibility>
+                        </x:ArrayExtension>
+                    </MultiBinding.ConverterParameter>
+                    <Binding Path="Widget" ElementName="MySelf" Converter="{StaticResource dashboardPropertyConverter}" ConverterParameter="DisplayMode"></Binding>
+                    <Binding  Source="{x:Static local:WidgetDisplayMode.Run}" ></Binding>
+                    <Binding  Source="{x:Static local:WidgetDisplayMode.Design}" ></Binding>
+                    <Binding  Source="{x:Static local:WidgetDisplayMode.Icon}" ></Binding>
+                </MultiBinding>
+            </Thumb.Visibility>
+            <Thumb.Template>
+                <ControlTemplate >
+                    <Grid Background="Transparent">
+                        <Border Name="border" BorderBrush="White" BorderThickness="0.5" Opacity="0.5"></Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Opacity" Value="1" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Thumb.Template>
+
+        </Thumb>
+
+        <Thumb HorizontalAlignment="Stretch" VerticalAlignment="Stretch" PreviewMouseLeftButtonDown="MoveThumb_PreviewMouseLeftButtonDown" MouseMove="MoveThumb_MouseMove" Cursor="Hand" >
+            <Thumb.Visibility>
+                <MultiBinding Converter="{StaticResource selectorConverter}" >
+                    <MultiBinding.ConverterParameter>
+                        <x:ArrayExtension Type="{x:Type Visibility}">
+                            <Visibility>Collapsed</Visibility>
+                            <Visibility>Collapsed</Visibility>
+                            <Visibility>Visible</Visibility>
+                            <Visibility>Collapsed</Visibility>
+                        </x:ArrayExtension>
+                    </MultiBinding.ConverterParameter>
+                    <Binding Path="Widget" ElementName="MySelf" Converter="{StaticResource dashboardPropertyConverter}" ConverterParameter="DisplayMode"></Binding>
+                    <Binding  Source="{x:Static local:WidgetDisplayMode.Run}" ></Binding>
+                    <Binding  Source="{x:Static local:WidgetDisplayMode.Design}" ></Binding>
+                    <Binding  Source="{x:Static local:WidgetDisplayMode.Icon}" ></Binding>
+                </MultiBinding>
+            </Thumb.Visibility>
+            <Thumb.Template>
+                <ControlTemplate >
+                    <Grid Background="Transparent">
+                        <Border Name="border" BorderBrush="White" BorderThickness="0.5" Opacity="0.5"></Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Opacity" Value="1" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Thumb.Template>
+
+        </Thumb>
+
+
+        <Border BorderBrush="White" BorderThickness="1">
+            <Border.Visibility>
+                <MultiBinding Converter="{StaticResource selectorConverter}" >
+                    <MultiBinding.ConverterParameter>
+                        <x:ArrayExtension Type="{x:Type Visibility}">
+                            <Visibility>Collapsed</Visibility>
+                            <Visibility>Visible</Visibility>
+                            <Visibility>Collapsed</Visibility>
+                            <Visibility>Collapsed</Visibility>
+                        </x:ArrayExtension>
+                    </MultiBinding.ConverterParameter>
+                    <Binding Path="Widget" ElementName="MySelf" Converter="{StaticResource dashboardPropertyConverter}" ConverterParameter="DisplayMode"></Binding>
+                    <Binding  Source="{x:Static local:WidgetDisplayMode.Run}" ></Binding>
+                    <Binding  Source="{x:Static local:WidgetDisplayMode.Design}" ></Binding>
+                    <Binding  Source="{x:Static local:WidgetDisplayMode.Icon}" ></Binding>
+                </MultiBinding>
+            </Border.Visibility>
+            <Border.Opacity>
+                <MultiBinding Converter="{StaticResource selectorConverter}" >
+                    <MultiBinding.ConverterParameter>
+                        <x:ArrayExtension Type="{x:Type sys:Double}">
+                            <sys:Double>0.5</sys:Double>
+                            <sys:Double>0.0</sys:Double>
+                            <sys:Double>0.0</sys:Double>
+                        </x:ArrayExtension>
+                    </MultiBinding.ConverterParameter>
+                    <Binding Path="IsSelected" ElementName="MySelf"></Binding>
+                    <Binding>
+                        <Binding.Source>
+                            <sys:Boolean>True</sys:Boolean>
+                        </Binding.Source>
+                    </Binding>
+                    <Binding>
+                        <Binding.Source>
+                            <sys:Boolean>False</sys:Boolean>
+                        </Binding.Source>
+                    </Binding>
+                </MultiBinding>
+            </Border.Opacity>
+        </Border>
+
+        <Thumb HorizontalAlignment="Right" VerticalAlignment="Bottom" ToolTip="Resize" PreviewMouseLeftButtonDown="ResizeThumb_PreviewMouseLeftButtonDown" MouseMove="ResizeThumb_MouseMove" Cursor="SizeNWSE" >
+            <Thumb.Visibility>               
+                <MultiBinding Converter="{StaticResource selectorConverter}" >
+                    <MultiBinding.ConverterParameter>
+                        <x:ArrayExtension Type="{x:Type Visibility}">
+                            <Visibility>Collapsed</Visibility>
+                            <Visibility>Visible</Visibility>
+                            <Visibility>Collapsed</Visibility>
+                            <Visibility>Collapsed</Visibility>
+                        </x:ArrayExtension>
+                    </MultiBinding.ConverterParameter>
+                    <Binding Path="Widget" ElementName="MySelf" Converter="{StaticResource dashboardPropertyConverter}" ConverterParameter="DisplayMode"></Binding>
+                    <Binding  Source="{x:Static local:WidgetDisplayMode.Run}" ></Binding>
+                    <Binding  Source="{x:Static local:WidgetDisplayMode.Design}" ></Binding>
+                    <Binding  Source="{x:Static local:WidgetDisplayMode.Icon}" ></Binding>
+                </MultiBinding>
+            </Thumb.Visibility>
+            <Thumb.Template>
+                <ControlTemplate>
+                    <Polyline Name="poly" Fill="White" Opacity="0.5">
+                        <Polyline.Points>
+                            <Point>10,0</Point>
+                            <Point>10,10</Point>
+                            <Point>0,10</Point>
+                            <Point>10,0</Point>
+                        </Polyline.Points>
+                    </Polyline>
+                    <ControlTemplate.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard >
+                                <Storyboard >
+                                    <DoubleAnimation Duration="00:00:00.1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="poly" To="1"></DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard >
+                                <Storyboard >
+                                    <DoubleAnimation Duration="00:00:00.1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="poly" To="0.5"></DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Thumb.Template>
+
+        </Thumb>
+
+        <Button HorizontalAlignment="Right" VerticalAlignment="Top" Click="WidgetDelete_Click">
+            <Button.Visibility>
+                <MultiBinding Converter="{StaticResource selectorConverter}" >
+                    <MultiBinding.ConverterParameter>
+                        <x:ArrayExtension Type="{x:Type Visibility}">
+                            <Visibility>Collapsed</Visibility>
+                            <Visibility>Visible</Visibility>
+                            <Visibility>Collapsed</Visibility>
+                            <Visibility>Collapsed</Visibility>
+                        </x:ArrayExtension>
+                    </MultiBinding.ConverterParameter>
+                    <Binding Path="Widget" ElementName="MySelf" Converter="{StaticResource dashboardPropertyConverter}" ConverterParameter="DisplayMode"></Binding>
+                    <Binding  Source="{x:Static local:WidgetDisplayMode.Run}" ></Binding>
+                    <Binding  Source="{x:Static local:WidgetDisplayMode.Design}" ></Binding>
+                    <Binding  Source="{x:Static local:WidgetDisplayMode.Icon}" ></Binding>
+                </MultiBinding>
+            </Button.Visibility>
+
+            <Button.Template>
+                <ControlTemplate>
+                    <Image Name="img" ToolTip="Delete" Width="16" Height="16" Margin="2" Opacity="0.5" Source="Images\SupervisionViews\Remove.png"/>
+                    <ControlTemplate.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard >
+                                <Storyboard >
+                                    <DoubleAnimation Duration="00:00:00.1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="img" To="1"></DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard >
+                                <Storyboard >
+                                    <DoubleAnimation Duration="00:00:00.1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="img" To="0.5"></DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+        
+    </Grid>
+    
+</UserControl>

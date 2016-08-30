@@ -1,0 +1,370 @@
+﻿<UserControl x:Class="Nixxis.Client.Controls.Calendar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Nixxis.Client.Controls"
+                    xmlns:nixxis="clr-namespace:Nixxis.Client.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <!--
+    xmlns:nixxis="clr-namespace:Nixxis.Client;assembly=Calendar"    
+    
+    -->
+    <UserControl.Resources>
+        <ResourceDictionary>
+            
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="EntriesStyle" TargetType="{x:Type ListBoxItem}">
+                <Setter Property="SnapsToDevicePixels" Value="true" />
+                <Setter Property="OverridesDefaultStyle" Value="true" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                            <ControlTemplate.Resources>
+                                <Storyboard x:Key="HoverOn">
+
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="HoverRectangle" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1"/>
+                                    </DoubleAnimationUsingKeyFrames>
+
+                                </Storyboard>
+                                <Storyboard x:Key="HoverOff">
+
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="HoverRectangle" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.4000000" Value="0"/>
+                                    </DoubleAnimationUsingKeyFrames>
+
+                                </Storyboard>
+                                <Storyboard x:Key="SelectedOn">
+
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="SelectedRectangle" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1"/>
+                                    </DoubleAnimationUsingKeyFrames>
+
+                                </Storyboard>
+                                <Storyboard x:Key="SelectedOff">
+
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="SelectedRectangle" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.4000000" Value="0"/>
+                                    </DoubleAnimationUsingKeyFrames>
+
+                                </Storyboard>
+                                <Storyboard x:Key="FocussedOn">
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                                <Storyboard x:Key="FocussedOff">
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </ControlTemplate.Resources>
+                            <Grid SnapsToDevicePixels="true" Margin="1,1,1,1" Background="Transparent">
+                                <Rectangle x:Name="Background" IsHitTestVisible="False" Opacity="0.25" Fill="{StaticResource NormalBrush}" RadiusX="1" RadiusY="1"/>
+                                <Rectangle x:Name="HoverRectangle" IsHitTestVisible="False" Opacity="0" Fill="{StaticResource NormalBrush}" RadiusX="1" RadiusY="1"/>
+                                <Rectangle x:Name="SelectedRectangle" IsHitTestVisible="False" Opacity="0" Fill="{StaticResource SelectedBackgroundBrush}" RadiusX="1" RadiusY="1"/>
+                                <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="5,0,0,0" x:Name="contentPresenter" />
+                                <Rectangle x:Name="FocusVisualElement" Stroke="{StaticResource HoverShineBrush}" StrokeThickness="1" RadiusX="1" RadiusY="1" Opacity="0"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsFocused" Value="True">
+                                    <Trigger.ExitActions>
+                                        <BeginStoryboard Storyboard="{StaticResource FocussedOff}" x:Name="FocussedOff_BeginStoryboard"/>
+                                    </Trigger.ExitActions>
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard Storyboard="{StaticResource FocussedOn}" x:Name="FocussedOn_BeginStoryboard"/>
+                                    </Trigger.EnterActions>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="true">
+
+                                    <Trigger.ExitActions>
+                                        <BeginStoryboard x:Name="SelectedOff_BeginStoryboard" Storyboard="{StaticResource SelectedOff}"/>
+                                    </Trigger.ExitActions>
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard x:Name="SelectedOn_BeginStoryboard" Storyboard="{StaticResource SelectedOn}"/>
+                                    </Trigger.EnterActions>
+
+                                </Trigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsMouseOver" Value="True" />
+                                        <Condition Property="Selector.IsSelected" Value="False" />
+                                    </MultiTrigger.Conditions>
+
+                                    <MultiTrigger.EnterActions>
+                                        <BeginStoryboard Storyboard="{StaticResource HoverOn}"/>
+                                    </MultiTrigger.EnterActions>
+                                    <MultiTrigger.ExitActions>
+                                        <BeginStoryboard x:Name="HoverOff_BeginStoryboard" Storyboard="{StaticResource HoverOff}"/>
+                                    </MultiTrigger.ExitActions>
+
+                                </MultiTrigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="Selector.IsSelected" Value="True" />
+                                        <Condition Property="IsMouseOver" Value="True" />
+                                    </MultiTrigger.Conditions>
+
+                                </MultiTrigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="IsEnabled" Value="{Binding Enabled}"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                <Style.Triggers>
+                    <Trigger Property="Selector.IsSelected" Value="True">
+                        <Setter Property="Foreground">
+                            <Setter.Value>
+                                <SolidColorBrush Color="{DynamicResource BlackColor}" />
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="HeaderStyle" TargetType="{x:Type ListBoxItem}">
+                <Setter Property="SnapsToDevicePixels" Value="true" />
+                <Setter Property="OverridesDefaultStyle" Value="true" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                            <ControlTemplate.Resources>
+                                <Storyboard x:Key="HoverOn">
+
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="HoverRectangle" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1"/>
+                                    </DoubleAnimationUsingKeyFrames>
+
+                                </Storyboard>
+                                <Storyboard x:Key="HoverOff">
+
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="HoverRectangle" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.4000000" Value="0"/>
+                                    </DoubleAnimationUsingKeyFrames>
+
+                                </Storyboard>
+                                <Storyboard x:Key="SelectedOn">
+
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="SelectedRectangle" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1"/>
+                                    </DoubleAnimationUsingKeyFrames>
+
+                                </Storyboard>
+                                <Storyboard x:Key="SelectedOff">
+
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="SelectedRectangle" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.4000000" Value="0"/>
+                                    </DoubleAnimationUsingKeyFrames>
+
+                                </Storyboard>
+                                <Storyboard x:Key="FocussedOn">
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                                <Storyboard x:Key="FocussedOff">
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </ControlTemplate.Resources>
+                            <Grid SnapsToDevicePixels="true" Margin="1,1,1,1" Background="Transparent" Width="Auto">
+                                <Rectangle x:Name="Background" IsHitTestVisible="False" Opacity="0.25" Fill="{StaticResource NormalBrush}" RadiusX="1" RadiusY="1"/>
+                                <Rectangle x:Name="HoverRectangle" IsHitTestVisible="False" Opacity="0" Fill="{StaticResource NormalBrush}" RadiusX="1" RadiusY="1"/>
+                                <Rectangle x:Name="SelectedRectangle" IsHitTestVisible="False" Opacity="0" Fill="{StaticResource SelectedBackgroundBrush}" RadiusX="1" RadiusY="1"/>
+                                <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="0" x:Name="contentPresenter" />
+                                <Rectangle x:Name="FocusVisualElement" Stroke="{StaticResource HoverShineBrush}" StrokeThickness="1" RadiusX="1" RadiusY="1" Opacity="0"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsFocused" Value="True">
+                                    <Trigger.ExitActions>
+                                        <BeginStoryboard Storyboard="{StaticResource FocussedOff}" x:Name="FocussedOff_BeginStoryboard"/>
+                                    </Trigger.ExitActions>
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard Storyboard="{StaticResource FocussedOn}" x:Name="FocussedOn_BeginStoryboard"/>
+                                    </Trigger.EnterActions>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="true">
+
+                                    <Trigger.ExitActions>
+                                        <BeginStoryboard x:Name="SelectedOff_BeginStoryboard" Storyboard="{StaticResource SelectedOff}"/>
+                                    </Trigger.ExitActions>
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard x:Name="SelectedOn_BeginStoryboard" Storyboard="{StaticResource SelectedOn}"/>
+                                    </Trigger.EnterActions>
+
+                                </Trigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsMouseOver" Value="True" />
+                                        <Condition Property="Selector.IsSelected" Value="False" />
+                                    </MultiTrigger.Conditions>
+
+                                    <MultiTrigger.EnterActions>
+                                        <BeginStoryboard Storyboard="{StaticResource HoverOn}"/>
+                                    </MultiTrigger.EnterActions>
+                                    <MultiTrigger.ExitActions>
+                                        <BeginStoryboard x:Name="HoverOff_BeginStoryboard" Storyboard="{StaticResource HoverOff}"/>
+                                    </MultiTrigger.ExitActions>
+
+                                </MultiTrigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="Selector.IsSelected" Value="True" />
+                                        <Condition Property="IsMouseOver" Value="True" />
+                                    </MultiTrigger.Conditions>
+
+                                </MultiTrigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                <Style.Triggers>
+                    <Trigger Property="Selector.IsSelected" Value="True">
+                        <Setter Property="Foreground">
+                            <Setter.Value>
+                                <SolidColorBrush Color="{DynamicResource BlackColor}" />
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <local:CalVisibilityConverter x:Key="todayVisible"></local:CalVisibilityConverter>
+
+            <local:DateFormater x:Key="dateFormater"></local:DateFormater>
+
+            <local:DayFormater x:Key="dayFormater"></local:DayFormater>
+
+            <local:FillToColorConverter x:Key="fillToColor"></local:FillToColorConverter>
+
+            <local:FillToTextConverter x:Key="fillToText"></local:FillToTextConverter>
+
+            <DataTemplate x:Key="HeaderTemplate" >
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="1">
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Ellipse Stroke="White" Visibility="{Binding Path=DayValue,Converter={StaticResource todayVisible}}" Width="20" Height="20"  Fill="Black" Opacity="0.6" HorizontalAlignment="Center" VerticalAlignment="Center" ></Ellipse>
+                        <ContentPresenter  HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Path=DayValue, Converter={StaticResource dayFormater}}" />
+                    </Grid>
+                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Path=DayValue, Converter={StaticResource dateFormater}, ConverterParameter=\{0:dd\}}" />
+                    <Border CornerRadius="1" Width="20" Height="5" >
+                        <Border.Background>
+                            <MultiBinding Converter="{StaticResource fillToColor}" ConverterParameter="false">
+                                <Binding Path="Filled"></Binding>
+                                <Binding Path="Enabled"></Binding>
+                            </MultiBinding>
+                        </Border.Background>
+                    </Border>
+                </StackPanel>
+            </DataTemplate>
+
+            <DataTemplate x:Key="EntriesTemplate" >
+
+                <Grid VerticalAlignment="Center" HorizontalAlignment="Stretch" >
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center"  Content="{Binding Path=Start, Converter={StaticResource dateFormater}, ConverterParameter=\{0:HH:mm\}}" />
+
+                    <Border CornerRadius="1" Grid.Column="1" 
+                                HorizontalAlignment="Stretch" 
+                                VerticalAlignment="Stretch" 
+                                Margin="4,1,4,1">
+                        <Border.Background>
+                            <MultiBinding Converter="{StaticResource fillToColor}" ConverterParameter="true">
+                                <Binding Path="Filled"></Binding>
+                                <Binding Path="Enabled"></Binding>
+                            </MultiBinding>
+                        </Border.Background>
+
+                        <TextBlock HorizontalAlignment="Center" Text="{Binding Path=Filled, Converter={StaticResource fillToText}}">
+                        </TextBlock>
+                    </Border>
+
+                </Grid>
+
+            </DataTemplate>
+
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Button Padding="0,3,0,3" Content="{Binding ElementName=lstHeader, Path=SelectedValue.DayValue, Converter={StaticResource dateFormater}, ConverterParameter=\{0:MMMM yyyy\}}"></Button>
+
+        <Grid Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Button Name="Previous" Content="&lt;&lt;" Padding="2" Click="Previous_Click">
+            </Button>
+            <ListBox Grid.Column="1" Name="lstHeader" 
+                 ItemContainerStyle="{StaticResource HeaderStyle}"
+                 BorderThickness="1" 
+                 ItemsSource="{Binding Path=Days}" 
+                 ItemTemplate="{StaticResource HeaderTemplate}" 
+                 SelectedIndex="0"
+                 SelectionMode="Single"
+                 SelectionChanged="lstHeader_SelectionChanged"
+                 >
+
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel VerticalAlignment="Center" IsItemsHost="True" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+            </ListBox>
+            <Button Grid.Column="2" Name="Next" Content="&gt;&gt;" Padding="2" Click="Next_Click"></Button>
+
+        </Grid>
+
+        <ListBox Name="lstEntries" BorderThickness="1" 
+                    Grid.Row="2"
+                    ItemsSource="{Binding ElementName=lstHeader, Path=SelectedValue.Entries}"
+                    ItemTemplate="{StaticResource EntriesTemplate}"   
+                 ItemContainerStyle="{StaticResource EntriesStyle}"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                 SelectedValuePath="StartTime"
+                 SelectedValue="{Binding Path=SelectedTime}"
+                 SelectionChanged="lstEntries_SelectionChanged"
+                    SelectionMode="Single">
+
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical" IsItemsHost="True" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+        </ListBox>
+
+    </Grid>
+    
+</UserControl>

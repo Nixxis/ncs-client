@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<modules>
+  <module name="NixxisAdminControls">
+    <version build="2.0.2.77" date="08/05/2013">
+      <note type="Bug">Bug 79</note>
+    </version>
+
+    <version build="2.0.2.76" date="06/05/2013">
+      <note type="Improvement">Item 99</note>
+    </version>
+
+    <version build="2.0.2.73" date="26/04/2013">
+      <note type="Improvement">Item 109, ensure old mail and chats are ok</note>
+    </version>
+
+    <version build="2.0.2.72" date="05/03/2013">
+      <note type="Bug">BUG-417</note>
+    </version>
+
+    <version build="2.0.2.71" date="05/03/2013">
+      <note type="Bug">BUG-415</note>
+    </version>
+
+    <version build="2.0.2.70" date="01/03/2013">
+      <note type="Improvement">FR-384</note>
+    </version>
+
+    <version build="2.0.2.69" date="26/02/2013">
+      <note type="Improvement">FR-384</note>
+    </version>
+
+    <version build="2.0.2.68" date="08/02/2013">
+      <note type="Improvement">FR-423</note>
+    </version>
+
+    <version build="2.0.2.67" date="07/02/2013">
+      <note type="Improvement">FR-423</note>
+    </version>
+
+    <version build="2.0.2.66" date="28/01/2013">
+      <note type="Improvement">Translations related</note>
+    </version>
+
+    <version build="2.0.2.65" date="09/01/2013">
+      <note type="Bug">(BUG-392)</note>
+    </version>
+
+    
+    
+    <version build="2.0.2.64" date="07/01/2013">
+      <note type="Bug">(BUG-290)</note>
+    </version>
+
+    <version build="2.0.2.63" date="21/12/2012">
+      <note type="Bug">(BUG-323)</note>
+    </version>
+
+    <version build="2.0.0.62" date="20/12/2012">
+      <note type="Bug">(BUG-333)</note>
+    </version>
+
+    <version build="2.0.0.60" date="07/11/2012">
+      <note type="Improvement">(FR-428)</note>
+    </version>
+
+    <version build="2.0.0.59" date="06/11/2012">
+      <note type="Bug">(BUG-327) Advanced filters in data management</note>
+    </version>
+
+    <version build="2.0.0.58" date="03/10/2012">
+      <note type="Improvement">(FR-384) Preparing to load mail configuration module</note>
+    </version>
+
+    <version build="2.0.0.57" date="02/08/2012">
+      <note type="Bug">(BUG-297) When recycling, the wizard does not force to choose between "recycle" or "remove time constrainst"</note>
+    </version>
+
+    <version build="2.0.0.56" date="31/07/2012">
+      <note type="Improvement">Cosmetic change in import result</note>
+    </version>
+
+    <version build="2.0.0.55" date="25/07/2012">
+      <note type="Improvement">(FR-339) Work in progress about duplicate method</note>
+    </version>
+
+    <version build="2.0.0.54" date="20/07/2012">
+      <note type="Improvement">(FR-378) Display sequence number at end of data import in admin</note>
+      <note type="Improvement">(FR-338) In callback ruleset creation wizard, ask for creation of default rules</note>
+    </version>
+
+    <version build="2.0.0.53" date="18/07/2012">
+      <note type="Improvement">(FR-381)Decimal symbol selection in import and export</note>
+    </version>
+
+    <version build="2.0.0.52" date="18/07/2012">
+      <note type="Improvement">(FR-330)Native Excel support</note>
+    </version>
+
+    <version build="2.0.0.51" date="16/07/2012">
+      <note type="Bug">(BUG-240)When importing in the admin, two source fields can be selected for a single destination field</note>
+    </version>
+
+    <version build="2.0.0.50" date="16/07/2012">
+      <note type="Bug">(BUG-236)Column width is not recomputed in import wizard when changing the separator (causing the field name column to be far too large)</note>
+    </version>
+
+    <version build="2.0.0.49" date="03/07/2012">
+      <note type="Bug">(BUG-272)ViewRestrictions cannot be modified from "include data" to "exclude data" (and reverse)</note>
+    </version>
+
+    <version build="2.0.0.48" date="26/06/2012">
+      <note type="Improvement">(FR-346, FR-353)Handle phones MAC addresses and hangup property of a qualification.</note>
+    </version>
+    
+    <version build="2.0.0.47" date="21/06/2012">
+      <note type="Improvement">(FR-349, FR-362)Allow view restrictions on queues and activities.</note>
+    </version>
+
+    <version build="2.0.0.46" date="20/06/2012">
+      <note type="Bug">(BUG-252)When adding a view restriction on a team, the list is not sorted. Same issue corrected with the campaigns.</note>
+    </version>
+
+    <version build="2.0.0.45" date="14/06/2012">
+      <note type="Bug">(BUG-244)Go to definition for queue prompt was not OK. Selecting a queue specific prompt or activity specific prompt was giving trouble as prompt selection was lost when changing context.</note>
+    </version>
+
+    <version build="2.0.0.44" date="21/05/2012">
+      <note type="Improvement">(FR-326)Play sound during rerouting.</note>
+    </version>
+    
+    <version build="2.0.0.43" date="09/05/2012">
+      <note type="Improvement">(FR-348)Import data wizard does not ask for max dial attempts. Max dial attemps is visible on callback ruleset and IgnoreMaxDialAttemps is visible on qualifiaction definitions.</note>
+    </version>
+
+    <version build="2.0.0.42" date="20/04/2012">
+      <note type="Improvement">(FR-328)Ask related activities in wizard when creating a new qualification</note>
+    </version>
+
+    <version build="2.0.0.41" date="20/04/2012">
+      <note type="Bug">(BUG-223)Importing an empty csv file generates a disgracious warning message dialog (with raw exception)</note>
+    </version>
+
+    <version build="2.0.0.40" date="18/04/2012">
+      <note type="Improvement">(FR-327)Ask automatic recording settings in activity creation wizard</note>
+    </version>
+
+
+    <version build="2.0.0.39" date="03/04/2012">
+      <note type="Bug">(BUG-211)Refresh is triggered on campaigns when group filter is changing</note>
+    </version>
+
+    <version build="2.0.0.38" date="03/04/2012">
+      <note type="Improvement">(FR-331)Informational language available on outbound activities..</note>
+    </version>
+
+    <version build="2.0.0.37" date="29/03/2012">
+      <note type="Bug">(208)Callback ivr configuration is not correctly reloaded (about ask phone numer and date/time).</note>
+    </version>
+
+    <version build="2.0.0.36" date="21/03/2012">
+      <note type="Bug">Related prompts (global ones) were not handled correctly.</note>
+    </version>
+
+    <version build="2.0.0.35" date="20/03/2012">
+      <note type="Improvement">Sla and preferred agent fields XML transmission.</note>
+    </version>
+
+    <version build="2.0.0.34" date="19/03/2012">
+      <note type="Improvement">High priority available on queues.</note>
+    </version>
+
+    <version build="2.0.0.33" date="16/03/2012">
+      <note type="bug">Issues about field length when importing in fields of type that are not strings.</note>
+    </version>
+
+    <version build="2.0.0.32" date="13/03/2012">
+      <note type="bug">Duplicate agents could be created by agents range creation.</note>
+      <note type="bug">Agents could not be deleted.</note>
+    </version>
+
+    <version build="2.0.0.31" date="12/03/2012">
+      <note type="improvement">Handling of special characters in field names.</note>
+    </version>
+
+    <version build="2.0.0.29" date="20/02/2012">
+      <note type="improvement">Filter available on LastHandlingTime.</note>
+    </version>
+
+    <version build="2.0.0.28" date="16/02/2012">
+      <note type="improvement">Callback IVR config related.</note>
+    </version>
+
+    <version build="2.0.0.27" date="13/02/2012">
+      <note type="improvement">"Listen allowed" flag on activities.</note>
+    </version>
+
+    <version build="2.0.0.26" date="08/02/2012">
+      <note type="improvement">Translations related</note>
+    </version>
+
+    <version build="2.0.0.25" date="02/02/2012">
+      <note type="improvement">Preparing information handling in global settings.</note>
+    </version>
+
+    <version build="2.0.0.24" date="18/01/2012">
+      <note type="improvement">Partial load.</note>
+    </version>
+
+    <version build="2.0.0.23" date="10/01/2012">
+      <note type="bug">Keep connection option was set as the same time as External.</note>
+    </version>
+
+    <version build="2.0.0.21" date="19/12/2011">
+      <note type="improvement">Performance related + background load.</note>
+    </version>
+
+    <version build="2.0.0.20" date="07/12/2011">
+      <note type="improvement">Performance related and loading progress bar.</note>
+    </version>
+
+    <version build="2.0.0.19" date="30/11/2011">
+      <note type="improvement">Queues define group key.</note>
+      <note type="improvement">Campaigns allow CustomConfig.</note>
+    </version>
+
+    <version build="2.0.0.18" date="28/11/2011">
+      <note type="bug">Default IVR without wav files selected was throwing exception.</note>
+    </version>
+
+    <version build="2.0.0.17" date="24/11/2011">
+      <note type="bug">Create campaigne explode admin, put try and catch in 'DlgAddCampaignOrActivity', does still have to be corrected.</note>
+    </version>
+
+    <version build="2.0.0.16" date="17/11/2011">
+      <note type="bug">Moving a qualification was sometimes generating an exception.</note>
+    </version>
+
+    <version build="2.0.0.15" date="10/11/2011">
+      <note type="bug">The wav file format check was not done when adding prompt to campaign's prompt.</note>
+    </version>
+
+    <version build="2.0.0.14" date="08/11/2011">
+      <note type="improvement">Id was not shown on queue when on debug mode.</note>
+      <note type="improvement">Standard preprocessor is now able to select skills and queue.</note>
+      <note type="improvement">When uploading wav file, there is a fast format verification and warning if needed.</note>
+    </version>
+
+    <version build="2.0.0.13" date="28/10/2011">
+      <note type="improvement">More information displayed when saving.</note>
+    </version>
+
+    <version build="2.0.0.12" date="24/10/2011">
+      <note type="improvement">Phone number preview during import</note>
+    </version>
+
+    <version build="2.0.0.11" date="21/10/2011">
+      <note type="improvement">Visibility of ShortCode on queues</note>
+      <note type="bug">register attribute on phones and in phone creation dialog</note>
+    </version>
+
+    <version build="2.0.0.10" date="19/10/2011">
+      <note type="improvement">Number formats on campaigns.</note>
+      <note type="improvement">Number format on data import.</note>      
+    </version>
+
+    <version build="2.0.0.9" date="05/10/2011">
+      <note type="bug">amd settings button was not correctly selected.</note>
+    </version>
+
+    <version build="2.0.0.8" date="28/09/2011">
+      <note type="improvement">Carriers and number format implementation.</note>
+    </version>
+
+    <version build="2.0.0.7" date="27/09/2011">
+      <note type="bug">Queues and Teams category buttons were not displayed properly (depending on NCS, EXPRESS, DEMO and on administrator restrictions)</note>
+    </version>
+
+  <version build="2.0.0.6" date="26/09/2011">
+      <note type="bug">Default dialing rule wizard was using wrong value *}</note>
+    </version>
+
+    <version build="2.0.0.5" date="22/09/2011">
+      <note type="improvement">allow filter on import tag (in data management)</note>
+      <note type="improvement">Disable manual qualifications on activities</note>
+    </version>
+
+    <version build="2.0.0.4" date="22/09/2011">
+      <note type="bug">Queues and Teams were displayed when in full even when admin was restricted to data.</note>
+    </version>
+
+    <version build="2.0.0.3" date="21/09/2011">
+      <note type="improvement">Filter strings (*.csv, etc.) are corrected.</note>
+    </version>
+
+    <version build="2.0.0.2" date="21/09/2011">
+      <note type="improvement">Asking more options in phone creation dialog</note>
+    </version>
+    <version build="2.0.0.1" date="20/09/2011">
+      <note type="">First release</note>
+    </version>
+  </module>
+</modules>

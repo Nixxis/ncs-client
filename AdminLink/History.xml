@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<modules>
+  <module name="AdminLink">
+    <version build="2.0.2.77" date="10/05/2013">
+      <note type="Bug">BUG-153</note>
+    </version>
+
+    <version build="2.0.2.76" date="08/05/2013">
+      <note type="Bug">BUG-79</note>
+    </version>
+
+    <version build="2.0.2.75" date="06/05/2013">
+      <note type="Bug">Partial BUG-79</note>
+    </version>
+
+    <version build="2.0.2.74" date="06/05/2013">
+      <note type="Improvement">Item 99</note>
+    </version>
+
+    <version build="2.0.2.72" date="01/03/2013">
+      <note type="Improvement">FR-384</note>
+    </version>
+
+    <version build="2.0.2.71" date="26/02/2013">
+      <note type="Improvement">FR-384</note>
+    </version>
+    
+    <version build="2.0.2.70" date="18/02/2013">
+      <note type="Improvement">BUG-405</note>
+    </version>
+
+    <version build="2.0.2.69" date="12/02/2013">
+      <note type="Improvement">BUG-399</note>
+    </version>
+
+    <version build="2.0.2.68" date="08/02/2013">
+      <note type="Improvement">FR-423</note>
+    </version>
+
+    <version build="2.0.2.67" date="07/02/2013">
+      <note type="Bug">BUG-398</note>
+      <note type="Improvement">FR-423</note>
+    </version>
+
+    <version build="2.0.2.66" date="28/01/2013">
+      <note type="Improvement">Translations related</note>
+    </version>
+
+    <version build="2.0.1.65" date="14/01/2013">
+      <note type="Bug">(BUG-391)</note>
+    </version>
+
+    <version build="2.0.1.64" date="07/01/2013">
+      <note type="Bug">(BUG-245)</note>
+    </version>
+
+    <version build="2.0.1.61" date="21/12/2012">
+      <note type="Bug">(BUG-323)</note>
+    </version>
+
+    <version build="2.0.0.59" date="07/11/2012">
+      <note type="Improvement">(FR-428)</note>
+    </version>
+
+    <version build="2.0.0.58" date="06/11/2012">
+      <note type="Bug">(BUG-321, BUG 327)</note>
+    </version>
+
+    <version build="2.0.0.57" date="21/08/2012">
+      <note type="Bug">(BUG-305) Crash when entering the data management dialog</note>
+    </version>
+
+    <version build="2.0.0.56" date="31/07/2012">
+      <note type="Bug">(BUG-289) Unicity constraints in campaign database cause the import to fail when there are duplicates</note>
+    </version>
+
+    <version build="2.0.0.55" date="25/07/2012">
+      <note type="Improvement">(FR-339) Work in progress about duplicate method</note>
+    </version>
+
+    <version build="2.0.0.54" date="20/07/2012">
+      <note type="Improvement">(FR-378) Display sequence number at end of data import in admin</note>
+    </version>
+    
+    <version build="2.0.0.53" date="18/07/2012">
+      <note type="Improvement">(FR-381)Decimal symbol selection in import and export</note>
+    </version>
+
+    <version build="2.0.0.52" date="18/07/2012">
+      <note type="Improvement">(FR-330)Native Excel support</note>
+    </version>
+
+    <version build="2.0.0.51" date="13/07/2012">
+      <note type="Bug">(BUG-278)Modifications in boolean operators in activities data filters are not reacting properly</note>
+    </version>
+    
+    <version build="2.0.0.50" date="03/07/2012">
+      <note type="Improvement">Better exception hadling when retrieving qualifications.</note>
+    </version>
+
+    <version build="2.0.0.49" date="27/06/2012">
+      <note type="Bug">(BUG-266)Generate fieldsconfig in name value order.</note>
+    </version>
+
+    <version build="2.0.0.48" date="26/06/2012">
+      <note type="Improvement">(FR-346, FR-353)Handle phones MAC addresses and hangup property of a qualification.</note>
+    </version>
+
+    <version build="2.0.0.47" date="21/06/2012">
+      <note type="Improvement">(FR-349, FR-362)Allow view restrictions on queues and activities.</note>
+    </version>
+
+    <version build="2.0.0.46" date="18/06/2012">
+      <note type="Bug">(FR-228)Play sound during rerouting.</note>
+    </version>
+
+    <version build="2.0.0.45" date="21/04/2012">
+      <note type="Improvement">(FR-326)Play sound during rerouting.</note>
+    </version>
+
+    <version build="2.0.0.44" date="05/04/2012">
+      <note type="Improvement">(FR-348)New MaxDialAttempts on callback ruleset and "IgnoreMaxDialAttempts" on qualifications.</note>
+    </version>
+
+    <version build="2.0.0.43" date="05/04/2012">
+      <note type="Bug">(BUG-215)Added extra security to prevent issue in case of orphaned activities.</note>
+    </version>
+
+    <version build="2.0.0.42" date="03/04/2012">
+      <note type="Improvement">(FR-331)Informational language available on outbound activities.</note>
+    </version>
+
+    <version build="2.0.0.41" date="30/03/2012">
+      <note type="Bug corrected">Exception was generated when reloading a deleted qualification.</note>
+    </version>
+
+    <version build="2.0.0.40" date="22/03/2012">
+      <note type="Bug corrected">Overflow parameter was incorrectly handled on inbound activities.</note>
+    </version>
+
+    <version build="2.0.0.39" date="21/03/2012">
+      <note type="Bug corrected">Related prompts were not reloaded correctly.</note>
+      <note type="Bug corrected">AdminObjectReference modification was ignored for saving purpose if the reference modification was the only modification.</note>
+      <note type="Improvement">Agent Gui language.</note>
+    </version>
+
+    <version build="2.0.0.37" date="16/03/2012">
+      <note type="Improvement">High priority field on queues.</note>
+    </version>
+
+    <version build="2.0.0.34" date="16/03/2012">
+      <note type="Bug corrected">Prevent assertion failure when no message is selected and "play prompt" action is requested.</note>
+    </version>
+
+    <version build="2.0.0.33" date="13/03/2012">
+      <note type="Bug corrected">Ignore fields without name.</note>
+    </version>
+
+    <version build="2.0.0.32" date="01/03/2012">
+      <note type="Bug corrected">Issue when working on freshly created campaign reloaded (not loaded)</note>
+    </version>
+
+    <version build="2.0.0.31" date="20/02/2012">
+      <note type="Improvement">Filter available on LastHandlingTime</note>
+    </version>
+
+    <version build="2.0.0.30" date="16/02/2012">
+      <note type="Improvement">Callback IVR configuration</note>
+    </version>
+
+    <version build="2.0.0.29" date="13/02/2012">
+      <note type="Improvement">"Listen allowed" flag on activities.</note>
+    </version>
+
+    <version build="2.0.0.28" date="08/02/2012">
+      <note type="Improvement">Translations related.</note>
+    </version>
+
+    <version build="2.0.0.27" date="02/02/2012">
+      <note type="Improvement">Performance related.</note>
+    </version>
+
+    <version build="2.0.0.26" date="31/01/2012">
+      <note type="Improvement">Performance related.</note>
+    </version>
+
+    <version build="2.0.0.25" date="18/01/2012">
+      <note type="Improvement">Partial load.</note>
+    </version>
+
+    <version build="2.0.0.23" date="19/12/2011">
+      <note type="Improvement">Performance related + background load.</note>
+    </version>
+
+    <version build="2.0.0.22" date="07/12/2011">
+      <note type="Improvement">Performance related.</note>
+    </version>
+
+    <version build="2.0.0.21" date="30/11/2011">
+      <note type="Improvement">Reduced loading time.</note>
+      <note type="Improvement">Campaigns now have CustomConfig.</note>
+    </version>
+
+    <version build="2.0.0.20" date="29/11/2011">
+      <note type="Improvement">Reduced loading time.</note>
+    </version>
+
+    <version build="2.0.0.19" date="16/11/2011">
+      <note type="Bug">Incorrect indexation of ids was causing crash during loading.</note>
+      <note type="Bug">When replacing a planning on activities, a duplicate was created in ClosedActions, causing admin to crash at startup.</note>
+    </version>
+
+    <version build="2.0.0.18" date="10/11/2011">
+      <note type="Bug">IVR config files were not uploaded when using IVR on closed or no agent action.</note>
+      <note type="Bug">Prompt path was incorrect.</note>
+    </version>
+
+    <version build="2.0.0.16" date="08/11/2011">
+      <note type="Improvement">Huge improvement on load time</note>
+      <note type="Bug">Preprocessor loading at the same time as the prompts could cause exception.</note>
+    </version>
+
+    <version build="2.0.0.15" date="27/10/2011">
+      <note type="Bug">Appointments area crashing on save</note>
+    </version>
+
+    <version build="2.0.0.14" date="26/10/2011">
+      <note type="Improvement">Number formats related</note>
+      <note type="Bug">Stand alone was crashing</note>
+    </version>
+
+    <version build="2.0.0.12" date="24/10/2011">
+      <note type="Improvement">Number formats and preview of phone numbers during import</note>
+      <note type="Bug">Import was failing when no tag was specified</note>
+      <note type="Bug">Could not save attachments</note>
+    </version>
+
+    <version build="2.0.0.11" date="21/10/2011">
+      <note type="Improvement">Shortcode is now visible on queues</note>
+    </version>
+
+    <version build="2.0.0.10" date="20/10/2011">
+      <note type="Improvement">SoundsSync to force rsync on sounds and ivr config files</note>
+    </version>
+
+    <version build="2.0.0.9" date="19/10/2011">
+      <note type="Improvement">Number formats on campaigns.</note>
+    </version>
+
+    <version build="2.0.0.8" date="03/10/2011">
+      <note type="Improvement">Carriers and number formats.</note>
+    </version>
+
+    <version build="2.0.0.7" date="03/10/2011">
+      <note type="Bug">Numbering rules, members and areas were not deletable.</note>
+    </version>
+
+    <version build="2.0.0.6" date="27/09/2011">
+      <note type="Bug">Pauses groups were preventing correct data commit, generating the question "do you want to save?" when requesting application quit.</note>
+    </version>
+
+    <version build="2.0.0.5" date="22/09/2011">
+      <note type="Bug">Fixed crypto exception when using temporary user profiles</note>
+    </version>
+    <version build="2.0.0.3" date="22/09/2011">
+      <note type="Bug">Accents are now supported in tags and file name (data management)</note>
+      <note type="Improvement">Data management now supports filtering on import tag</note>
+      <note type="Improvement">DisableManualQualification property on activities</note>
+    </version>
+
+    <version build="2.0.0.2" date="22/09/2011">
+      <note type="Bug">LastModifiedBy and LastModifiaction were incorrectly filled in</note>
+      <note type="Bug">Recording playback resource was not correct</note>
+    </version>
+    <version build="2.0.0.1" date="20/09/2011">
+      <note type="">First release</note>
+    </version>
+  </module>
+</modules>

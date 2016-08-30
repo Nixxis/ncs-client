@@ -1,0 +1,43 @@
+﻿<Window x:Class="Nixxis.Client.Admin.DlgPrint"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:adminlink="clr-namespace:Nixxis.Client.Admin;assembly=AdminLink"
+        xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:n="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControlsCommon"
+        xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+        Name="MySelf"
+        xmlns:nixxiscommon="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControlsCommon"
+        xmlns:local="clr-namespace:Nixxis.Client.Admin"
+        xmlns:rv="clr-namespace:Microsoft.Reporting.WinForms;assembly=Microsoft.ReportViewer.WinForms"
+        WindowStyle="SingleBorderWindow"  ResizeMode="CanResizeWithGrip" ShowInTaskbar="False" WindowState="Maximized"
+        Title="{Binding Source={x:Static crs:TranslationContext.Default}, Converter={x:Static nixxis:TranslationConverter.Default}, ConverterParameter='Print'}" 
+        Height="420" Width="500" WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+
+        <ResourceDictionary>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisPanel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisTabControl.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisDataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            
+        </ResourceDictionary>
+
+    </Window.Resources>
+
+ 
+    <Grid>
+        <WindowsFormsHost >
+            <rv:ReportViewer x:Name="_reportViewer"/>
+        </WindowsFormsHost>
+    </Grid>
+    
+</Window>

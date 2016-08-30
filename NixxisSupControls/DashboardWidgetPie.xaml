@@ -1,0 +1,162 @@
+﻿<local:DashboardWidgetBase 
+    x:Class="Nixxis.Client.Supervisor.DashboardWidgetPie"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:Nixxis.Client.Supervisor"
+    mc:Ignorable="d" 
+    x:Name="MySelf"          
+    ClipToBounds="True"
+    d:DesignHeight="300" d:DesignWidth="300">
+
+    <local:DashboardWidgetBase.Resources>
+        <local:MultiIndexerConverter x:Key="indexer"></local:MultiIndexerConverter>
+        <local:CoordinateConverter x:Key="coordinateConverter"></local:CoordinateConverter>
+        <local:CoefConverter x:Key="coefConverter"></local:CoefConverter>
+        <local:SizeConverter x:Key="sizeConverter"></local:SizeConverter>
+        <local:ProgressToAngleConverter x:Key="progressToAngleConverter"></local:ProgressToAngleConverter>
+        <local:CumulativeConverter x:Key="cumulConverter"></local:CumulativeConverter>
+        <local:LabelsContentConverter x:Key="labelsConverter"></local:LabelsContentConverter>
+        <local:PieHelperVisibilityConverter x:Key="pieHelperVisibilityConverter"></local:PieHelperVisibilityConverter>
+    </local:DashboardWidgetBase.Resources>
+
+    <local:ConstrainedGrid Square="{Binding ElementName=MySelf, Path=KeepAspectRatio}" Margin="3" >
+
+        <ItemsControl  AlternationCount="999">
+            <ItemsControl.ItemsSource>
+                <MultiBinding Converter="{StaticResource cumulConverter}">
+                    <Binding ElementName="MySelf" Path="Data.Objects[0].Values"></Binding>
+                    <Binding ElementName="MySelf" Path="Data.Properties[0].Values"></Binding>
+                    <Binding ElementName="MySelf" Path="SwapAxis"></Binding>
+                </MultiBinding>
+            </ItemsControl.ItemsSource>
+
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid></Grid>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            
+            <ItemsControl.ItemTemplate>
+                
+                <DataTemplate>
+
+                    <Grid>
+
+                        <Ellipse Stroke="Black" StrokeThickness="0.5" Visibility="{Binding Width, Converter={StaticResource coordinateConverter}, ConverterParameter=invert}"  >
+                            <Ellipse.Fill>
+                                <MultiBinding Converter="{StaticResource indexer}" ConverterParameter=".">
+                                    <Binding ElementName="MySelf" Path="Palette.Brushes"></Binding>
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="(ItemsControl.AlternationIndex)"></Binding>
+                                </MultiBinding>
+                            </Ellipse.Fill>
+                        </Ellipse>
+
+                        <TextBlock Foreground="{DynamicResource darkTextBrush}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Visibility="{Binding Width, Converter={StaticResource coordinateConverter}, ConverterParameter=invert}">
+                            <TextBlock.MaxWidth>
+                                <Binding RelativeSource="{RelativeSource AncestorType=Canvas}" Path="ActualWidth"></Binding>
+                            </TextBlock.MaxWidth>
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{StaticResource labelsConverter}">
+                                    <Binding Path="."></Binding>
+                                    <Binding ElementName="MySelf" Path="LabelsContent"></Binding>
+                                    <Binding ElementName="MySelf" Path="Format"></Binding>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                        
+                        <Canvas Visibility="{Binding Width, Converter={StaticResource coordinateConverter}}">
+                            <Path Name="piePart" Stroke="Black" StrokeThickness="0.5" Canvas.ZIndex="1" >
+
+                                <Path.Fill>
+                                    <MultiBinding Converter="{StaticResource indexer}" ConverterParameter=".">
+                                        <Binding ElementName="MySelf" Path="Palette.Brushes"></Binding>
+                                        <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="(ItemsControl.AlternationIndex)"></Binding>
+                                    </MultiBinding>
+                                </Path.Fill>
+
+                                <Path.Data>
+                                    <PathGeometry>
+                                        <PathFigure IsClosed="true">
+                                            <PathFigure.StartPoint>
+                                                <MultiBinding Converter="{StaticResource sizeConverter}">
+                                                    <Binding RelativeSource="{RelativeSource AncestorType=Canvas}" Path="ActualWidth" Converter="{StaticResource coefConverter}" ConverterParameter="0.5"></Binding>
+                                                    <Binding RelativeSource="{RelativeSource AncestorType=Canvas}" Path="ActualHeight" Converter="{StaticResource coefConverter}" ConverterParameter="0.5"></Binding>
+                                                </MultiBinding>
+                                            </PathFigure.StartPoint>
+                                            <LineSegment>
+                                                <LineSegment.Point>
+                                                    <MultiBinding Converter="{StaticResource coordinateConverter}">
+                                                        <Binding Path="Start"></Binding>
+                                                        <Binding RelativeSource="{RelativeSource AncestorType=Canvas}" Path="ActualWidth" Converter="{StaticResource coefConverter}" ConverterParameter="0.5"></Binding>
+                                                        <Binding RelativeSource="{RelativeSource AncestorType=Canvas}" Path="ActualHeight" Converter="{StaticResource coefConverter}" ConverterParameter="0.5"></Binding>
+                                                    </MultiBinding>
+                                                </LineSegment.Point>
+                                            </LineSegment>
+                                            <ArcSegment SweepDirection="Clockwise">
+                                                <ArcSegment.Size>
+                                                    <MultiBinding Converter="{StaticResource sizeConverter}">
+                                                        <Binding RelativeSource="{RelativeSource AncestorType=Canvas}" Path="ActualWidth" Converter="{StaticResource coefConverter}" ConverterParameter="0.5"></Binding>
+                                                        <Binding RelativeSource="{RelativeSource AncestorType=Canvas}" Path="ActualHeight" Converter="{StaticResource coefConverter}" ConverterParameter="0.5"></Binding>
+                                                    </MultiBinding>
+                                                </ArcSegment.Size>
+                                                <ArcSegment.IsLargeArc>
+                                                    <MultiBinding Converter="{StaticResource coordinateConverter}">
+                                                        <Binding Path="Width"></Binding>
+                                                        <Binding RelativeSource="{RelativeSource Self}" Path="Size"></Binding>
+                                                    </MultiBinding>
+                                                </ArcSegment.IsLargeArc>
+                                                <ArcSegment.Point>
+                                                    <MultiBinding Converter="{StaticResource coordinateConverter}">
+                                                        <Binding Path="End"></Binding>
+                                                        <Binding RelativeSource="{RelativeSource Self}" Path="Size"></Binding>
+                                                    </MultiBinding>
+                                                </ArcSegment.Point>
+                                            </ArcSegment>
+                                        </PathFigure>
+                                    </PathGeometry>
+                                </Path.Data>
+                            </Path>
+
+                            <TextBlock Foreground="{DynamicResource darkTextBrush}" TextTrimming="CharacterEllipsis" TextAlignment="Center" Canvas.ZIndex="1000" Visibility="{Binding Converter={StaticResource pieHelperVisibilityConverter}}">
+                                <TextBlock.MaxWidth>
+                                    <Binding RelativeSource="{RelativeSource AncestorType=Canvas}" Path="ActualWidth" Converter="{StaticResource coefConverter}" ConverterParameter="0.5"></Binding>
+                                </TextBlock.MaxWidth>
+                                <Canvas.Left>
+                                    <MultiBinding Converter="{StaticResource coordinateConverter}" ConverterParameter="X">
+                                        <Binding Path="Middle"></Binding>
+                                        <Binding RelativeSource="{RelativeSource AncestorType=Canvas}" Path="ActualWidth" Converter="{StaticResource coefConverter}" ConverterParameter="0.5"></Binding>
+                                        <Binding RelativeSource="{RelativeSource AncestorType=Canvas}" Path="ActualHeight" Converter="{StaticResource coefConverter}" ConverterParameter="0.5"></Binding>
+                                        <Binding RelativeSource="{RelativeSource Self}" Path="ActualWidth"></Binding>
+                                        <Binding RelativeSource="{RelativeSource Self}" Path="ActualHeight"></Binding>
+                                    </MultiBinding>
+                                </Canvas.Left>
+                                <Canvas.Top>
+                                    <MultiBinding Converter="{StaticResource coordinateConverter}" ConverterParameter="Y">
+                                        <Binding Path="Middle"></Binding>
+                                        <Binding RelativeSource="{RelativeSource AncestorType=Canvas}" Path="ActualWidth" Converter="{StaticResource coefConverter}" ConverterParameter="0.5"></Binding>
+                                        <Binding RelativeSource="{RelativeSource AncestorType=Canvas}" Path="ActualHeight" Converter="{StaticResource coefConverter}" ConverterParameter="0.5"></Binding>
+                                        <Binding RelativeSource="{RelativeSource Self}" Path="ActualWidth"></Binding>
+                                        <Binding RelativeSource="{RelativeSource Self}" Path="ActualHeight"></Binding>
+                                    </MultiBinding>
+                                </Canvas.Top>
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource labelsConverter}">
+                                        <Binding Path="."></Binding>
+                                        <Binding ElementName="MySelf" Path="LabelsContent"></Binding>
+                                        <Binding ElementName="MySelf" Path="Format"></Binding>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                        </Canvas>
+
+                    </Grid>
+
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </local:ConstrainedGrid>
+
+</local:DashboardWidgetBase>

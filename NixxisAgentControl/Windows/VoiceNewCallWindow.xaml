@@ -1,0 +1,49 @@
+﻿<Window x:Class="Nixxis.Client.Agent.VoiceNewCallWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+        xmlns:local="clr-namespace:Nixxis.Client.Agent"
+        xmlns:clientLink="clr-namespace:Nixxis.Client;assembly=NixxisClientLink"
+        Focusable="True"
+        WindowStyle="SingleBorderWindow"
+        xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+        Topmost="True"
+        ShowInTaskbar="False"        
+        Background="Transparent" 
+        WindowStartupLocation="CenterOwner"
+        Icon="../Images/Ico/ManualCall.ico"
+        Title="{Binding Source={x:Static crs:TranslationContext.Default}, Converter={x:Static nixxis:TranslationConverter.Default}, ConverterParameter='Manual call'}" Height="280" Width="320">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisPanel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisDataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <local:ObjectToBoolConverter x:Key="objectToBoolConverter"></local:ObjectToBoolConverter>
+        </ResourceDictionary>
+    </Window.Resources>
+    <!--<Grid>
+        <local:VoiceNewCallControl Grid.Row="0" x:Name="NewCallCrtl"></local:VoiceNewCallControl>
+    </Grid>-->
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <!--<RowDefinition Height="30"></RowDefinition>-->
+        </Grid.RowDefinitions>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#7c7c7c" Offset="0"/>
+                <GradientStop Color="#aeaeae" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <local:VoiceNewCallControl x:Name="NewCallCrtl"></local:VoiceNewCallControl>
+    </Grid>
+</Window>

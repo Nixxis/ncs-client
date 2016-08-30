@@ -1,0 +1,219 @@
+﻿<UserControl x:Class="Nixxis.Client.Admin.AdminFrameSet"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+             xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+             mc:Ignorable="d" 
+             xmlns:local="clr-namespace:Nixxis.Client.Admin"
+             d:DesignHeight="300" d:DesignWidth="300" Focusable="true"
+             Name="MySelf"  >
+
+    <UserControl.InputBindings>
+        <KeyBinding Command="local:AdminFrameSet.SwitchCategory" Gesture="CTRL+TAB"></KeyBinding>
+    </UserControl.InputBindings>
+    
+    <UserControl.CommandBindings>
+        <CommandBinding Command="local:AdminFrameSet.PauseOutboundActivities" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.UnpauseOutboundActivities" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.PauseInboundActivities" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.UnpauseInboundActivities" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.PauseChatActivities" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.UnpauseChatActivities" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.PauseMailActivities" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.UnpauseMailActivities" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+
+        <CommandBinding Command="local:AdminFrameSet.PauseActivity" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.UnpauseActivity" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.AffectToCore" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.AffectToCampaign" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.AffectToActivities" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>        
+        <CommandBinding Command="local:AdminFrameSet.ShowCategory" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.SwitchCategory" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+
+        <CommandBinding Command="local:AdminFrameSet.CommitChanges" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+
+    </UserControl.CommandBindings>
+
+    <UserControl.Resources>
+
+        <ResourceDictionary>
+            
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisPanel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisTabControl.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisDataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+            <crs:TranslationContext Context="AdminFrameSet" x:Key="tcx"></crs:TranslationContext>
+
+            <local:RightsConverter x:Key="rightsConverter"></local:RightsConverter><local:InvertedRightsConverter x:Key="invertedRightsConverter"></local:InvertedRightsConverter>
+
+            <nixxis:NixxisExpandPanel x:Key="AdminPanel" Name="AdminPanel" Title="General" nixxis:NixxisGrid.Panel="Left" MinimumNumberOfHorizontalItems="5" MinimumNumberOfVerticalItems="2"  >
+
+                <nixxis:NixxisButton Name="btnAdm" MouseDoubleClick="StartButton_MouseDoubleClick" DropDownReplaceContent="False" KeepDropDownButton="True" ClickMeansDropDown="True" nixxis:NixxisBasePanel.Priority="4" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application_Administrator.png">Administrator
+                    <nixxis:NixxisButton.DropDown>
+                        <nixxis:NixxisContextMenu>
+                            <nixxis:NixxisButton Command="nixxis:GeneralCommands.ShowApplication" CommandParameter="agt" nixxis:NixxisButton.DropDownCloser="True" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application_Agent.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Agent'}"></nixxis:NixxisButton>
+                            <nixxis:NixxisButton Command="nixxis:GeneralCommands.ShowApplication" CommandParameter="sup" nixxis:NixxisButton.DropDownCloser="True" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application_Supervisor.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Supervisor'}"></nixxis:NixxisButton>
+                            <nixxis:NixxisButton Command="nixxis:GeneralCommands.ShowApplication" CommandParameter="adm" nixxis:NixxisButton.DropDownCloser="True" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application_Administrator.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Administrator'}"></nixxis:NixxisButton>
+                            <nixxis:NixxisButton Command="nixxis:GeneralCommands.ShowApplication" CommandParameter="rec" nixxis:NixxisButton.DropDownCloser="True" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application_RecordingTool.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Recording Tool'}"></nixxis:NixxisButton>
+                            <nixxis:NixxisButton Command="nixxis:GeneralCommands.ShowApplication" CommandParameter="rpt" nixxis:NixxisButton.DropDownCloser="True" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application_Reporting.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Reporting Tool'}"></nixxis:NixxisButton>
+
+                        </nixxis:NixxisContextMenu>
+                    </nixxis:NixxisButton.DropDown>
+                </nixxis:NixxisButton>
+
+                <nixxis:NixxisButton MouseDoubleClick="NixxisButton_MouseDoubleClick" nixxis:NixxisBasePanel.Priority="5" Command="local:AdminFrameSet.CommitChanges" CommandParameter="" CommandTarget="{Binding}" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application_Save.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Commit changes'}"></nixxis:NixxisButton>
+
+                <nixxis:NixxisButton local:RightsManagement.Rights="Application.Agents" Name="CategoryAgents" IsToggleButton="True" IsChecked="{Binding Source={x:Static local:AdminFrameSet.ShowCategory}, Path=State, Mode=TwoWay, Converter={StaticResource EqConverter}, ConverterParameter=agents}" nixxis:NixxisBasePanel.Priority="5" Command="local:AdminFrameSet.ShowCategory" CommandParameter="agents" CommandTarget="{Binding}" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Admin_Agent.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Agents'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton local:RightsManagement.Rights="Application.Skills" Name="CategorySkills" IsToggleButton="True" IsChecked="{Binding Source={x:Static local:AdminFrameSet.ShowCategory}, Path=State, Mode=TwoWay, Converter={StaticResource EqConverter}, ConverterParameter=skills}" nixxis:NixxisBasePanel.Priority="5" Command="local:AdminFrameSet.ShowCategory" CommandParameter="skills" CommandTarget="{Binding}" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Admin_Skill.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Skills'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton local:RightsManagement.Rights="Application.Languages" Name="CategoryLanguages" IsToggleButton="True" IsChecked="{Binding Source={x:Static local:AdminFrameSet.ShowCategory}, Path=State, Mode=TwoWay, Converter={StaticResource EqConverter}, ConverterParameter=languages}" nixxis:NixxisBasePanel.Priority="5" Command="local:AdminFrameSet.ShowCategory" CommandParameter="languages" CommandTarget="{Binding}" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Admin_Language.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Languages'}"></nixxis:NixxisButton>
+                <StackPanel Name="CategoryTeams" local:RightsManagement.Rights="Application.Teams" >
+                    <nixxis:NixxisButton IsVisibleChanged="NixxisButton_IsVisibleChanged" Visibility="{Binding Source={x:Static local:AdminFrameSet.Settings}, Path=IsFullVersion, Converter={StaticResource VisWithCollapseConverter}}" IsToggleButton="True" IsChecked="{Binding Source={x:Static local:AdminFrameSet.ShowCategory}, Path=State, Mode=TwoWay, Converter={StaticResource EqConverter}, ConverterParameter=teams}" nixxis:NixxisBasePanel.Priority="5" Command="local:AdminFrameSet.ShowCategory" CommandParameter="teams" CommandTarget="{Binding}" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Admin_Team.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Teams'}"></nixxis:NixxisButton>
+                </StackPanel>
+                <StackPanel Name="CategoryQueues" local:RightsManagement.Rights="Application.Queues" >
+                    <nixxis:NixxisButton IsVisibleChanged="NixxisButton_IsVisibleChanged" Visibility="{Binding Source={x:Static local:AdminFrameSet.Settings}, Path=IsFullVersion, Converter={StaticResource VisWithCollapseConverter}}" IsToggleButton="True" IsChecked="{Binding Source={x:Static local:AdminFrameSet.ShowCategory}, Path=State, Mode=TwoWay, Converter={StaticResource EqConverter}, ConverterParameter=queues}" nixxis:NixxisBasePanel.Priority="5" Command="local:AdminFrameSet.ShowCategory" CommandParameter="queues" CommandTarget="{Binding}" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Admin_Queue.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Queues'}"></nixxis:NixxisButton>
+                </StackPanel>                
+                <nixxis:NixxisButton local:RightsManagement.Rights="Application.Campaigns" Name="CategoryCampaigns" IsToggleButton="True" IsChecked="{Binding Source={x:Static local:AdminFrameSet.ShowCategory}, Path=State, Mode=TwoWay, Converter={StaticResource EqConverter}, ConverterParameter=campaigns}" nixxis:NixxisBasePanel.Priority="5" Command="local:AdminFrameSet.ShowCategory" CommandParameter="campaigns" CommandTarget="{Binding}" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Admin_Campaign.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Campaigns'}"></nixxis:NixxisButton>
+
+                <nixxis:NixxisButton local:RightsManagement.Rights="Application.Advanced" DropDownReplaceIsChecked="True" KeepDropDownButton="True" ClickMeansDropDown="True" nixxis:NixxisBasePanel.Priority="5" Foreground="{StaticResource RedGradient}" ImageSource="Images\Categories_Advanced.png"  Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Advanced'}" >
+                    <nixxis:NixxisButton.DropDown>
+                        <nixxis:NixxisContextMenu>
+
+                            <StackPanel local:RightsManagement.Rights="Application.Advanced.Preprocessors" Name="CategoryPreprocessors">
+                                <nixxis:NixxisButton  Visibility="{Binding Source={x:Static local:AdminFrameSet.Settings}, Path=IsFullVersion, Converter={StaticResource VisWithCollapseConverter}}" IsToggleButton="True" IsChecked="{Binding Source={x:Static local:AdminFrameSet.ShowCategory}, Path=State, Mode=TwoWay, Converter={StaticResource EqConverter}, ConverterParameter=preprocessors}"  nixxis:NixxisButton.DropDownCloser="True" Command="local:AdminFrameSet.ShowCategory" CommandParameter="preprocessors" CommandTarget="{Binding}" Foreground="{StaticResource RedGradient}" ImageSource="Images\Admin_Preprocessor.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Preprocessors'}"></nixxis:NixxisButton>
+                            </StackPanel>
+
+                            <StackPanel local:RightsManagement.Rights="Application.Advanced.Locations" Name="CategoryLocations">
+                                <nixxis:NixxisButton nixxis:NixxisButton.DropDownCloser="True" Command="local:AdminFrameSet.ShowCategory" CommandParameter="locations" CommandTarget="{Binding}" Foreground="{StaticResource RedGradient}" ImageSource="Images\Admin_Location.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Locations'}">
+                                    <nixxis:NixxisButton.Visibility>
+                                        <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                            <Binding Source="{x:Static local:AdminFrameSet.Settings}" Path="IsFullVersion"></Binding>
+                                            <Binding Source="{x:Static local:AdminFrameSet.Settings}" Path="IsNotCloudOrSuperUser" ></Binding>
+                                        </MultiBinding>
+                                    </nixxis:NixxisButton.Visibility>
+                                </nixxis:NixxisButton>
+                            </StackPanel>
+
+                            <nixxis:NixxisButton local:RightsManagement.Rights="Application.Advanced.Prompts" Name="CategoryPrompts" nixxis:NixxisButton.DropDownCloser="True" Command="local:AdminFrameSet.ShowCategory" CommandParameter="prompts" CommandTarget="{Binding}" Foreground="{StaticResource RedGradient}" ImageSource="Images\Admin_Prompt.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Prompts'}"></nixxis:NixxisButton>
+
+                            <StackPanel local:RightsManagement.Rights="Application.Advanced.Phones" Name="CategoryPhones">
+                                <nixxis:NixxisButton nixxis:NixxisButton.DropDownCloser="True" Command="local:AdminFrameSet.ShowCategory" CommandParameter="phones" CommandTarget="{Binding}" Foreground="{StaticResource RedGradient}" ImageSource="Images\Admin_Phone.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Phones'}">
+                                    <nixxis:NixxisButton.Visibility >
+                                        <Binding Source="{x:Static local:AdminFrameSet.Settings}" Path="IsNotCloudOrSuperUser" Converter="{StaticResource VisWithCollapseConverter}"></Binding>
+                                    </nixxis:NixxisButton.Visibility>
+                                </nixxis:NixxisButton>
+                            </StackPanel>
+
+                            <StackPanel local:RightsManagement.Rights="Application.Advanced.Resources" Name="CategoryResources">
+                                <nixxis:NixxisButton nixxis:NixxisButton.DropDownCloser="True" Command="local:AdminFrameSet.ShowCategory" CommandParameter="resources" CommandTarget="{Binding}" Foreground="{StaticResource RedGradient}" ImageSource="Images\Admin_Resource.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Resources'}">
+                                    <nixxis:NixxisButton.Visibility>
+                                        <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                            <Binding Source="{x:Static local:AdminFrameSet.Settings}" Path="IsFullVersion"></Binding>
+                                            <Binding Source="{x:Static local:AdminFrameSet.Settings}" Path="IsNotCloudOrSuperUser"></Binding>
+                                        </MultiBinding>
+                                    </nixxis:NixxisButton.Visibility>
+                                </nixxis:NixxisButton>
+                            </StackPanel>
+
+                            <nixxis:NixxisButton local:RightsManagement.Rights="Application.Advanced.Plannings" Name="CategoryPlannings" IsToggleButton="True" IsChecked="{Binding Source={x:Static local:AdminFrameSet.ShowCategory}, Path=State, Mode=TwoWay, Converter={StaticResource EqConverter}, ConverterParameter=plannings}"  nixxis:NixxisButton.DropDownCloser="True" Command="local:AdminFrameSet.ShowCategory" CommandParameter="plannings" CommandTarget="{Binding}" Foreground="{StaticResource RedGradient}" ImageSource="Images\Admin_Planification.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Plannings'}"></nixxis:NixxisButton>
+                            
+                            <nixxis:NixxisButton local:RightsManagement.Rights="Application.Advanced.Appointments" Name="CategoryAppointments" nixxis:NixxisButton.DropDownCloser="True" Command="local:AdminFrameSet.ShowCategory" CommandParameter="appointments" CommandTarget="{Binding}" Foreground="{StaticResource RedGradient}" ImageSource="Images\Admin_Appointment.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Appointments'}"></nixxis:NixxisButton>
+                            
+                            <nixxis:NixxisButton local:RightsManagement.Rights="Application.Advanced.Pauses" Name="CategoryPauses" nixxis:NixxisButton.DropDownCloser="True" Command="local:AdminFrameSet.ShowCategory" CommandParameter="pauses" CommandTarget="{Binding}" Foreground="{StaticResource RedGradient}" ImageSource="Images\Admin_Pause.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Pauses'}"></nixxis:NixxisButton>
+
+                            <nixxis:NixxisButton local:RightsManagement.Rights="Application.Advanced.Roles" Name="CategoryRoles" nixxis:NixxisButton.DropDownCloser="True" Command="local:AdminFrameSet.ShowCategory" CommandParameter="roles" CommandTarget="{Binding}" Foreground="{StaticResource RedGradient}" ImageSource="Images\Admin_Rights.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Roles'}"></nixxis:NixxisButton>
+
+                            <nixxis:NixxisButton local:RightsManagement.Rights="Application.Advanced.SecurityContexts" Name="CategorySecurityContexts" nixxis:NixxisButton.DropDownCloser="True" Command="local:AdminFrameSet.ShowCategory" CommandParameter="securitycontexts" CommandTarget="{Binding}" Foreground="{StaticResource RedGradient}" ImageSource="Images\Admin_Security.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Security contexts'}"></nixxis:NixxisButton>
+
+                            <StackPanel local:RightsManagement.Rights="Application.Advanced.CallbackRules" Name="CategoryCallbackRules">
+                                <nixxis:NixxisButton Visibility="{Binding Source={x:Static local:AdminFrameSet.Settings}, Path=IsFullVersion, Converter={StaticResource VisWithCollapseConverter}}" nixxis:NixxisButton.DropDownCloser="True" Command="local:AdminFrameSet.ShowCategory" CommandParameter="callbackrulesets" CommandTarget="{Binding}" Foreground="{StaticResource RedGradient}" ImageSource="Images\Admin_Callback rule.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Callback rules'}"></nixxis:NixxisButton>
+                            </StackPanel>
+
+                            <StackPanel local:RightsManagement.Rights="Application.Advanced.AmdSettings" Name="CategoryAmdSettings">
+                                <nixxis:NixxisButton Visibility="{Binding Source={x:Static local:AdminFrameSet.Settings}, Path=IsFullVersion, Converter={StaticResource VisWithCollapseConverter}}" nixxis:NixxisButton.DropDownCloser="True" Command="local:AdminFrameSet.ShowCategory" CommandParameter="amdsettings" CommandTarget="{Binding}" Foreground="{StaticResource RedGradient}" ImageSource="Images\Admin_AmdSettings.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Amd settings'}"></nixxis:NixxisButton>
+                            </StackPanel>
+
+                            <StackPanel local:RightsManagement.Rights="Application.Advanced.Carriers" Name="CategoryCarriers">
+                                <nixxis:NixxisButton nixxis:NixxisButton.DropDownCloser="True" Command="local:AdminFrameSet.ShowCategory" CommandParameter="carriers" CommandTarget="{Binding}" Foreground="{StaticResource RedGradient}" ImageSource="Images\Admin_Carrier.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Carriers'}">
+                                    <nixxis:NixxisButton.Visibility >
+                                        <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                            <Binding Source="{x:Static local:AdminFrameSet.Settings}" Path="IsFullVersion"></Binding>
+                                            <Binding Source="{x:Static local:AdminFrameSet.Settings}" Path="IsNotCloudOrSuperUser" ></Binding>
+                                        </MultiBinding>
+                                    </nixxis:NixxisButton.Visibility>
+                                </nixxis:NixxisButton>
+                            </StackPanel>
+
+                            <StackPanel local:RightsManagement.Rights="Application.Advanced.GlobalSettings"  Name="CategoryGlobalSettings">
+                                <nixxis:NixxisButton nixxis:NixxisButton.DropDownCloser="True" Command="local:AdminFrameSet.ShowCategory" CommandParameter="globalsettings" CommandTarget="{Binding}" Foreground="{StaticResource RedGradient}" ImageSource="Images\Admin_Various.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Global settings'}"></nixxis:NixxisButton>
+                            </StackPanel>
+
+                        </nixxis:NixxisContextMenu>
+                    </nixxis:NixxisButton.DropDown>
+                </nixxis:NixxisButton>
+
+                <nixxis:NixxisButton Visibility="{Binding Source={x:Static local:AdminFrameSet.Settings}, Path=IsVersionSwitchAllowed, Converter={StaticResource VisWithCollapseConverter}}" Foreground="{StaticResource OrangeGradient}" nixxis:NixxisBasePanel.Priority="5" ImageSource="Images\Action_ShowAdvanced.png" IsToggleButton="True" IsChecked="{Binding Source={x:Static local:AdminFrameSet.Settings}, Path=IsFullVersion, Mode=TwoWay}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Full version'}"></nixxis:NixxisButton>
+                
+
+                <nixxis:NixxisButton  Foreground="{StaticResource OrangeGradient}" nixxis:NixxisBasePanel.Priority="5" ImageSource="Images\Action_Orientation.png" IsToggleButton="True" IsChecked="{Binding Source={x:Static local:AdminFrameSet.Settings}, Path=IsOrientationHorizontal, Mode=TwoWay}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Swap Orientation'}"></nixxis:NixxisButton>
+                
+            </nixxis:NixxisExpandPanel>
+
+            <DataTemplate x:Key="ExtraView">
+                <nixxis:CoverflowElement Visibility="{Binding ProgressVisibility}" Margin="5" IsChecked="true">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>                            
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>                            
+                        </Grid.ColumnDefinitions>
+                        <ProgressBar Style="{x:Null}" Value="{Binding ProgressValue}" Height="15" Grid.ColumnSpan="3" Margin="20,5,20,0"></ProgressBar>
+                        <TextBlock Text="{nixxis:FormatString BindTo={Binding ProgressValue}, FormatString='{}{0}%'}" Grid.ColumnSpan="3"  Margin="20,5,20,0" TextAlignment="Center"></TextBlock>
+                        <Label Grid.Row="1" Grid.Column="1" Content="{Binding ProgressDescription }"></Label>
+                    </Grid>
+                </nixxis:CoverflowElement>
+            </DataTemplate>
+            <nixxis:NixxisExpandCoverFlowPanel x:Key="DetailsPanel2"  
+                ItemsSource="{Binding}" Title="Details" nixxis:NixxisGrid.Panel="Right" ItemsWidth="350" ItemTemplate="{StaticResource ExtraView}"/>
+
+        </ResourceDictionary>
+
+    </UserControl.Resources>
+
+
+    <Grid Name="containerGrid" Background="{StaticResource BackgroundBrush}" >
+        <local:AgentsControl x:Name="agents" Tag="adminctrl" Visibility="Collapsed" Grid.Column="1" DataContext="{Binding Path=TheCore, ElementName=MySelf}"/>
+        <local:SkillsControl x:Name="skills" Tag="adminctrl" Visibility="Collapsed" Grid.Column="1" DataContext="{Binding Path=TheCore, ElementName=MySelf}"/>
+        <local:LanguagesControl x:Name="languages" Tag="adminctrl" Visibility="Collapsed" Grid.Column="1" DataContext="{Binding Path=TheCore, ElementName=MySelf}"/>
+        <local:TeamsControl x:Name="teams" Tag="adminctrl" Visibility="Collapsed" Grid.Column="1" DataContext="{Binding Path=TheCore, ElementName=MySelf}"/>
+        <local:QueuesControl x:Name="queues" Tag="adminctrl" Visibility="Collapsed" Grid.Column="1" DataContext="{Binding Path=TheCore, ElementName=MySelf}"/>
+        <local:CampaignsControl x:Name="campaigns" Tag="adminctrl" Visibility="Collapsed" Grid.Column="1" DataContext="{Binding Path=TheCore, ElementName=MySelf}"/>
+        <local:PreprocessorsControl x:Name="preprocessors" Tag="adminctrl" Visibility="Collapsed" Grid.Column="1" DataContext="{Binding Path=TheCore, ElementName=MySelf}"/>
+        <local:PlanningsControl x:Name="plannings" Tag="adminctrl" Visibility="Collapsed" Grid.Column="1" DataContext="{Binding Path=TheCore, ElementName=MySelf}"/>
+        <local:PromptsControl x:Name="prompts" Tag="adminctrl" Visibility="Collapsed" Grid.Column="1" DataContext="{Binding Path=TheCore, ElementName=MySelf}"/>        
+        <local:PhonesControl x:Name="phones" Tag="adminctrl" Visibility="Collapsed" Grid.Column="1" DataContext="{Binding Path=TheCore, ElementName=MySelf}"/>
+        <local:PausesControl x:Name="pauses" Tag="adminctrl" Visibility="Collapsed" Grid.Column="1" DataContext="{Binding Path=TheCore, ElementName=MySelf}"/>
+        <local:RolesControl x:Name="roles" Tag="adminctrl" Visibility="Collapsed" Grid.Column="1" DataContext="{Binding Path=TheCore, ElementName=MySelf}"/>
+        <local:SecurityContextsControl x:Name="securitycontexts" Tag="adminctrl" Visibility="Collapsed" Grid.Column="1" DataContext="{Binding Path=TheCore, ElementName=MySelf}"/>
+        <local:LocationsControl x:Name="locations" Tag="adminctrl" Visibility="Collapsed" Grid.Column="1" DataContext="{Binding Path=TheCore, ElementName=MySelf}"/>
+        <local:ResourcesControl x:Name="resources" Tag="adminctrl" Visibility="Collapsed" Grid.Column="1" DataContext="{Binding Path=TheCore, ElementName=MySelf}"/>
+        <local:CallbackRulesetsControl x:Name="callbackrulesets" Tag="adminctrl" Visibility="Collapsed" Grid.Column="1" DataContext="{Binding Path=TheCore, ElementName=MySelf}"/>
+        <local:GlobalSettingsControl x:Name="globalsettings" Tag="adminctrl" Visibility="Collapsed" Grid.Column="1" DataContext="{Binding Path=TheCore, ElementName=MySelf}"/>
+        <local:AppointmentsControl x:Name="appointments" Tag="adminctrl" Visibility="Collapsed" Grid.Column="1" DataContext="{Binding Path=TheCore, ElementName=MySelf}"/>
+        <local:AmdSettingsControl x:Name="amdsettings" Tag="adminctrl" Visibility="Collapsed" Grid.Column="1" DataContext="{Binding Path=TheCore, ElementName=MySelf}"/>
+        <local:CarriersControl x:Name="carriers" Tag="adminctrl" Visibility="Collapsed" Grid.Column="1" DataContext="{Binding Path=TheCore, ElementName=MySelf}"/>
+    </Grid>
+</UserControl>

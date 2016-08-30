@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<modules>
+  <module name="ApplicationHost">
+    <version build="2.0.2.17" date="21/12/2012">
+      <note type="Bug">(BUG-323)</note>
+    </version>
+
+    <version build="2.0.0.12" date="22/03/2012">
+      <note type="Improvement">Handling agent Gui language selection.</note>
+    </version>
+
+    <version build="2.0.0.10" date="08/02/2012">
+      <note type="Improvement">Translations related.</note>
+    </version>
+
+    <version build="2.0.0.9" date="02/02/2012">
+      <note type="Improvement">Background load removed.</note>
+    </version>
+
+    <version build="2.0.0.8" date="18/01/2012">
+      <note type="Improvement">Partial load.</note>
+    </version>
+
+    <version build="2.0.0.7" date="19/12/2011">
+      <note type="Improvement">Background load.</note>
+    </version>
+
+    <version build="2.0.0.6" date="07/12/2011">
+      <note type="Improvement">True load progress is displayed.</note>
+    </version>
+
+    <version build="2.0.0.5" date="08/11/2011">
+      <note type="">Load progress is displayed.</note>
+    </version>
+
+    <version build="2.0.0.4" date="26/10/2011">
+      <note type="">Stand alone mode is allowed.</note>
+    </version>
+
+    <version build="2.0.0.3" date="21/10/2011">
+      <note type="">Loading of translations</note>
+    </version>
+
+    <version build="2.0.0.1" date="20/09/2011">
+      <note type="">First release</note>
+    </version>
+  </module>
+</modules>

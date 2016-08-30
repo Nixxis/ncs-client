@@ -1,0 +1,319 @@
+﻿<UserControl x:Class="Nixxis.Client.Admin.RolesControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+             xmlns:local="clr-namespace:Nixxis.Client.Admin"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             Name="MySelf">
+
+
+    <UserControl.CommandBindings>
+        <CommandBinding Command="local:AdminFrameSet.AdminObjectAddOperation" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.AdminObjectDuplicateOperation" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.AdminObjectDeleteOperation" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.AdminObjectPrintOperation" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+        <CommandBinding Command="local:AdminFrameSet.ShowObject" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+
+    </UserControl.CommandBindings>
+    
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <local:RightsConverter x:Key="rightsConverter"></local:RightsConverter><local:InvertedRightsConverter x:Key="invertedRightsConverter"></local:InvertedRightsConverter>
+
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+
+            <crs:TranslationContext x:Key="tcx" Context="RolesControl"  ></crs:TranslationContext>
+
+
+            <CollectionViewSource x:Key="List" Source="{Binding Roles}">
+            </CollectionViewSource>
+            
+            <local:WaitTimeConverter x:Key="WTConverter"/>
+
+            <local:ComboListConverter x:Key="cboConverter" />
+
+            <local:DurationConverter3 x:Key="durationConverter3" />
+
+            <local:DurationConverter x:Key="durationConverter" />
+
+
+            <local:ComboStringListConverter x:Key="cboStringConverter" />
+
+            <sys:Single x:Key="-1F">-1</sys:Single>
+            <sys:Int32 x:Key="-1">-1</sys:Int32>
+            <sys:Int32 x:Key="1">1</sys:Int32>
+
+
+            <local:AdminObjectConverter x:Key="adminObjectConverter"></local:AdminObjectConverter>
+
+            <nixxis:NixxisExpandPanel x:Key="AdminPanel" Title="Administration toolbar" nixxis:NixxisGrid.Panel="CenterLeft">
+                <nixxis:NixxisButton local:RightsManagement.Rights="Role.Add" Command="local:AdminFrameSet.AdminObjectAddOperation" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Action_Add.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Add'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton local:RightsManagement.Rights="Role.Duplicate" Command="local:AdminFrameSet.AdminObjectDuplicateOperation" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Action_Duplicate.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Duplicate'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton local:RightsManagement.Rights="Role.Delete" Command="local:AdminFrameSet.AdminObjectDeleteOperation"  CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Action_Delete.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Delete'}"></nixxis:NixxisButton>
+                <nixxis:NixxisButton local:RightsManagement.Rights="Role.Print" Command="local:AdminFrameSet.AdminObjectPrintOperation" CommandTarget="{Binding}" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Action_Print.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Print'}"></nixxis:NixxisButton>
+            </nixxis:NixxisExpandPanel>
+
+            <DataTemplate x:Key="FullView">
+                <nixxis:CoverflowElement Margin="5" IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPresenter}}, Path=(nixxis:NixxisCoverFlowPanel.IsSelected), Mode=TwoWay}">
+                    <StackPanel Margin="5" Orientation="Vertical">
+
+                        <Label Content="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Role {0}',BindTo={Binding DisplayText}}" ></Label>
+
+                        <Label>
+                            <Label.Content>
+                                <nixxis:FormatStringExtension TranslationContext="{StaticResource tcx}" FormatString="Created at {0:dd/MM/yyy HH:mm} by {1}">
+                                    <nixxis:FormatStringExtension.BindTo>
+                                        <MultiBinding>
+                                            <Binding Path="CreationTime"></Binding>
+                                            <Binding Path="Creator"></Binding>
+                                        </MultiBinding>
+                                    </nixxis:FormatStringExtension.BindTo>
+                                </nixxis:FormatStringExtension>
+                            </Label.Content>
+                        </Label>
+
+                        <Label>
+                            <nixxis:FormatStringExtension TranslationContext="{StaticResource tcx}" FormatString="Modified at {0:dd/MM/yyy HH:mm} by {1}">
+                                <nixxis:FormatStringExtension.BindTo>
+                                    <MultiBinding>
+                                        <Binding Path="ModifyTime"></Binding>
+                                        <Binding Path="Modificator"></Binding>
+                                    </MultiBinding>
+                                </nixxis:FormatStringExtension.BindTo>
+                            </nixxis:FormatStringExtension>
+                        </Label>
+
+                    </StackPanel>
+
+                </nixxis:CoverflowElement>
+
+            </DataTemplate>
+
+            <nixxis:NixxisExpandCoverFlowPanel x:Key="DetailsPanel" ItemsSource="{Binding Source={StaticResource List}, Path=CurrentItem}" Title="Details" nixxis:NixxisGrid.Panel="CenterRight" ItemTemplate="{StaticResource FullView}" ItemsWidth="350"/>
+
+        </ResourceDictionary>
+        
+    </UserControl.Resources>
+
+    <nixxis:PresentationGrid Orientation="{Binding Source={x:Static local:AdminFrameSet.Settings}, Path=PanelsOrientation}" >
+
+        <ComboBox Name="cboFilter" nixxis:PresentationGrid.Meaning="Filter" Margin="5,0,0,0" ItemsSource="{Binding GroupKeysSameType, Converter={StaticResource cboStringConverter}}" DisplayMemberPath="DisplayText" SelectedValue="{x:Null}" SelectedValuePath="Id" DropDownOpened="ComboBox_DropDownOpened" DropDownClosed="ComboBox_DropDownClosed" ></ComboBox>
+
+
+        <nixxis:NixxisDataGrid nixxis:PresentationGrid.Meaning="List" BorderThickness="0" DefaultSortOrder="Description" Name="MainGrid" SelectedItem="{Binding ElementName=MySelf, Path=SelectedItem}" ItemsSource="{Binding Source={StaticResource List}}" CanUserAddRows="False" HeadersVisibility="Column" RowDetailsVisibilityMode="Collapsed" IsReadOnly="True">
+
+            <nixxis:NixxisDataGrid.Columns>
+
+                <DataGridTemplateColumn IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding ., Converter={StaticResource adminObjectConverter}}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <nixxis:NixxisDataGridTextColumn IsNotEditableBinding="{Binding IsSystem}"  EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Description'}" Binding="{Binding Description}" AlternateBinding="{Binding DisplayText, Mode=OneWay}" UseAlternateBinding="{Binding IsSystem}"></nixxis:NixxisDataGridTextColumn>
+
+                <DataGridTextColumn EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Group'}" Binding="{Binding GroupKey}"></DataGridTextColumn>
+            </nixxis:NixxisDataGrid.Columns>
+
+        </nixxis:NixxisDataGrid>
+
+        <nixxis:NixxisTabControl nixxis:PresentationGrid.Meaning="Properties" DataContext="{StaticResource List}" IsEnabled="{Binding ElementName=MainGrid, Path=SelectedIndex, Converter={StaticResource IneqConverter}, ConverterParameter={StaticResource -1}}">
+
+            <!--General-->
+            <nixxis:NixxisTabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Width="25" Height="25" Source="Images\AdminSmall_Rights.png"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='General'}"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                    <ScrollViewer CanContentScroll="False" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+
+                        <nixxis:NixxisStackPanel>
+
+                            <Label Visibility="{Binding Source={x:Static local:AdminFrameSet.Settings}, Path=IsDebug, Converter={StaticResource VisWithCollapseConverter}}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Id:'}"></Label>
+                            <TextBox Visibility="{Binding Source={x:Static local:AdminFrameSet.Settings}, Path=IsDebug, Converter={StaticResource VisWithCollapseConverter}}" IsReadOnly="True" 
+                                                Text="{Binding Id, Mode=OneWay}"></TextBox>
+
+                            <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Description:'}"></Label>
+                            <TextBox local:RightsManagement.Rights="Role.Description" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Role.Description}" Text="{Binding Description}"></TextBox>
+
+                            <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Group:'}"></Label>
+                            <ComboBox local:RightsManagement.Rights="Role.Group" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Role.Group}" ItemsSource="{Binding GroupKeys}" SelectedItem="{Binding GroupKey}" Text="{Binding GroupKey}" IsEditable="True"></ComboBox>
+
+                            <CheckBox local:RightsManagement.Rights="Role.NotAllowedMeansDenied" IsEnabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource rightsConverter}, ConverterParameter=Role.NotAllowedMeansDenied}" IsChecked="{Binding NotAllowedMeansDenied}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Not allowed means denied'}"/>
+
+                        </nixxis:NixxisStackPanel>
+                    </ScrollViewer>
+                        
+                    <GridSplitter IsTabStop="False" Grid.Column="1" Grid.RowSpan="10" Margin="5,0,5,0"  ResizeDirection="Columns" Width="2" VerticalAlignment="Stretch" HorizontalAlignment="Center"  ></GridSplitter>
+                    <ScrollViewer Grid.Column="2" CanContentScroll="False" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+
+                        <nixxis:NixxisStackPanel Grid.Column="2">
+
+
+
+                        </nixxis:NixxisStackPanel>
+                    </ScrollViewer>
+                </Grid>
+
+            </nixxis:NixxisTabItem>
+
+            <!--Agents-->
+            <nixxis:NixxisTabItem Name="Agents">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Width="25" Height="25" Source="Images\AdminSmall_Agent.png"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Members'}"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+
+                <nixxis:NixxisDataGrid local:RightsManagement.Rights="Role.Agents" IsDisabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource invertedRightsConverter}, ConverterParameter=Role.Agents}" DefaultSortOrder="Item.DisplayText" Name="DGAgents" EditMode="SingleClick"  Margin="10" ItemsSource="{Binding CheckedAgents}" CanUserAddRows="False" HeadersVisibility="Column" RowDetailsVisibilityMode="Collapsed"  >
+
+                    <nixxis:NixxisDataGrid.Columns>
+                        <DataGridTemplateColumn IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="Images\AdminSmall_Agent.png"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridCheckBoxColumn ElementStyle="{StaticResource DatagridCheckBox}" EditingElementStyle="{StaticResource {x:Type CheckBox}}" Binding="{Binding HasLink, UpdateSourceTrigger=PropertyChanged}"></DataGridCheckBoxColumn>                        
+                        <DataGridTextColumn IsReadOnly="True" EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Agent'}" Binding="{Binding Item.DisplayText}"></DataGridTextColumn>
+
+                    </nixxis:NixxisDataGrid.Columns>
+                    <nixxis:NixxisDataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Visibility="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsEnabled, Converter={StaticResource VisWithCollapseConverter}}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Go to definition'}" Command="local:AdminFrameSet.ShowObject" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"></MenuItem>
+                        </ContextMenu>
+                    </nixxis:NixxisDataGrid.ContextMenu>
+                </nixxis:NixxisDataGrid>
+
+            </nixxis:NixxisTabItem>
+
+            <!--Default rights-->
+            <nixxis:NixxisTabItem Name="Rights">
+                
+                <nixxis:NixxisTabItem.Visibility>
+                    <MultiBinding Converter="{StaticResource BoolMultiAndConverter}" TargetNullValue="Collapsed">
+                        <Binding Source="{x:Static local:AdminFrameSet.Settings}" Path="IsFullVersion"  ></Binding>
+                        <Binding Path="IsRightsHandlingAllowed"></Binding>
+                    </MultiBinding>
+                </nixxis:NixxisTabItem.Visibility>
+
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Width="25" Height="25" Source="Images\AdminSmall_Rights.png"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Default rights'}"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+
+
+
+                <nixxis:NixxisDataGrid local:RightsManagement.Rights="Roles.Rights" IsDisabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource invertedRightsConverter}, ConverterParameter=Roles.Rights}" Name="DGSubRights" EditMode="SingleClick" Margin="10" ItemsSource="{Binding Path=DefaultRights.Security}" CanUserAddRows="False" HeadersVisibility="Column" RowDetailsVisibilityMode="Collapsed"  >
+                    <nixxis:NixxisDataGrid.Columns>
+                        <DataGridTemplateColumn IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding ., Converter={StaticResource adminObjectConverter}}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTextColumn IsReadOnly="True" EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Right'}" Binding="{Binding RightDescription}"></DataGridTextColumn>
+
+                        <nixxis:NixxisDataGridCheckBoxColumn EnabledBinding="{Binding IsListAllowedEnabled}" VisibilityBinding="{Binding IsListAllowedVisible, Converter={StaticResource VisWithCollapseConverter}}" ElementStyle="{StaticResource DatagridCheckBox}" EditingElementStyle="{StaticResource {x:Type CheckBox}}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='List'}" Binding="{Binding ListAllowed, UpdateSourceTrigger=PropertyChanged}" IsThreeState="True">
+                        </nixxis:NixxisDataGridCheckBoxColumn>
+
+                        <nixxis:NixxisDataGridCheckBoxColumn EnabledBinding="{Binding IsReadAllowedEnabled}" VisibilityBinding="{Binding IsReadAllowedVisible, Converter={StaticResource VisWithCollapseConverter}}" ElementStyle="{StaticResource DatagridCheckBox}" EditingElementStyle="{StaticResource {x:Type CheckBox}}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Read'}" Binding="{Binding ReadAllowed, UpdateSourceTrigger=PropertyChanged}" IsThreeState="True">
+                        </nixxis:NixxisDataGridCheckBoxColumn>
+
+                        <nixxis:NixxisDataGridCheckBoxColumn EnabledBinding="{Binding IsWriteAllowedEnabled}" VisibilityBinding="{Binding IsWriteAllowedVisible, Converter={StaticResource VisWithCollapseConverter}}" ElementStyle="{StaticResource DatagridCheckBox}" EditingElementStyle="{StaticResource {x:Type CheckBox}}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Write'}" Binding="{Binding WriteAllowed, UpdateSourceTrigger=PropertyChanged}" IsThreeState="True" >
+                        </nixxis:NixxisDataGridCheckBoxColumn>
+
+                        <nixxis:NixxisDataGridCheckBoxColumn EnabledBinding="{Binding IsCreateAllowedEnabled}" VisibilityBinding="{Binding IsCreateAllowedVisible, Converter={StaticResource VisWithCollapseConverter}}" ElementStyle="{StaticResource DatagridCheckBox}" EditingElementStyle="{StaticResource {x:Type CheckBox}}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Create'}" Binding="{Binding CreateAllowed, UpdateSourceTrigger=PropertyChanged}" IsThreeState="True" >
+                        </nixxis:NixxisDataGridCheckBoxColumn>
+
+                        <nixxis:NixxisDataGridCheckBoxColumn EnabledBinding="{Binding IsDeleteAllowedEnabled}" VisibilityBinding="{Binding IsDeleteAllowedVisible, Converter={StaticResource VisWithCollapseConverter}}" ElementStyle="{StaticResource DatagridCheckBox}" EditingElementStyle="{StaticResource {x:Type CheckBox}}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Delete'}" Binding="{Binding DeleteAllowed, UpdateSourceTrigger=PropertyChanged}" IsThreeState="True" >
+                        </nixxis:NixxisDataGridCheckBoxColumn>
+
+                        <nixxis:NixxisDataGridCheckBoxColumn EnabledBinding="{Binding IsPowerUserEnabled}" VisibilityBinding="{Binding IsPowerUserVisible, Converter={StaticResource VisWithCollapseConverter}}" ElementStyle="{StaticResource DatagridCheckBox}" EditingElementStyle="{StaticResource {x:Type CheckBox}}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Power'}" Binding="{Binding PowerUser, UpdateSourceTrigger=PropertyChanged}" IsThreeState="True">
+                        </nixxis:NixxisDataGridCheckBoxColumn>
+
+                        <nixxis:NixxisDataGridCheckBoxColumn EnabledBinding="{Binding IsFullControlEnabled}" VisibilityBinding="{Binding IsFullControlVisible, Converter={StaticResource VisWithCollapseConverter}}" ElementStyle="{StaticResource DatagridCheckBox}" EditingElementStyle="{StaticResource {x:Type CheckBox}}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Full'}" Binding="{Binding FullControl, UpdateSourceTrigger=PropertyChanged}" IsThreeState="True" >
+                        </nixxis:NixxisDataGridCheckBoxColumn>
+
+                    </nixxis:NixxisDataGrid.Columns>
+
+
+                </nixxis:NixxisDataGrid>
+
+
+
+            </nixxis:NixxisTabItem>
+
+            <!--AdminObjects-->
+            <nixxis:NixxisTabItem Name="AdminObjects">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Width="25" Height="25" Source="Images\AdminSmall_Rights.png"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Objects'}"></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+
+                <Grid Margin="10" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='The list of objects associated to this role'}"></Label>
+                    <nixxis:NixxisDataGrid local:RightsManagement.Rights="Roles.AdminObjects" IsDisabled="{Binding ElementName=MySelf, Path=SelectedItem, Converter={StaticResource invertedRightsConverter}, ConverterParameter=Roles.AdminObjects}" DefaultSortOrder="SecuredAdminObject.DisplayText" Grid.Row="1" Name="DGAdminObjects" EditMode="SingleClick" ItemsSource="{Binding FilteredSecuredObjects}"  CanUserAddRows="False" HeadersVisibility="Column" RowDetailsVisibilityMode="Collapsed" SourceUpdated="DGAdminObjects_SourceUpdated" >
+                        <nixxis:NixxisDataGrid.Columns>
+                            <DataGridTemplateColumn IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding SecuredAdminObject, Converter={StaticResource adminObjectConverter}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn IsReadOnly="True" EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Object'}" Binding="{Binding SecuredAdminObject.DisplayText}"></DataGridTextColumn>
+                            <DataGridTextColumn IsReadOnly="True" EditingElementStyle="{StaticResource DatagridTextEdit}" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Rights'}" Binding="{Binding Rights}"></DataGridTextColumn>
+                        </nixxis:NixxisDataGrid.Columns>
+                        <nixxis:NixxisDataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Visibility="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsEnabled, Converter={StaticResource VisWithCollapseConverter}}"  Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Go to definition'}" Command="local:AdminFrameSet.ShowObject" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"></MenuItem>
+                            </ContextMenu>
+                        </nixxis:NixxisDataGrid.ContextMenu>
+                    </nixxis:NixxisDataGrid>
+                </Grid>
+            </nixxis:NixxisTabItem>
+
+
+        </nixxis:NixxisTabControl>
+
+    </nixxis:PresentationGrid>
+    
+</UserControl>

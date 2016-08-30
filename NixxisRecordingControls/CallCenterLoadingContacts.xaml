@@ -1,0 +1,68 @@
+﻿<Window x:Class="Nixxis.Client.Recording.CallCenterLoadingContacts"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:s="clr-namespace:System;assembly=mscorlib"
+        xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+        xmlns:local="clr-namespace:Nixxis.Client.Recording"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+        mc:Ignorable="d" 
+        d:DesignHeight="176" d:DesignWidth="300"
+        AllowsTransparency="True" 
+        Background="Transparent" 
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        Loaded="Window_Loaded">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisPanel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisDataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+            <crs:TranslationContext x:Key="tcx" Context="CallCenterLoadingContacts"></crs:TranslationContext>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Border BorderThickness="1" BorderBrush="#a8a9a8" CornerRadius="13">
+        <Border.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#7c7c7c" Offset="0"/>
+                <GradientStop Color="#aeaeae" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.Background>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Label Name="lblHeading" Grid.Row="0" HorizontalAlignment="Center"  VerticalAlignment="Center" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Searching ...'}" FontFamily="Verdana" FontSize="14" Padding="5" Margin="0,5"></Label>
+
+            <ProgressBar Name="pbMain" Grid.Row="1" Height="20" Margin="4,5" IsIndeterminate="True"></ProgressBar>
+
+            <Label Name="lblFound" Grid.Row="2" FontFamily="Verdana" Foreground="White" HorizontalAlignment="Center" MinHeight="15"></Label>
+            <Label Name="lblStatus" Grid.Row="3" FontFamily="Verdana" Foreground="White" HorizontalAlignment="Center" MinHeight="15"></Label>
+
+            <Button Grid.Row="4" Name="btnCancel" IsEnabled="True" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Cancel}" HorizontalAlignment="Center" Click="Cancel_Click" Padding="10,0" Height="30" Margin="0,5"></Button>
+        </Grid>
+        <Border.Effect>
+            <DropShadowEffect ShadowDepth="2" Direction="-40" Opacity="0.3" BlurRadius="2"></DropShadowEffect>
+        </Border.Effect>
+
+    </Border>
+</Window>
+
+    

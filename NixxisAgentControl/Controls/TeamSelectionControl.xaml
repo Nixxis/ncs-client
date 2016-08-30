@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="Nixxis.Client.Agent.TeamSelectionControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+             xmlns:n="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControlsCommon"
+             xmlns:local="clr-namespace:Nixxis.Client.Agent"
+             xmlns:clientLink="clr-namespace:Nixxis.Client;assembly=NixxisClientLink"
+             Focusable="True"
+             Background="Transparent"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             Name="MySelf">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisPanel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisDataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <CollectionViewSource x:Key="TeamList" Source="{Binding ElementName=MySelf, Path=ItemSource}"></CollectionViewSource>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#7c7c7c" Offset="0"/>
+                <GradientStop Color="#aeaeae" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <n:NixxisAdvListBox 
+            VerticalAlignment="Center"
+            SelectionMode="Multiple" 
+            Height="{Binding ElementName=LayoutRoot, Path=ActualHeight}"
+            x:Name="lstTeam"    
+            ItemSourceList="{Binding Source={StaticResource TeamList}}"
+            DisplayMemberPath="Description"
+            IsSelectedMemberPath="Active">
+        </n:NixxisAdvListBox>
+        
+        <!--<ListBox VerticalAlignment="Center"
+                 Height="{Binding ElementName=LayoutRoot, Path=ActualHeight}" 
+                 ItemsSource="{Binding Source={StaticResource TeamList}}"
+                 DisplayMemberPath="Description"
+                 SelectedItem="{Binding ElementName=MySelf, Path=SelectedItem}"
+                 SelectionChanged="SelectionChanged">
+        </ListBox>-->
+
+    </Grid>
+</UserControl>

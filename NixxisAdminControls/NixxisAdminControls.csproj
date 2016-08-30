@@ -1,0 +1,919 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{67BDC57C-1E62-4000-AE32-3EB447AD0384}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Nixxis.Client.Admin</RootNamespace>
+    <AssemblyName>NixxisAdminControls</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NEWSAVE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NEWSAVE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\bin\debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NEWSAVE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NEWSAVE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NEWSAVE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\debug\Microsoft.ReportViewer.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdminFrameSet.xaml.cs">
+      <DependentUpon>AdminFrameSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AgentsControl.xaml.cs">
+      <DependentUpon>AgentsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CampaignsControl.xaml.cs">
+      <DependentUpon>CampaignsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CallbackRulesetsControl.xaml.cs">
+      <DependentUpon>CallbackRulesetsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AppointmentsControl.xaml.cs">
+      <DependentUpon>AppointmentsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AmdSettingsControl.xaml.cs">
+      <DependentUpon>AmdSettingsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CarriersControl.xaml.cs">
+      <DependentUpon>CarriersControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SecurityContextsControl.xaml.cs">
+      <DependentUpon>SecurityContextsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RolesControl.xaml.cs">
+      <DependentUpon>RolesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PromptsControl.xaml.cs">
+      <DependentUpon>PromptsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OutboundClosingHelper.xaml.cs">
+      <DependentUpon>OutboundClosingHelper.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PromptHelper.xaml.cs">
+      <DependentUpon>PromptHelper.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\SFS\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgAddSecurityContext.xaml.cs">
+      <DependentUpon>DlgAddSecurityContext.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgAddRole.xaml.cs">
+      <DependentUpon>DlgAddRole.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgStdMusicConfigure.xaml.cs">
+      <DependentUpon>DlgStdMusicConfigure.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgAddDemo.xaml.cs">
+      <DependentUpon>DlgAddDemo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgBlackList3Config.xaml.cs">
+      <DependentUpon>DlgBlackList3Config.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgBlackList2Config.xaml.cs">
+      <DependentUpon>DlgBlackList2Config.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgBlackList1Config.xaml.cs">
+      <DependentUpon>DlgBlackList1Config.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgRemoveCarrier.xaml.cs">
+      <DependentUpon>DlgRemoveCarrier.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgPrint.xaml.cs">
+      <DependentUpon>DlgPrint.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgAddCarrier.xaml.cs">
+      <DependentUpon>DlgAddCarrier.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgStdCallbackConfigure.xaml.cs">
+      <DependentUpon>DlgStdCallbackConfigure.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgAddGlobalPrompt.xaml.cs">
+      <DependentUpon>DlgAddGlobalPrompt.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgStdPreprocessorConfigure.xaml.cs">
+      <DependentUpon>DlgStdPreprocessorConfigure.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgManageData.xaml.cs">
+      <DependentUpon>DlgManageData.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgAddPrompt.xaml.cs">
+      <DependentUpon>DlgAddPrompt.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgAddPreprocessor.xaml.cs">
+      <DependentUpon>DlgAddPreprocessor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgAddAmdSettings.xaml.cs">
+      <DependentUpon>DlgAddAmdSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgAddAppointmentContext.xaml.cs">
+      <DependentUpon>DlgAddAppointmentContext.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgAddPause.xaml.cs">
+      <DependentUpon>DlgAddPause.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PausesControl.xaml.cs">
+      <DependentUpon>PausesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgAddNumberingRule.xaml.cs">
+      <DependentUpon>DlgAddNumberingRule.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GlobalSettingsControl.xaml.cs">
+      <DependentUpon>GlobalSettingsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgAddCallbackRuleset.xaml.cs">
+      <DependentUpon>DlgAddCallbackRuleset.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgAddPhone.xaml.cs">
+      <DependentUpon>DlgAddPhone.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgAddLocation.xaml.cs">
+      <DependentUpon>DlgAddLocation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgAddResource.xaml.cs">
+      <DependentUpon>DlgAddResource.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResourcesControl.xaml.cs">
+      <DependentUpon>ResourcesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PhonesControl.xaml.cs">
+      <DependentUpon>PhonesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LocationsControl.xaml.cs">
+      <DependentUpon>LocationsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OverflowConditionHelper.xaml.cs">
+      <DependentUpon>OverflowConditionHelper.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgAddPlanning.xaml.cs">
+      <DependentUpon>DlgAddPlanning.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OverflowHelper.xaml.cs">
+      <DependentUpon>OverflowHelper.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PlanningsControl.xaml.cs">
+      <DependentUpon>PlanningsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgAddQueue.xaml.cs">
+      <DependentUpon>DlgAddQueue.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgAddTeam.xaml.cs">
+      <DependentUpon>DlgAddTeam.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgAddLanguage.xaml.cs">
+      <DependentUpon>DlgAddLanguage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgAddSkill.xaml.cs">
+      <DependentUpon>DlgAddSkill.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgAddAgent.xaml.cs">
+      <DependentUpon>DlgAddAgent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\DlgAddCampaignOrActivity.xaml.cs">
+      <DependentUpon>DlgAddCampaignOrActivity.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PreprocessorsControl.xaml.cs">
+      <DependentUpon>PreprocessorsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TeamsControl.xaml.cs">
+      <DependentUpon>TeamsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="QueuesControl.xaml.cs">
+      <DependentUpon>QueuesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LanguagesControl.xaml.cs">
+      <DependentUpon>LanguagesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="General.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="SkillsControl.xaml.cs">
+      <DependentUpon>SkillsControl.xaml</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <None Include="Web References\SFS\DeleteResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\DescribeAppMenuItem.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\DescribeAvailableQuickActionResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\DescribeCompactLayoutsResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\DescribeDataCategoryGroupResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\DescribeDataCategoryGroupStructureResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\DescribeFlexiPageResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\DescribeGlobalResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\DescribeGlobalTheme.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\DescribeLayoutResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\DescribeQuickActionResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\DescribeSearchLayoutResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\DescribeSearchScopeOrderResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\DescribeSObjectResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\DescribeSoftphoneLayoutResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\DescribeTabSetResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\DescribeThemeItem.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\EmptyRecycleBinResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\GetDeletedResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\GetServerTimestampResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\GetUpdatedResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\GetUserInfoResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\InvalidateSessionsResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\LeadConvertResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\LoginResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\MergeResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\PerformQuickActionResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\ProcessResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\QueryResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\SFS\ResetPasswordResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\SaveResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\SearchResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\SendEmailResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\SetPasswordResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\sObject.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\UndeleteResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\UpsertResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SFS\wsdl.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="AdminFrameSet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AgentsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CampaignsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CallbackRulesetsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AppointmentsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AmdSettingsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CarriersControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SecurityContextsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="RolesControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PromptsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OutboundClosingHelper.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PromptHelper.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgAddSecurityContext.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgAddRole.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgStdMusicConfigure.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgAddDemo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgBlackList3Config.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgBlackList2Config.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgBlackList1Config.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgRemoveCarrier.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgPrint.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgAddCarrier.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgStdCallbackConfigure.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgAddGlobalPrompt.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgStdPreprocessorConfigure.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgManageData.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgAddPrompt.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgAddPreprocessor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgAddAmdSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgAddAppointmentContext.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgAddPause.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PausesControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgAddNumberingRule.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GlobalSettingsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgAddCallbackRuleset.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgAddPhone.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgAddLocation.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgAddResource.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResourcesControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PhonesControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LocationsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OverflowConditionHelper.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgAddPlanning.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OverflowHelper.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PlanningsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgAddQueue.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgAddTeam.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgAddLanguage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgAddSkill.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizards\DlgAddAgent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Wizards\DlgAddCampaignOrActivity.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PreprocessorsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="QualifHelpers.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TeamsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="QueuesControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LanguagesControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SkillsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Admin_Preprocessor.png" />
+    <Resource Include="Images\Admin_Team.png" />
+    <Resource Include="Images\Admin_Agent.png" />
+    <Resource Include="Images\Admin_Phone.png" />
+    <Resource Include="Images\Admin_Activity.png" />
+    <Resource Include="Images\Admin_Appointment.png" />
+    <Resource Include="Images\Admin_Callback rule.png" />
+    <Resource Include="Images\Admin_Campaign.png" />
+    <Resource Include="Images\Admin_Language.png" />
+    <Resource Include="Images\Admin_Location.png" />
+    <Resource Include="Images\Admin_Resource.png" />
+    <Resource Include="Images\Admin_Skill.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Application_Administrator.png" />
+    <Resource Include="Images\Application_Agent.png" />
+    <Resource Include="Images\Application_Choose.png" />
+    <Resource Include="Images\Application_RecordingTool.png" />
+    <Resource Include="Images\Application_Reporting.png" />
+    <Resource Include="Images\Application_Supervisor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Categories_Advanced.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Categories_Base.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Action_ShowAdvanced.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Action_Add.png" />
+    <Resource Include="Images\Action_Delete.png" />
+    <Resource Include="Images\Action_Duplicate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\UserType_Administrator.png" />
+    <Resource Include="Images\UserType_Agent.png" />
+    <Resource Include="Images\UserType_Supervisor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AdminSmall_Activity.png" />
+    <Resource Include="Images\AdminSmall_Agent.png" />
+    <Resource Include="Images\AdminSmall_Appointment.png" />
+    <Resource Include="Images\AdminSmall_CallbackRule.png" />
+    <Resource Include="Images\AdminSmall_Campaign.png" />
+    <Resource Include="Images\AdminSmall_Language.png" />
+    <Resource Include="Images\AdminSmall_Location.png" />
+    <Resource Include="Images\AdminSmall_Phone.png" />
+    <Resource Include="Images\AdminSmall_Preprocessor.png" />
+    <Resource Include="Images\AdminSmall_Resource.png" />
+    <Resource Include="Images\AdminSmall_Skill.png" />
+    <Resource Include="Images\AdminSmall_Team.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AdminSmall_Queue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Admin_Queue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Activities_Chat.png" />
+    <Resource Include="Images\Activities_Inbound.png" />
+    <Resource Include="Images\Activities_Mail.png" />
+    <Resource Include="Images\Activities_Outbound.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Activities_Search.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Campaign_Chat_Pause.png" />
+    <Resource Include="Images\Campaign_Chat_Play.png" />
+    <Resource Include="Images\Campaign_Chat_Play_Pause.png" />
+    <Resource Include="Images\Campaign_Inbound_Pause.png" />
+    <Resource Include="Images\Campaign_Inbound_Play.png" />
+    <Resource Include="Images\Campaign_Inbound_Play_Pause.png" />
+    <Resource Include="Images\Campaign_Mail_Pause.png" />
+    <Resource Include="Images\Campaign_Mail_Play.png" />
+    <Resource Include="Images\Campaign_Mail_Play_Pause.png" />
+    <Resource Include="Images\Campaign_Outbound_Pause.png" />
+    <Resource Include="Images\Campaign_Outbound_Play.png" />
+    <Resource Include="Images\Campaign_Outbound_Play_Pause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AdminSmall_Affectation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AdminSmall_CallFlow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AdminSmall_Field.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AdminSmall_Filter.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AdminSmall_General.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AdminSmall_OverFlow.png" />
+    <Resource Include="Images\AdminSmall_Planification.png" />
+    <Resource Include="Images\AdminSmall_Profit.png" />
+    <Resource Include="Images\AdminSmall_Qualification.png" />
+    <Resource Include="Images\AdminSmall_Rights.png" />
+    <Resource Include="Images\AdminSmall_Schedule.png" />
+    <Resource Include="Images\AdminSmall_SortOrder.png" />
+    <Resource Include="Images\AdminSmall_SpecialDay.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Admin_Various.png" />
+    <Resource Include="Images\AdminSmall_Wizard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Admin_Planification.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Admin_Pause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Admin_Wizard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AdminSmall_Pause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Admin_AmdSettings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AdminSmall_AmdSettings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Admin_Prompt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AdminSmall_Prompt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Action_MoveDown.png" />
+    <Resource Include="Images\Action_MoveUp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Media_chat.png" />
+    <Resource Include="Images\Media_Mail.png" />
+    <Resource Include="Images\Media_Voice.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\General_Collapse.png" />
+    <Resource Include="Images\General_Expand.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Application_Save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Action_Orientation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="History.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AdminSmall_Carrier.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Admin_Carrier.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Wizards\Images\AdminSmall_Filter.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Action_Print.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ApplicationServer\CRShared\CRShared.csproj">
+      <Project>{16dbb7b7-5760-4c7a-8171-9a391c59d418}</Project>
+      <Name>CRShared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AdminLink\AdminLink.csproj">
+      <Project>{d8a39a98-6af4-415e-80c9-f971672f42ab}</Project>
+      <Name>AdminLink</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CrCommonTools\CrCommonTools.csproj">
+      <Project>{24fcadbd-f0bc-4fc4-b9ef-1be6e8e0fecd}</Project>
+      <Name>CrCommonTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExcelInterop\ExcelInterop.csproj">
+      <Project>{6c96b7c4-f83b-43f6-9eb0-a9dbdda607d7}</Project>
+      <Name>ExcelInterop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NixxisClientLink\NixxisClientLink.csproj">
+      <Project>{ac0298ae-6ac8-48dc-bcee-35b916ff44f2}</Project>
+      <Name>NixxisClientLink</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NixxisClientReferences\NixxisClientReferences.csproj">
+      <Project>{b30eec2a-2df4-42e8-84f9-04426e8cfe56}</Project>
+      <Name>NixxisClientReferences</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NixxisControls\NixxisWpfControls.csproj">
+      <Project>{6ff8901b-0189-4b8d-baa9-4d85f26cb34d}</Project>
+      <Name>NixxisWpfControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NixxisWpfCommonControls\NixxisWpfControlsCommon.csproj">
+      <Project>{dae35ba5-edfc-4db9-bc91-c94c1a7cd5e4}</Project>
+      <Name>NixxisWpfControlsCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NixxisWpfControlsEditor\NixxisWpfControlsEditor.csproj">
+      <Project>{737cc8b0-dbda-4998-a579-bd22c388c67d}</Project>
+      <Name>NixxisWpfControlsEditor</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AdminSmall_Salesforce.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="C:\Users\oli\Desktop\wsdl.jsp.xml">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\SFS\</RelPath>
+      <UpdateFromURL>C:\Users\oli\Desktop\wsdl.jsp.xml</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>NixxisAdminControls_SFS_SforceService</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SFLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Admin_Rights.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Admin_Security.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AdminSmall_Security.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AdminSmall_AggregateFilter.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AdminSmall_AggregateSortOrder.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

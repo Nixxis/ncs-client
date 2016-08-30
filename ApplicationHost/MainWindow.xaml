@@ -1,0 +1,128 @@
+﻿<Window x:Class="Nixxis.Client.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Nixxis.Client"
+        xmlns:admin="clr-namespace:Nixxis;assembly=NixxisAdminControls"
+        xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+        xmlns:sup="clr-namespace:Nixxis;assembly=NixxisSupControls"  
+        xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+        Title="{Binding Source={x:Static crs:TranslationContext.Default}, Converter={x:Static nixxis:TranslationConverter.Default}, ConverterParameter='Nixxis Contact Suite'}" 
+        Height="924" Width="1280" Name="TheWindow"
+        MinWidth="{Binding ElementName=BottomGrid, Path=MinimumWindowWidth}"        
+        MinHeight="480" 
+         WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        Icon="Images/64x64_AppIcon.ico" Loaded="TheWindow_Loaded">
+    
+    <Window.CommandBindings>
+        <CommandBinding Command="nixxis:GeneralCommands.ShowApplication" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
+    </Window.CommandBindings>
+    
+    <Window.Resources>
+        
+        <ResourceDictionary>
+            
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisPanel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisTabControl.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisDataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+            <crs:TranslationContext x:Key="tcx" Context="MainWindow"></crs:TranslationContext>
+        </ResourceDictionary>
+
+    </Window.Resources>
+
+    <Grid >
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition MinHeight="{Binding ElementName=BottomGrid, Path=MinimumPanelHeight}" Height="0" MaxHeight="{Binding ElementName=BottomGrid, Path=MaximumPanelHeight}"></RowDefinition>            
+        </Grid.RowDefinitions>
+        
+        <ContentControl Name="ApplicationContent"></ContentControl>
+
+        <nixxis:NixxisGridSplitter x:Name="HorizontalSplitter" Grid.Row="1" PanelsContainer="{Binding ElementName=BottomGrid}" HorizontalAlignment="Stretch"/>
+
+        <nixxis:NixxisGrid x:Name="BottomGrid" Grid.Row="2">
+            
+            <nixxis:NixxisGrid.Resources>
+                <Style TargetType="{x:Type GridSplitter}">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <ImageBrush ImageSource="pack://application:,,,/NixxisWpfControls;component/Images/Bottom_bar.png" Viewport="0,0,50,2000" ViewportUnits="Absolute" TileMode="FlipX" Stretch="None" AlignmentY="Top"  ></ImageBrush>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Width" Value="2"/>
+                    <Setter Property="ResizeDirection" Value="Columns"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                </Style>
+            </nixxis:NixxisGrid.Resources>
+
+            <nixxis:NixxisGrid.ColumnDefinitions>
+                <nixxis:NixxisColumnDefinition PanelName="Left" Width="50*"></nixxis:NixxisColumnDefinition>
+                <nixxis:NixxisColumnDefinition PanelName="LeftSeparator" Width="Auto"></nixxis:NixxisColumnDefinition>
+                <nixxis:NixxisColumnDefinition PanelName="CenterLeft" Width="50*"></nixxis:NixxisColumnDefinition>
+                <nixxis:NixxisColumnDefinition PanelName="CenterSeparator" Width="Auto"></nixxis:NixxisColumnDefinition>
+                <nixxis:NixxisColumnDefinition PanelName="CenterRight" Width="50*"></nixxis:NixxisColumnDefinition>
+                <nixxis:NixxisColumnDefinition PanelName="RightSeparator" Width="Auto"></nixxis:NixxisColumnDefinition>
+                <nixxis:NixxisColumnDefinition PanelName="Right" Width="50*"></nixxis:NixxisColumnDefinition>
+            </nixxis:NixxisGrid.ColumnDefinitions>
+
+
+            <nixxis:NixxisExpandPanel x:Name="Left" Title="General" nixxis:NixxisGrid.Panel="Left" MinimumNumberOfVerticalItems="2">
+
+                <nixxis:NixxisButton DropDownReplaceContent="True" KeepDropDownButton="True" ClickMeansDropDown="True" nixxis:NixxisBasePanel.Priority="4" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application_Choose.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Application}">
+                    <nixxis:NixxisButton.DropDown>
+                        <nixxis:NixxisContextMenu>
+                            <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" IsEnabled="True" Command="nixxis:GeneralCommands.ShowApplication" CommandParameter="agt" nixxis:NixxisButton.DropDownCloser="True" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application_Agent.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Agent}"></nixxis:NixxisButton>
+                            <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="5" IsEnabled="True" Command="nixxis:GeneralCommands.ShowApplication" CommandParameter="sup" nixxis:NixxisButton.DropDownCloser="True" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application_Supervisor.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Supervisor}"></nixxis:NixxisButton>
+                            <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" IsEnabled="True" Command="nixxis:GeneralCommands.ShowApplication" CommandParameter="adm" nixxis:NixxisButton.DropDownCloser="True" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application_Administrator.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Administrator}"></nixxis:NixxisButton>
+                            <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" IsEnabled="True" Command="nixxis:GeneralCommands.ShowApplication" CommandParameter="rec" nixxis:NixxisButton.DropDownCloser="True" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application_RecordingTool.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Recording Tool'}"></nixxis:NixxisButton>
+                            <nixxis:NixxisButton nixxis:NixxisBasePanel.Priority="3" IsEnabled="True" Command="nixxis:GeneralCommands.ShowApplication" CommandParameter="rpt" nixxis:NixxisButton.DropDownCloser="True" Foreground="{StaticResource GreenGradient}" ImageSource="Images\Application_Reporting.png" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Reporting Tool'}"></nixxis:NixxisButton>
+                        </nixxis:NixxisContextMenu>
+                    </nixxis:NixxisButton.DropDown>
+                </nixxis:NixxisButton>
+
+            </nixxis:NixxisExpandPanel>
+
+            <GridSplitter nixxis:NixxisGrid.Panel="LeftSeparator"/>
+
+            <nixxis:NixxisExpandPanel x:Name="CenterLeft" nixxis:NixxisGrid.Panel="CenterLeft">
+            </nixxis:NixxisExpandPanel>
+
+            <GridSplitter nixxis:NixxisGrid.Panel="CenterSeparator"/>
+
+            <nixxis:NixxisExpandPanel x:Name="CenterRight" nixxis:NixxisGrid.Panel="CenterRight">                
+            </nixxis:NixxisExpandPanel>
+
+            <GridSplitter nixxis:NixxisGrid.Panel="RightSeparator"/>
+
+            <nixxis:NixxisExpandPanel x:Name="Right" nixxis:NixxisGrid.Panel="Right" >
+                <!--<nixxis:NixxisButton DropDownReplaceContent="True" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Application_Reporting.png">Style
+                    <nixxis:NixxisButton.DropDown>
+                        <ContextMenu>
+                            <nixxis:NixxisButton nixxis:NixxisButton.DropDownCloser="True" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Application_Reporting.png" Click="NixxisButton_Click_0" >Style1</nixxis:NixxisButton>
+                            <nixxis:NixxisButton nixxis:NixxisButton.DropDownCloser="True" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Application_Reporting.png" Click="NixxisButton_Click_1" >Style2</nixxis:NixxisButton>
+                            <nixxis:NixxisButton nixxis:NixxisButton.DropDownCloser="True" Foreground="{StaticResource OrangeGradient}" ImageSource="Images\Application_Reporting.png" Click="NixxisButton_Click_2" >Style3</nixxis:NixxisButton>
+                        </ContextMenu>
+                    </nixxis:NixxisButton.DropDown>
+                </nixxis:NixxisButton>-->
+            </nixxis:NixxisExpandPanel>
+
+
+        </nixxis:NixxisGrid>
+
+
+    </Grid>
+</Window>
+
+    

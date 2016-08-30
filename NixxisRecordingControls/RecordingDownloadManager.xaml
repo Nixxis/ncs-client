@@ -1,0 +1,168 @@
+﻿<UserControl x:Class="Nixxis.Client.Recording.RecordingDownloadManager"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Nixxis.Client.Recording"
+             xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+             xmlns:n="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControlsCommon"
+             xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             Name="MySelf">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisTreeView.xaml"/>
+
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControlsCommon;component/Themes/TimePicker.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <!--Convertors-->
+            <n:ObjectCompairToVisibilityConverter x:Key="objectCompairToVisibilityConverter"/>
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+            <crs:TranslationContext x:Key="tcx" Context="RecordingDownloadManager"></crs:TranslationContext>
+            
+            <!--Enum MediaSubTypes-->
+            <local:DownloadManagerItemStates x:Key="DownloadManagerItemStates_Waiting">Waiting</local:DownloadManagerItemStates>
+            <local:DownloadManagerItemStates x:Key="DownloadManagerItemStates_CheckingItem">CheckingItem</local:DownloadManagerItemStates>
+            <local:DownloadManagerItemStates x:Key="DownloadManagerItemStates_Checked">Checked</local:DownloadManagerItemStates>
+            <local:DownloadManagerItemStates x:Key="DownloadManagerItemStates_NotFound">NotFound</local:DownloadManagerItemStates>
+            <local:DownloadManagerItemStates x:Key="DownloadManagerItemStates_Downloading">Downloading</local:DownloadManagerItemStates>
+            <local:DownloadManagerItemStates x:Key="DownloadManagerItemStates_Downloaded">Downloaded</local:DownloadManagerItemStates>
+            <local:DownloadManagerItemStates x:Key="DownloadManagerItemStates_Failed">Failed</local:DownloadManagerItemStates>
+            <!--Collection views-->
+            <CollectionViewSource x:Key="MainList" Source="{Binding ElementName=MySelf, Path=DownloadList}"></CollectionViewSource>
+            
+            <!--Style-->
+            <Style x:Key="txtDescription" TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
+
+            </Style>
+
+            <Style x:Key="txtValue" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                <Setter Property="Foreground" Value="{DynamicResource TextBrush}"></Setter>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+
+        <Grid Grid.Column="0" Grid.Row="0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto" MinWidth="30"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto" MinWidth="30"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Column="0" Grid.Row="0" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Total:'}" Style="{StaticResource txtDescription}"></Label>
+            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding ElementName=MySelf, Path=Stat_Total}" Style="{StaticResource txtValue}"></TextBlock>
+
+            <Label Grid.Column="3" Grid.Row="0" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Succcess:'}" Style="{StaticResource txtDescription}"></Label>
+            <TextBlock Grid.Column="4" Grid.Row="0" Text="{Binding ElementName=MySelf, Path=Stat_Succcess}" Style="{StaticResource txtValue}"></TextBlock>
+
+            <Label Grid.Column="0" Grid.Row="1" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Finished:'}" Style="{StaticResource txtDescription}"></Label>
+            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding ElementName=MySelf, Path=Stat_Finished}" Style="{StaticResource txtValue}"></TextBlock>
+
+            <Label Grid.Column="3" Grid.Row="1" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Failed:'}" Style="{StaticResource txtDescription}"></Label>
+            <TextBlock Grid.Column="4" Grid.Row="1" Text="{Binding ElementName=MySelf, Path=Stat_Failed}" Style="{StaticResource txtValue}"></TextBlock>
+        </Grid>
+        <nixxis:NixxisDataGrid Name="MainGrid"
+                               Grid.Column="0"
+                               Grid.Row="1"
+                               Margin="0,5"
+                               ItemsSource="{Binding Source={StaticResource MainList}}"
+                               CanUserDeleteRows="False"
+                               HeadersVisibility="Column"
+                               RowDetailsVisibilityMode="Collapsed"
+                               IsReadOnly="True"
+                               RowHeight="60">
+            <nixxis:NixxisDataGrid.CellStyle>
+                <Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource CellStyle}">
+                    <Setter Property="Height" Value="60"></Setter>
+                </Style>
+            </nixxis:NixxisDataGrid.CellStyle>
+            <nixxis:NixxisDataGrid.Columns>
+                <DataGridTemplateColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Name}" MinWidth="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Height="60" Margin="10,5,10,2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <TextBlock Text="{Binding FileName}" FontSize="12" FontWeight="Bold" TextTrimming="CharacterEllipsis"></TextBlock>
+                                <TextBlock Text="{Binding ContactItem.LocalDateTime}" Margin="5,3,0,0" TextTrimming="CharacterEllipsis"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Status}" MinWidth="220">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center" >
+                                <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center" Orientation="Horizontal" Visibility="{Binding State, Converter={StaticResource objectCompairToVisibilityConverter}, ConverterParameter={StaticResource DownloadManagerItemStates_Waiting}}">
+                                    <Image Height="50" Width="50" Source="Images/_Others/DownloadWaiting50.png"></Image>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Waiting...'}" Margin="5,3,0,0"></TextBlock>
+                                        <TextBlock Text="{Binding ProgressbarDescription}" Margin="5,3,0,0"></TextBlock>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center" Orientation="Horizontal" Visibility="{Binding State, Converter={StaticResource objectCompairToVisibilityConverter}, ConverterParameter={StaticResource DownloadManagerItemStates_CheckingItem}}">
+                                    <Image Height="50" Width="50" Source="Images/_Others/DownloadOk50.png"></Image>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Checking...'}" Margin="5,3,0,0"></TextBlock>
+                                        <TextBlock Text="{Binding ProgressbarDescription}" Margin="5,3,0,0"></TextBlock>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center" Orientation="Horizontal" Visibility="{Binding State, Converter={StaticResource objectCompairToVisibilityConverter}, ConverterParameter={StaticResource DownloadManagerItemStates_Checked}}">
+                                    <Image Height="50" Width="50" Source="Images/_Others/DownloadOk50.png"></Image>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Checked.'}" Margin="5,3,0,0"></TextBlock>
+                                        <TextBlock Text="{Binding ProgressbarDescription}" Margin="5,3,0,0"></TextBlock>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="{Binding State, Converter={StaticResource objectCompairToVisibilityConverter}, ConverterParameter={StaticResource DownloadManagerItemStates_Downloading}}">
+                                    <ProgressBar Height="20" Width="200" IsIndeterminate="{Binding ProgressbarIsIndeterminate}" Value="{Binding ProgressbarValue}" Maximum="{Binding ProgressbarMaximum}" Minimum="{Binding ProgressbarMinimum}"></ProgressBar>
+                                    <TextBlock Text="{Binding ProgressbarDescription}" Margin="5,3,0,0" VerticalAlignment="Center"></TextBlock>
+                                    <TextBlock Text="{Binding FileProgressDescription}" Margin="5,3,0,0" VerticalAlignment="Center"></TextBlock>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center" Visibility="{Binding State, Converter={StaticResource objectCompairToVisibilityConverter}, ConverterParameter={StaticResource DownloadManagerItemStates_Downloaded}}">
+                                    <Image Height="50" Width="50" Source="Images/_Others/DownloadOk50.png"></Image>
+                                    <TextBlock Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Downloaded}" Margin="5,3,0,0" VerticalAlignment="Center"></TextBlock>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center" Visibility="{Binding State, Converter={StaticResource objectCompairToVisibilityConverter}, ConverterParameter={StaticResource DownloadManagerItemStates_Failed}}">
+                                    <Image Height="50" Width="50" Source="Images/_Others/DownloadFailed50.png"></Image>
+                                    <TextBlock Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter=Failed}" Margin="5,3,0,0" VerticalAlignment="Center"></TextBlock>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center" Visibility="{Binding State, Converter={StaticResource objectCompairToVisibilityConverter}, ConverterParameter={StaticResource DownloadManagerItemStates_NotFound}}">
+                                    <Image Height="50" Width="50" Source="Images/_Others/downloadNotFound50.png"></Image>
+                                    <TextBlock Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Recording not found'}" Margin="5,3,0,0" VerticalAlignment="Center"></TextBlock>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Action" Visibility="Hidden">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Name="btnActionCancel" Click="btnActionRetry_Click" Content="Cancel" Visibility="{Binding State, Converter={StaticResource objectCompairToVisibilityConverter}, ConverterParameter={StaticResource DownloadManagerItemStates_Waiting}}"></Button>
+                                <Button Name="btnActionRetry" Click="btnActionRetry_Click" Content="Retry" Visibility="{Binding State, Converter={StaticResource objectCompairToVisibilityConverter}, ConverterParameter={StaticResource DownloadManagerItemStates_Failed}}"></Button>
+                                <Button Name="btnActionStop" Click="btnActionRetry_Click" Content="Stop" Visibility="{Binding State, Converter={StaticResource objectCompairToVisibilityConverter}, ConverterParameter={StaticResource DownloadManagerItemStates_Downloading}}"></Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </nixxis:NixxisDataGrid.Columns>
+        </nixxis:NixxisDataGrid>
+    </Grid>
+</UserControl>

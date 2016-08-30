@@ -1,0 +1,198 @@
+﻿<UserControl x:Class="Nixxis.Client.Controls.NixxisEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+             xmlns:n="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControlsCommon"
+             xmlns:local="clr-namespace:Nixxis.Client.Controls"
+             Focusable="True"
+             Background="Transparent"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             Name="MySelf"
+             Unloaded="MySelf_Unloaded"
+             FocusManager.IsFocusScope="True">
+    <UserControl.Resources>
+        <n:BoolToVisibilityCollapsedConverter x:Key="boolToVisibilityConverter"/>
+
+        <!--<CollectionViewSource x:Key="fontFamilyList" Source="{Binding ElementName=MySelf, Path=FontFamilyList}"></CollectionViewSource>-->
+    </UserControl.Resources>
+
+    <UserControl.CommandBindings>
+        <CommandBinding Command="local:NixxisEditor.HtmlEditorActionCut" Executed="OnExecutedCut" CanExecute="OnCanExecutedCut"></CommandBinding>
+        <CommandBinding Command="local:NixxisEditor.HtmlEditorActionCopy" Executed="OnExecutedCopy" CanExecute="OnCanExecutedCopy"></CommandBinding>
+        <CommandBinding Command="local:NixxisEditor.HtmlEditorActionPaste" Executed="OnExecutedPaste" CanExecute="OnCanExecutedPaste"></CommandBinding>
+
+        <CommandBinding Command="local:NixxisEditor.HtmlEditorActionBold" Executed="OnExecutedBold" CanExecute="EditingCommandCanExecute"></CommandBinding>
+        <CommandBinding Command="local:NixxisEditor.HtmlEditorActionItalic" Executed="OnExecutedItalic" CanExecute="EditingCommandCanExecute"></CommandBinding>
+        <CommandBinding Command="local:NixxisEditor.HtmlEditorActionUnderline" Executed="OnExecutedUnderline" CanExecute="EditingCommandCanExecute"></CommandBinding>
+        <CommandBinding Command="local:NixxisEditor.HtmlEditorActionSubscript" Executed="OnExecutedSubscript" CanExecute="EditingCommandCanExecute"></CommandBinding>
+        <CommandBinding Command="local:NixxisEditor.HtmlEditorActionSuperscript" Executed="OnExecutedSuperscript" CanExecute="EditingCommandCanExecute"></CommandBinding>
+
+        <CommandBinding Command="local:NixxisEditor.HtmlEditorActionNumericList" Executed="OnExecutedNumericList" CanExecute="EditingCommandCanExecute"></CommandBinding>
+        <CommandBinding Command="local:NixxisEditor.HtmlEditorActionBubbledList" Executed="OnExecutedBubbledList" CanExecute="EditingCommandCanExecute"></CommandBinding>
+        <CommandBinding Command="local:NixxisEditor.HtmlEditorActionIndent" Executed="OnExecutedIndent" CanExecute="EditingCommandCanExecute"></CommandBinding>
+        <CommandBinding Command="local:NixxisEditor.HtmlEditorActionOutdent" Executed="OnExecutedOutdent" CanExecute="EditingCommandCanExecute"></CommandBinding>
+        
+        <CommandBinding Command="local:NixxisEditor.HtmlEditorActionJustifyLeft" Executed="OnExecutedJustifyLeft" CanExecute="EditingCommandCanExecute"></CommandBinding>
+        <CommandBinding Command="local:NixxisEditor.HtmlEditorActionJustifyCenter" Executed="OnExecutedJustifyCenter" CanExecute="EditingCommandCanExecute"></CommandBinding>
+        <CommandBinding Command="local:NixxisEditor.HtmlEditorActionJustifyRight" Executed="OnExecutedJustifyRight" CanExecute="EditingCommandCanExecute"></CommandBinding>
+        <CommandBinding Command="local:NixxisEditor.HtmlEditorActionJustifyFull" Executed="OnExecutedJustifyFull" CanExecute="EditingCommandCanExecute"></CommandBinding>
+
+        <CommandBinding Command="local:NixxisEditor.HtmlEditorActionLink" Executed="OnExecutedLink" CanExecute="EditingCommandCanExecute"></CommandBinding>
+        <CommandBinding Command="local:NixxisEditor.HtmlEditorActionUnLink" Executed="OnExecutedUnLink" CanExecute="EditingCommandCanExecute"></CommandBinding>
+    </UserControl.CommandBindings>
+    
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <ToolBar x:Name="tbEditorMain" Grid.Column="0" Grid.Row="0">           
+            <ComboBox
+                x:Name="cboFontFamily"
+                ItemsSource="{Binding Source={x:Static Member=Fonts.SystemFontFamilies}}"
+                Width="170"
+                SelectedItem="{Binding ElementName=MySelf, Path=EditorFontFamilySelected}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock FontFamily="{Binding .}" Text="{Binding Source}" FontSize="12"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <ComboBox
+                x:Name="cboFontSize"
+                Width="75"
+                ItemsSource="{Binding ElementName=MySelf, Path=FontSizeListSource}"               
+                SelectedItem="{Binding ElementName=MySelf, Path=EditorFontSizeSelected}"
+                DisplayMemberPath="Text" >
+            </ComboBox>
+            
+            <Separator></Separator>
+            <Button Width="20" MinWidth="20" Command="local:NixxisEditor.HtmlEditorActionCut">
+                <Image Width="16" Height="16" Source="Images\cut.png" />
+            </Button>
+            <Button Width="20" MinWidth="20" Command="local:NixxisEditor.HtmlEditorActionCopy">
+                <Image Width="16" Height="16" Source="Images\copy.png" />
+            </Button>
+            <Button Width="20" MinWidth="20" Command="local:NixxisEditor.HtmlEditorActionPaste">
+                <Image Width="16" Height="16" Source="Images\paste.png" />
+            </Button>
+            
+            <Separator></Separator>
+            <ToggleButton x:Name="btnBold" Width="20" Command="local:NixxisEditor.HtmlEditorActionBold">
+                <Image Width="16" Height="16" Source="Images\bold.png" />
+            </ToggleButton>
+            <ToggleButton x:Name="btnItalic" Width="20" Command="local:NixxisEditor.HtmlEditorActionItalic">
+                <Image Width="16" Height="16" Source="Images\Italic.png" />
+            </ToggleButton>
+            <ToggleButton x:Name="btnUnderline" Width="20" Command="local:NixxisEditor.HtmlEditorActionUnderline">
+                <Image Width="16" Height="16" Source="Images\Underline.png" />
+            </ToggleButton>
+            <ToggleButton x:Name="btnSubscript" Width="20" Command="local:NixxisEditor.HtmlEditorActionSubscript">
+                <Image Width="16" Height="16" Source="Images\Subscript.png" />
+            </ToggleButton>
+            <ToggleButton x:Name="btnSuperscript" Width="20" Command="local:NixxisEditor.HtmlEditorActionSuperscript">
+                <Image Width="16" Height="16" Source="Images\Superscript.png" />
+            </ToggleButton>
+            
+            <Separator></Separator>
+            <n:NixxisSplitButton 
+                x:Name="btnBackColor" 
+                Text="Color" 
+                ImageSource="{Binding ElementName=ncpBackColor, Path=IndicatorImageSource}" 
+                Click="btnBackColor_Click">
+                <n:NixxisSplitButton.ContextMenu>
+                    <ContextMenu>
+                        <StackPanel>
+                            <n:NixxisColorPicker 
+                                x:Name="ncpBackColor" 
+                                HorizontalAlignment="Stretch" 
+                                MinWidth="150"
+                                IndicatorImageSource="Images\BackColor.png"
+                                IndicatorRectangle="3, 13, 10, 3"
+                                ColorSelected="ncpBackColor_ColorSelected">
+                            </n:NixxisColorPicker>
+                        </StackPanel>
+                    </ContextMenu>
+                </n:NixxisSplitButton.ContextMenu>
+            </n:NixxisSplitButton>
+            <n:NixxisSplitButton 
+                x:Name="btnForeColor" 
+                Text="Color" 
+                ImageSource="{Binding ElementName=ncpForeColor, Path=IndicatorImageSource}" 
+                Click="btnForeColor_Click">
+                <n:NixxisSplitButton.ContextMenu>
+                    <ContextMenu>
+                        <StackPanel>
+                            <n:NixxisColorPicker 
+                                x:Name="ncpForeColor" 
+                                HorizontalAlignment="Stretch" 
+                                MinWidth="150"
+                                IndicatorImageSource="Images\ForeColor.png"
+                                IndicatorRectangle="3, 13, 10, 3"
+                                ColorSelected="ncpForeColor_ColorSelected">
+                            </n:NixxisColorPicker>
+                        </StackPanel>
+                    </ContextMenu>
+                </n:NixxisSplitButton.ContextMenu>
+            </n:NixxisSplitButton>
+            
+            <Separator></Separator>
+            <ToggleButton x:Name="btnNumericList" Width="20" Command="local:NixxisEditor.HtmlEditorActionNumericList">
+                <Image Width="16" Height="16" Source="Images\NumericList.png" />
+            </ToggleButton>
+            <ToggleButton x:Name="btnBubbledList" Width="20" Command="local:NixxisEditor.HtmlEditorActionBubbledList">
+                <Image Width="16" Height="16" Source="Images\BubbledList.png" />
+            </ToggleButton>
+            <Button x:Name="btnIndent" Width="20" MinWidth="20" Command="local:NixxisEditor.HtmlEditorActionIndent">
+                <Image Width="16" Height="16" Source="Images\Indent.png" />
+            </Button>
+            <Button x:Name="btnOutdent" Width="20" MinWidth="20" Command="local:NixxisEditor.HtmlEditorActionOutdent">
+                <Image Width="16" Height="16" Source="Images\Outdent.png" />
+            </Button>
+            
+            <Separator></Separator>
+            <ToggleButton x:Name="btnJustifyLeft" Width="20" Command="local:NixxisEditor.HtmlEditorActionJustifyLeft">
+                <Image Width="16" Height="16" Source="Images\JustifyLeft.png" />
+            </ToggleButton>
+            <ToggleButton x:Name="btnJustifyCenter" Width="20" Command="local:NixxisEditor.HtmlEditorActionJustifyCenter">
+                <Image Width="16" Height="16" Source="Images\JustifyCenter.png" />
+            </ToggleButton>
+            <ToggleButton x:Name="btnJustifyRight" Width="20" Command="local:NixxisEditor.HtmlEditorActionJustifyRight">
+                <Image Width="16" Height="16" Source="Images\JustifyRight.png" />
+            </ToggleButton>
+            <ToggleButton x:Name="btnJustifyFull" Width="20" Command="local:NixxisEditor.HtmlEditorActionJustifyFull">
+                <Image Width="16" Height="16" Source="Images\Justify.png" />
+            </ToggleButton>
+
+            <Separator></Separator>
+            <Button x:Name="btnLink" Width="20" MinWidth="20" Command="local:NixxisEditor.HtmlEditorActionLink">
+                <Image Width="16" Height="16" Source="Images\Link.png" />
+            </Button>
+            <Button x:Name="btnUnLink" Width="20" MinWidth="20" Command="local:NixxisEditor.HtmlEditorActionUnLink">
+                <Image Width="16" Height="16" Source="Images\UnLink.png" />
+            </Button>            
+        </ToolBar>
+        
+        <WebBrowser 
+            x:Name="webb"
+            Grid.Column="0" Grid.Row="1"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            LoadCompleted="webb_LoadCompleted"
+            LostKeyboardFocus="webb_LostKeyboardFocus"
+            LostFocus="webb_LostFocus"
+            Visibility="{Binding ElementName=MySelf, Path=DisplayPlainText, Converter={StaticResource boolToVisibilityConverter}, ConverterParameter=false}">
+        </WebBrowser>
+        
+        <TextBox
+            x:Name="plainText"
+            Grid.Column="0" Grid.Row="1"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            Text="{Binding ElementName=MySelf, Path=HtmlText}"
+            Visibility="{Binding ElementName=MySelf, Path=DisplayPlainText, Converter={StaticResource boolToVisibilityConverter}}"></TextBox>
+        
+    </Grid>
+</UserControl>

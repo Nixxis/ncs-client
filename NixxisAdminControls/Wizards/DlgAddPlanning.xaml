@@ -1,0 +1,233 @@
+﻿<Window x:Class="Nixxis.Client.Admin.DlgAddPlanning"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:nixxis2="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControlsCommon"
+        Name="MySelf"
+        xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+        xmlns:local="clr-namespace:Nixxis.Client.Admin"
+        WindowStyle="ToolWindow"  ResizeMode="NoResize" ShowInTaskbar="False" SizeToContent="WidthAndHeight"        
+        Title="{Binding Source={x:Static crs:TranslationContext.Default}, Converter={x:Static nixxis:TranslationConverter.Default}, ConverterParameter='Planning creation...'}" MinHeight="300" MinWidth="300" MaxHeight="400" MaxWidth="500" WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+
+        <ResourceDictionary>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisPanel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisTabControl.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisDataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <local:ComboListConverter x:Key="cboConverter" />
+
+            <local:ComboListConverterNoDummies x:Key="cboConverterNoDummies" />
+            
+            <CollectionViewSource x:Key="Plannings" Source="{Binding Plannings, Converter={StaticResource cboConverterNoDummies}, ConverterParameter=false}" />
+
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+
+            <crs:TranslationContext x:Key="tcx" Context="DlgAddPlanning" ></crs:TranslationContext>
+
+
+        </ResourceDictionary>
+
+    </Window.Resources>
+
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
+            <GradientStop Color="#757575" Offset="0.1"></GradientStop>
+            <GradientStop Color="#353535" Offset="0.7"></GradientStop>
+        </LinearGradientBrush>
+    </Window.Background>
+
+
+
+    <Grid Margin="10">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Name="AddWizard" >
+
+            
+            
+            <Grid Name="Start">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='What do you want to do?'}"></Label>
+                <RadioButton Name="RadioAddPlanning" Grid.Row="1" IsChecked="True" nixxis:WizardControl.NextStep="AddPlanning" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Add a new planing'}"></RadioButton>
+                <RadioButton Name="RadioAddSpecialDay" Grid.Row="2" IsChecked="false" nixxis:WizardControl.NextStep="AddSpecialDay" Content="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Add a new special day in context of {0}',BindTo={Binding ElementName=WizControl, Path=Context.DisplayText}}"></RadioButton>
+            </Grid>
+
+
+            <Grid Name="AddPlanning">
+
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the settings for new planning...'}"></Label>
+
+
+                <Label Grid.Row="1" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Description:'}"></Label>
+                <TextBox Name="txtDescription" Grid.Row="2" nixxis:WizardControl.Required="True" ></TextBox>
+
+            </Grid>
+
+            <Grid Name="AddSpecialDay" nixxis:WizardControl.NextStep="DayAction">
+
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the settings for new special day...'}"></Label>
+
+
+                <Label Grid.Row="1" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Description:'}"></Label>
+                <TextBox Name="txtSdDescription" Grid.Row="2" nixxis:WizardControl.Required="True" ></TextBox>
+
+                <GroupBox Margin="0,5,0,0" Grid.Row="3" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Day'}">
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+
+                        <nixxis:NumericUpDown Name="udDay" Margin="0,5,0,0" NumberFormat="0" IsEnabled="{Binding ElementName=chkRepeatDay, Path=IsChecked, Converter={StaticResource BoolInverter}}" MinimumValue="1" MaximumValue="31"></nixxis:NumericUpDown>
+                        <CheckBox VerticalAlignment="Center" Grid.Column="1" Name="chkRepeatDay" IsChecked="{Binding ElementName=udDay, Path=Value, Converter={StaticResource BoolInverter}}"  Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Repeat every day'}"></CheckBox>
+
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Margin="0,5,0,0" Grid.Row="4" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Month'}">
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+
+                        <nixxis:NumericUpDown Name="udMonth" Margin="0,5,0,0" NumberFormat="0" IsEnabled="{Binding ElementName=chkRepeatMonth, Path=IsChecked, Converter={StaticResource BoolInverter}}" MinimumValue="1" MaximumValue="12" ></nixxis:NumericUpDown>
+                        <CheckBox VerticalAlignment="Center" Grid.Column="1" Name="chkRepeatMonth"  IsChecked="{Binding ElementName=udMonth, Path=Value, Converter={StaticResource BoolInverter}}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Repeat every month'}"></CheckBox>
+
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Margin="0,5,0,0" Grid.Row="5" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Year'}">
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+
+                        <nixxis:NumericUpDown Name="udYear" Margin="0,5,0,0" NumberFormat="0" IsEnabled="{Binding ElementName=chkRepeatYear, Path=IsChecked, Converter={StaticResource BoolInverter}}" MinimumValue="2000" MaximumValue="3000" ></nixxis:NumericUpDown>
+                        <CheckBox VerticalAlignment="Center" Grid.Column="1" Name="chkRepeatYear"  IsChecked="{Binding ElementName=udYear, Path=Value, Converter={StaticResource BoolInverter}}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Repeat every year'}"></CheckBox>
+
+                    </Grid>
+                </GroupBox>
+
+            </Grid>
+
+
+            <Grid Name="DayAction" >
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='When the special day occurs, a new schedule is taken into account.'}"></Label>
+
+                
+                <RadioButton Name="radioClosed" Grid.Row="1" IsChecked="True" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='The schedule is closed'}"></RadioButton>
+                <RadioButton Name="radioOpened" Grid.Row="2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='The schedule is opened'}"></RadioButton>
+
+                <Label Margin="0,5,0,0" Grid.Row="3" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='The schedule is ranging from:'}"></Label>
+                <StackPanel Grid.Row="4" Orientation="Horizontal">
+                    <nixxis2:TimePicker IsSecondeVisible="False" Name="TpFrom"></nixxis2:TimePicker>
+                    <Label Margin="5,0,5,0" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='to'}"></Label>
+                    <nixxis2:TimePicker IsSecondeVisible="False" Name="TpTo"></nixxis2:TimePicker>
+                </StackPanel>
+
+            </Grid>
+
+            <Grid Name="End" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}">
+                    <Grid>
+                        <TextBlock Visibility="{Binding ElementName=RadioAddPlanning, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}}" Text="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Please click on finish to complete the creation of planning {0}',BindTo={Binding ElementName=txtDescription, Path=Text}}" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Visibility="{Binding ElementName=RadioAddSpecialDay, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}}" Text="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Please click on finish to complete the creation of specail day {0}',BindTo={Binding ElementName=txtSdDescription, Path=Text}}" TextWrapping="Wrap"></TextBlock>
+                    </Grid>
+                </Label>
+
+                <GroupBox Margin="2" Grid.Row="1" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Summary:'}">
+                    <ScrollViewer CanContentScroll="False" >
+                        <Label>
+                            <TextBlock IsVisibleChanged="TextBlock_IsVisibleChanged" TextWrapping="Wrap"></TextBlock>
+                        </Label>
+                    </ScrollViewer>
+                </GroupBox>
+
+            </Grid>
+
+        </Grid>
+
+        <nixxis:WizardControl Grid.Row="1" Name="WizControl" WizardGrid="{Binding ElementName=AddWizard}" EndStep="End" WizardFinished="WizControl_WizardFinished" ></nixxis:WizardControl>
+        
+    </Grid>
+</Window>

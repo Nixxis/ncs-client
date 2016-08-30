@@ -1,0 +1,249 @@
+﻿<Window x:Class="Nixxis.Client.Admin.DlgStdCallbackConfigure"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:Nixxis.Client.Admin"
+        xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+        Name="MySelf"
+        xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+        WindowStyle="ToolWindow"  ResizeMode="NoResize" ShowInTaskbar="False" SizeToContent="WidthAndHeight"        
+        Title="{Binding Source={x:Static crs:TranslationContext.Default}, Converter={x:Static nixxis:TranslationConverter.Default}, ConverterParameter='Preprocessor configuration...'}" MinHeight="350" MinWidth="300" MaxHeight="600" MaxWidth="400" WindowStartupLocation="CenterOwner">
+
+    <Window.Resources>
+
+        <ResourceDictionary>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisPanel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisTabControl.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisDataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+
+            <crs:TranslationContext x:Key="tcx" Context="DlgStdCallbackConfigure" ></crs:TranslationContext>
+
+            <crs:TranslationContext x:Key="tcxprompt" Context="Prompt" ></crs:TranslationContext>
+
+
+            <local:AtivityPromptsToPromptsConverter x:Key="AtivityPromptsToPromptsConverter"></local:AtivityPromptsToPromptsConverter>
+
+            <local:ComboListConverter x:Key="cboConverter" />
+           
+        </ResourceDictionary>
+
+    </Window.Resources>
+
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
+            <GradientStop Color="#757575" Offset="0.1"></GradientStop>
+            <GradientStop Color="#353535" Offset="0.7"></GradientStop>
+        </LinearGradientBrush>
+    </Window.Background>
+
+
+
+    <Grid Margin="10" DataContext="{Binding ElementName=WizControl, Path=Context}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Name="AddWizard" >
+
+            <!--Start-->
+            <Grid Name="Start" nixxis:WizardControl.NextStep="InitialPrompts">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the settings for the callback IVR...'}"></Label>
+
+                <nixxis:NixxisStackPanel Grid.Row="1">
+
+                    <RadioButton IsChecked="True"><TextBlock TextWrapping="Wrap" Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='If the caller\'s phone number is visible, use it as default value but ask confirm.'}"></TextBlock></RadioButton>
+
+                    <RadioButton Name="radioAlwaysAskPhoneNum">
+                        <TextBlock TextWrapping="Wrap" Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Always ask the phone number to the caller, even if his phone number is visible.'}"></TextBlock></RadioButton>
+
+                </nixxis:NixxisStackPanel>
+
+
+            </Grid>
+
+            <Grid Name="InitialPrompts" nixxis:WizardControl.NextStep="DateChoice">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the initial prompts...'}"></Label>
+
+                <nixxis:NixxisStackPanel Grid.Row="1">
+
+                    <Label ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Example: welcome to our callback IVR.'}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Annouce:'}"></Label>
+                    <local:PromptHelper ToolTip="{Binding Source={StaticResource tcxprompt}, Converter={StaticResource tcv}, ConverterParameter='Example: welcome to our callback IVR.'}" x:Name="promptAnnounce" IncludeNone="True"></local:PromptHelper>
+
+                    <Label ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Example: please enter your phone number followed by #.'}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Request phone:'}"></Label>
+                    <local:PromptHelper ToolTip="{Binding Source={StaticResource tcxprompt}, Converter={StaticResource tcv}, ConverterParameter='Example: please enter your phone number followed by #.'}" x:Name="promptPhone" IncludeNone="True"></local:PromptHelper>
+
+                    <Label ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Example: the callback will be done using the follwing phone number...'}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Repeat phone:'}"></Label>
+                    <local:PromptHelper ToolTip="{Binding Source={StaticResource tcxprompt}, Converter={StaticResource tcv}, ConverterParameter='Example: the callback will be done using the follwing phone number...'}" x:Name="promptRepeatPhone" IncludeNone="True"></local:PromptHelper>
+
+                    <Label ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Example: to confirm, press 1.'}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Accept message (1):'}"></Label>
+                    <local:PromptHelper ToolTip="{Binding Source={StaticResource tcxprompt}, Converter={StaticResource tcv}, ConverterParameter='Example: to confirm, press 1.'}" x:Name="promptAcceptPhone" IncludeNone="True"></local:PromptHelper>
+
+                    <Label ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Example: to enter again, press 2.'}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Re-enter message (2):'}"></Label>
+                    <local:PromptHelper ToolTip="{Binding Source={StaticResource tcxprompt}, Converter={StaticResource tcv}, ConverterParameter='Example: to enter again, press 2.'}" x:Name="promptReenterPhone" IncludeNone="True"></local:PromptHelper>
+
+                </nixxis:NixxisStackPanel>
+               
+                
+            </Grid>
+
+            <!--CommonPrompts-->
+            <Grid Name="DateChoice">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the settings for preprocessor...'}"></Label>
+
+
+                <nixxis:NixxisStackPanel Grid.Row="1" >
+
+                    <RadioButton Margin="3" IsChecked="True" Name="radioDoNotAskDate" nixxis:WizardControl.NextStep="EndPrompts" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Do not ask callback date or time'}"></RadioButton>
+
+                    <RadioButton Margin="3" Name="radioEnqueueRequest" nixxis:WizardControl.NextStep="EndPrompts" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Enqueue the callback request'}"></RadioButton>
+
+                    <RadioButton Margin="3" Name="radioAskDate" nixxis:WizardControl.NextStep="AskDate" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Ask callback date'}"></RadioButton>
+
+                    <RadioButton Margin="3" Name="radioAskTime" nixxis:WizardControl.NextStep="AskDate" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Ask callback time'}"></RadioButton>
+
+                    <RadioButton Margin="3" Name="radioAskDateTime" nixxis:WizardControl.NextStep="AskDate" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Ask callback date and time'}"></RadioButton>
+
+                </nixxis:NixxisStackPanel>
+
+            </Grid>
+
+            <!--AskDate-->
+            <Grid Name="AskDate" nixxis:WizardControl.NextStep="EndPrompts">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the date prompts...'}"></Label>
+
+                <nixxis:NixxisStackPanel Grid.Row="1">
+
+                    <Label ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Example: to be called ASAP, press 1.'}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Call ASAP (1):'}"></Label>
+                    <local:PromptHelper ToolTip="{Binding Source={StaticResource tcxprompt}, Converter={StaticResource tcv}, ConverterParameter='Example: to be called ASAP, press 1.'}" x:Name="promptCallAsap" IncludeNone="True"></local:PromptHelper>
+
+                    <Label ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Example: to be called later, press 2.'}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Call later(2):'}"></Label>
+                    <local:PromptHelper  ToolTip="{Binding Source={StaticResource tcxprompt}, Converter={StaticResource tcv}, ConverterParameter='Example: to be called later, press 2.'}" x:Name="promptCallLater" IncludeNone="True"></local:PromptHelper>
+
+                    <Label ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Example: please enter the date in format ddMMyyyy.'}">Ask date:
+                        <Label.Visibility>
+                            <MultiBinding Converter="{StaticResource BoolMultiOrConverter}">
+                                <Binding ElementName="radioAskDate" Path="IsChecked"></Binding>
+                                <Binding ElementName="radioAskDateTime" Path="IsChecked"></Binding>
+                            </MultiBinding>
+                        </Label.Visibility>
+                    </Label>
+                    <local:PromptHelper ToolTip="{Binding Source={StaticResource tcxprompt}, Converter={StaticResource tcv}, ConverterParameter='Example: please enter the date in format ddMMyyyy.'}" x:Name="promptAskDate" IncludeNone="True">
+                        <local:PromptHelper.Visibility>
+                            <MultiBinding Converter="{StaticResource BoolMultiOrConverter}">
+                                <Binding ElementName="radioAskDate" Path="IsChecked"></Binding>
+                                <Binding ElementName="radioAskDateTime" Path="IsChecked"></Binding>
+                            </MultiBinding>
+                        </local:PromptHelper.Visibility>
+                    </local:PromptHelper>
+
+                    <Label ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Example: please enter the time in format HHmm.'}">Ask time:
+                        <Label.Visibility>
+                            <MultiBinding Converter="{StaticResource BoolMultiOrConverter}">
+                                <Binding ElementName="radioAskTime" Path="IsChecked"></Binding>
+                                <Binding ElementName="radioAskDateTime" Path="IsChecked"></Binding>
+                            </MultiBinding>
+                        </Label.Visibility>
+                    </Label>
+                    <local:PromptHelper ToolTip="{Binding Source={StaticResource tcxprompt}, Converter={StaticResource tcv}, ConverterParameter='Example: please enter the time in format HHmm.'}" x:Name="promptAskTime" IncludeNone="True">
+                        <local:PromptHelper.Visibility>
+                            <MultiBinding Converter="{StaticResource BoolMultiOrConverter}">
+                                <Binding ElementName="radioAskTime" Path="IsChecked"></Binding>
+                                <Binding ElementName="radioAskDateTime" Path="IsChecked"></Binding>
+                            </MultiBinding>
+                        </local:PromptHelper.Visibility>
+                    </local:PromptHelper>
+
+                    <Label ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Example: the date you entered is:'}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Repeat date/time:'}"></Label>
+                    <local:PromptHelper ToolTip="{Binding Source={StaticResource tcxprompt}, Converter={StaticResource tcv}, ConverterParameter='Example: the date you entered is:'}" x:Name="promptRepeatDateTime" IncludeNone="True"></local:PromptHelper>
+
+                </nixxis:NixxisStackPanel>
+            </Grid>
+
+            <!--EndPrompts-->
+            <Grid Name="EndPrompts">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the general prompts...'}"></Label>
+
+                <nixxis:NixxisStackPanel Grid.Row="1">
+
+                    <Label ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Example: this is not a valid entry.'}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Not valid:'}"></Label>
+                    <local:PromptHelper ToolTip="{Binding Source={StaticResource tcxprompt}, Converter={StaticResource tcv}, ConverterParameter='Example: this is not a valid entry.'}" x:Name="promptNotValid" IncludeNone="True"></local:PromptHelper>
+
+                    <Label ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Example: thank you.'}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Thank you:'}"></Label>
+                    <local:PromptHelper ToolTip="{Binding Source={StaticResource tcxprompt}, Converter={StaticResource tcv}, ConverterParameter='Example: thank you.'}" x:Name="promptThankYou" IncludeNone="True"></local:PromptHelper>
+
+                    <Label ToolTip="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Example: due to a technical issue we cannot handle your request.'}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Sorry:'}"></Label>
+                    <local:PromptHelper ToolTip="{Binding Source={StaticResource tcxprompt}, Converter={StaticResource tcv}, ConverterParameter='Example: due to a technical issue we cannot handle your request.'}" x:Name="promptSorry" IncludeNone="True"></local:PromptHelper>
+
+                </nixxis:NixxisStackPanel>
+            </Grid>
+
+            <!--End-->
+            <Grid Name="End" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}">
+                    <TextBlock Text="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please click on finish to complete the configuration of preprocessor'}" TextWrapping="Wrap"></TextBlock>
+                </Label>
+
+                <GroupBox Margin="2" Grid.Row="1" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Summary:'}">
+                    <ScrollViewer CanContentScroll="False" >
+                        <Label>
+                            <TextBlock IsVisibleChanged="TextBlock_IsVisibleChanged" TextWrapping="Wrap"></TextBlock>
+                        </Label>
+                    </ScrollViewer>
+                </GroupBox>
+
+            </Grid>
+
+        </Grid>
+
+        <nixxis:WizardControl Grid.Row="1" Name="WizControl" WizardGrid="{Binding ElementName=AddWizard}" CurrentStep="Start" EndStep="End" WizardFinished="WizControl_WizardFinished" ></nixxis:WizardControl>
+
+    </Grid>
+</Window>

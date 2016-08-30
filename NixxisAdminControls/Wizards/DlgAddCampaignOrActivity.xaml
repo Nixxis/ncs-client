@@ -1,0 +1,1150 @@
+﻿<Window x:Class="Nixxis.Client.Admin.DlgAddCampaignOrActivity"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:nixxis="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControls"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:Nixxis.Client.Admin"
+        xmlns:adminlink="clr-namespace:Nixxis.Client.Admin;assembly=AdminLink"
+        xmlns:nixxiscommon="clr-namespace:Nixxis.Client.Controls;assembly=NixxisWpfControlsCommon"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        xmlns:crs="clr-namespace:Nixxis;assembly=CRShared"
+       
+        Name="MySelf" 
+        WindowStyle="ToolWindow"  ResizeMode="NoResize" ShowInTaskbar="False" SizeToContent="WidthAndHeight"        
+        Title="{Binding Source={x:Static crs:TranslationContext.Default}, Converter={x:Static nixxis:TranslationConverter.Default}, ConverterParameter='Wizard'}" MinHeight="300" MinWidth="300" MaxHeight="410" MaxWidth="500" WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+
+        <ResourceDictionary>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../QualifHelpers.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Themes/ExpressionDarkDataGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisGrid.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisPanel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisButton.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisTabControl.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/Global.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/NixxisWpfControls;component/NixxisDataGrid.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <sys:Int32 x:Key="0">0</sys:Int32>
+
+            <sys:Int32 x:Key="-1">-1</sys:Int32>
+
+            <nixxis:TranslationConverter x:Key="tcv"></nixxis:TranslationConverter>
+
+            <crs:TranslationContext x:Key="tcx" Context="DlgAddCampaignOrActivity" ></crs:TranslationContext>
+
+            <local:ComboListConverterNoDummies x:Key="cboConverterNoDummies" />
+
+            <Style x:Key="VerticalRadioButtonList" TargetType="{x:Type ListBox}">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="ItemsPanel">
+                    <Setter.Value>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel Background="Transparent" Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="ItemContainerStyle">
+                    <Setter.Value>
+                        <Style TargetType="{x:Type ListBoxItem}" >
+                            <Setter Property="Margin" Value="3" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                        <Border BorderThickness="0" Background="Transparent">
+                                            <RadioButton Focusable="False" IsHitTestVisible="False" IsChecked="{TemplateBinding IsSelected}">
+                                                <ContentPresenter />
+                                            </RadioButton>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Control.Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListBox}">
+                            <Border BorderThickness="0" Padding="0" BorderBrush="Transparent" Background="Transparent" Name="Bd" SnapsToDevicePixels="True">
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+
+            <CollectionViewSource x:Key="stringOperands" Source="{Binding ElementName=WizControl, Path=Context.Campaign.StringFields}" />
+            <CollectionViewSource x:Key="stringAgentsOperands" Source="{Binding ElementName=WizControl, Path=Context.Campaign.StringAgentsFields}" />
+            <CollectionViewSource x:Key="stringActivitiesOperands" Source="{Binding ElementName=WizControl, Path=Context.Campaign.StringActivitiesFields}" />
+            <CollectionViewSource x:Key="stringAreasOperands" Source="{Binding ElementName=WizControl, Path=Context.Campaign.StringAreasFields}" />
+            <CollectionViewSource x:Key="stringQualificationsOperands" Source="{Binding ElementName=WizControl, Path=Context.Campaign.StringQualificationsFields}" />
+            <CollectionViewSource x:Key="intOperands" Source="{Binding ElementName=WizControl, Path=Context.Campaign.IntFields}" />
+            <CollectionViewSource x:Key="datetimeOperands" Source="{Binding ElementName=WizControl, Path=Context.Campaign.DateTimeFields}"/>
+            <CollectionViewSource x:Key="boolOperands" Source="{Binding ElementName=WizControl, Path=Context.Campaign.BoolFields}"/>
+
+            <CollectionViewSource x:Key="sortedAgents" Source="{Binding Agents, Converter={StaticResource cboConverterNoDummies}, ConverterParameter=false}">
+                <CollectionViewSource.SortDescriptions>
+                    <scm:SortDescription PropertyName="DisplayText"/>
+                </CollectionViewSource.SortDescriptions>
+            </CollectionViewSource>
+
+            <CollectionViewSource x:Key="sortedActivities" Source="{Binding ElementName=WizControl, Path=Context.Campaign.Activities, Converter={StaticResource cboConverterNoDummies}, ConverterParameter=false}">
+                <CollectionViewSource.SortDescriptions>
+                    <scm:SortDescription PropertyName="DisplayText"/>
+                </CollectionViewSource.SortDescriptions>
+            </CollectionViewSource>
+
+
+            <local:DurationConverter x:Key="durationConverter" />
+
+            <local:DlgOperatorTypeConverter x:Key="OperatorTypeConverter" />
+            
+            <local:AggregatorConverter x:Key="aggregatorConverter" />
+
+            <adminlink:SortOrderHelper x:Key="SortOrders"></adminlink:SortOrderHelper>
+
+            <adminlink:DBTypeHelper x:Key="DBTypes"></adminlink:DBTypeHelper>
+
+            <adminlink:UserFieldMeaningHelper x:Key="UserMeanings"></adminlink:UserFieldMeaningHelper>
+
+            <CollectionViewSource x:Key="UserMeaningsNoQuotas" Source="{Binding Source={StaticResource UserMeanings} }" Filter="NoQuota_Filter"/>
+
+            <nixxis:BooleanMultiOrConverter x:Key="booleanMultiOrConverter"></nixxis:BooleanMultiOrConverter>
+
+            <adminlink:RestrictedDialingModeHelper x:Key="restrictedDialingModeHelper"></adminlink:RestrictedDialingModeHelper>
+            <adminlink:ExpressRestrictedDialingModeHelper x:Key="expressRestrictedDialingModeHelper"></adminlink:ExpressRestrictedDialingModeHelper>
+
+
+            <adminlink:OverflowActionsHelper x:Key="overflowActionsHelper"></adminlink:OverflowActionsHelper>
+
+            <local:ComboListConverter x:Key="cboConverter" />
+
+            <CollectionViewSource x:Key="EmailMediaProviders" Source="{Binding MediaProviders}" Filter="EmailMediaProvider_Filter"></CollectionViewSource>
+
+            <CollectionViewSource x:Key="ChatMediaProviders" Source="{Binding MediaProviders}" Filter="ChatMediaProvider_Filter"></CollectionViewSource>
+
+            <CollectionViewSource x:Key="VoicePreprocessors" Source="{Binding Preprocessors, Converter={StaticResource cboConverterNoDummies}}" Filter="VoicePreprocessors_Filter"></CollectionViewSource>
+
+            <CollectionViewSource x:Key="ChatPreprocessors" Source="{Binding Preprocessors, Converter={StaticResource cboConverterNoDummies}}" Filter="ChatPreprocessors_Filter"></CollectionViewSource>
+
+            <CollectionViewSource x:Key="MailPreprocessors" Source="{Binding Preprocessors, Converter={StaticResource cboConverterNoDummies}}" Filter="MailPreprocessors_Filter"></CollectionViewSource>
+
+            <CollectionViewSource x:Key="Scripts" Source="{Binding Preprocessors, Converter={StaticResource cboConverterNoDummies}}" Filter="Scripts_Filter"></CollectionViewSource>
+
+            <CollectionViewSource x:Key="NumberingPlanEntries" Source="{Binding NumberingPlanEntries, Converter={StaticResource cboConverterNoDummies}, ConverterParameter=false}" Filter="CollectionViewSource_Filter" ></CollectionViewSource>
+
+
+
+            <adminlink:OperatorHelper x:Key="Operators"></adminlink:OperatorHelper>
+
+            <adminlink:CombineOperatorHelper x:Key="CombineOperators" ></adminlink:CombineOperatorHelper>
+
+            <CollectionViewSource x:Key="combineOperators" Source="{Binding Source={StaticResource CombineOperators} }" Filter="CombineOperators_Filter"/>
+
+            <CollectionViewSource x:Key="stringOperators" Source="{Binding Source={StaticResource Operators} }" Filter="StringOperators_Filter"/>
+
+            <CollectionViewSource x:Key="intOperators" Source="{Binding Source={StaticResource Operators} }" Filter="IntOperators_Filter"/>
+
+            <CollectionViewSource x:Key="datetimeOperators" Source="{Binding Source={StaticResource Operators} }" Filter="DateTimeOperators_Filter"/>
+
+            <CollectionViewSource x:Key="boolOperators" Source="{Binding Source={StaticResource Operators} }" Filter="BoolOperators_Filter"/>
+
+            <adminlink:AggregatorHelper x:Key="aggregators"></adminlink:AggregatorHelper>
+            
+        </ResourceDictionary>
+
+    </Window.Resources>
+
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
+            <GradientStop Color="#757575" Offset="0.1"></GradientStop>
+            <GradientStop Color="#353535" Offset="0.7"></GradientStop>
+        </LinearGradientBrush>
+    </Window.Background>
+    
+    
+    
+    <Grid Margin="10">
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Name="AddWizard" >
+
+            <Grid Name="Start">
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='What do you want to do?'}"></Label>
+                <RadioButton Name="RadioAddCamp" Grid.Row="1" IsChecked="True" nixxis:WizardControl.NextStep="CampSettings" Visibility="{Binding ElementName=WizControl, Path=Context.ProposeCampaignCreation, Converter={StaticResource VisWithCollapseConverter} }" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Add a new campaign'}"></RadioButton>
+                <RadioButton Name="RadioAddAct" Grid.Row="2" nixxis:WizardControl.NextStep="ActSettings" Visibility="{Binding ElementName=WizControl, Path=Context.ProposeActivityCreation, Converter={StaticResource VisWithCollapseConverter} }" Content="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Add a new activity as a child of {0}',BindTo={Binding ElementName=WizControl, Path=Context.Campaign.DisplayText}}"/>
+                <RadioButton Name="RadioAddQualif" Grid.Row="3" nixxis:WizardControl.NextStep="QualSettings"  Visibility="{Binding ElementName=WizControl, Path=Context.NewQualification, Converter={StaticResource EqCConverter}}" Content="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Add a new qualification in the context of {0}',BindTo={Binding ElementName=WizControl, Path=Context.Campaign.DisplayText}}"/>
+                <RadioButton Name="RadioAddQualifUnder" Grid.Row="4" nixxis:WizardControl.NextStep="QualSettings" Visibility="{Binding ElementName=WizControl, Path=Context.Qualification, Converter={StaticResource EqCConverter}}" Content="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Add a new qualification as a child of qualification {0}',BindTo={Binding ElementName=WizControl, Path=Context.Qualification.DisplayText}}"/>
+                <RadioButton Name="RadioAddQualifSister" Grid.Row="5" nixxis:WizardControl.NextStep="QualSettings" Visibility="{Binding ElementName=WizControl, Path=Context.Qualification, Converter={StaticResource EqCConverter}}" Content="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Add a new qualification as a sister of qualification {0}',BindTo={Binding ElementName=WizControl, Path=Context.Qualification.DisplayText}}"/>
+                <RadioButton Name="RadioAddField" Grid.Row="6" nixxis:WizardControl.NextStep="FieldSettings" Visibility="{Binding ElementName=WizControl, Path=Context.NewField, Converter={StaticResource EqCConverter}}" Content="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Add a new field to the data structure of {0}',BindTo={Binding ElementName=WizControl, Path=Context.Campaign.DisplayText}}"/>
+                <RadioButton Name="RadioAddSortField" Grid.Row="7" nixxis:WizardControl.NextStep="SortFieldSettings" Visibility="{Binding ElementName=WizControl, Path=Context.ProposeNewSort, Converter={StaticResource VisWithCollapseConverter}}" Content="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Add a new sort field to the data sort order of {0}',BindTo={Binding ElementName=WizControl, Path=Context.Activity.DisplayText}}"/>
+                <RadioButton Name="RadioAddFilter" Grid.Row="8" nixxis:WizardControl.NextStep="FilterSettings" Visibility="{Binding ElementName=WizControl, Path=Context.ProposeNewFilter, Converter={StaticResource VisWithCollapseConverter}}" Content="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Add a new filter combined with the filters of {0}',BindTo={Binding ElementName=WizControl, Path=Context.Activity.DisplayText}}"/>
+                <RadioButton Name="RadioAddPrompt" Grid.Row="9" nixxis:WizardControl.NextStep="PromptSettings" Visibility="{Binding ElementName=WizControl, Path=Context.ProposeNewPrompt, Converter={StaticResource VisWithCollapseConverter}}" Content="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Upload a new prompt in the current context',BindTo={Binding ElementName=WizControl, Path=Context.Campaign.DisplayText}}"/>
+                <RadioButton Name="RadioAddPromptUnder" Grid.Row="10" nixxis:WizardControl.NextStep="PromptSettings" Visibility="{Binding ElementName=WizControl, Path=Context.ProposeNewPromptUnder, Converter={StaticResource VisWithCollapseConverter}}" Content="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Upload a new prompt related to {0}',BindTo={Binding ElementName=WizControl, Path=Context.Prompt.Prompt.Description}}"/>
+                <RadioButton Name="RadioAddPredefinedText" Grid.Row="11" nixxis:WizardControl.NextStep="PredefinedTextSettings" Visibility="{Binding ElementName=WizControl, Path=Context.ProposeNewPredefinedText, Converter={StaticResource VisWithCollapseConverter}}" Content="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Add a new predefined text in the context of {0}',BindTo={Binding ElementName=WizControl, Path=Context.Campaign.DisplayText}}"/>
+                <RadioButton Name="RadioAddAttachment" Grid.Row="12" nixxis:WizardControl.NextStep="AttachmentSettings" Visibility="{Binding ElementName=WizControl, Path=Context.ProposeNewAttachment, Converter={StaticResource VisWithCollapseConverter}}" Content="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Add a new attachment in the context of {0}',BindTo={Binding ElementName=WizControl, Path=Context.Campaign.DisplayText}}"/>
+            </Grid>
+
+            <!-- Region ActSettings -->
+            <Grid Name="ActSettings">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the settings for new activity...'}"></Label>
+
+                <Label Grid.Row="1" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Description:'}"></Label>
+                <TextBox Margin="0,0,0,10" Name="txtAct" Grid.Row="2" nixxis:WizardControl.Required="True"></TextBox>
+                
+                <GroupBox Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Activity type'}" Grid.Row="3" >
+                    <StackPanel>
+                        <RadioButton Name="radioInbound" nixxis:WizardControl.NextStep="InboundSettings" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Inbound'}"></RadioButton>
+                        
+                        <RadioButton Name="radioOutbound"  nixxis:WizardControl.NextStep="OutboundSettings" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Outbound'}"></RadioButton>
+
+                        <!--RadioButton Name="radioChat" nixxis:WizardControl.NextStep="ChatSettings" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Chat'}"></RadioButton-->
+
+
+
+                        <RadioButton Visibility="{Binding Source={StaticResource ChatMediaProviders}, Path=Count, Converter={StaticResource EqCConverter}, ConverterParameter={StaticResource 0}}" Name="radioChatWithProviders" nixxis:WizardControl.NextStep="ChatSettings" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Chat'}"></RadioButton>
+
+                        <RadioButton Visibility="{Binding Source={StaticResource ChatMediaProviders}, Path=Count, Converter={StaticResource IneqCConverter}, ConverterParameter={StaticResource 0}}" Name="radioChatWithoutProvider" nixxis:WizardControl.NextStep="ChatSettings2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Chat'}"></RadioButton>
+
+
+                        <RadioButton Visibility="{Binding Source={StaticResource EmailMediaProviders}, Path=Count, Converter={StaticResource EqCConverter}, ConverterParameter={StaticResource 0}}" Name="radioEmailWithProviders" nixxis:WizardControl.NextStep="EmailSettings" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Email'}"></RadioButton>
+
+                        <RadioButton Visibility="{Binding Source={StaticResource EmailMediaProviders}, Path=Count, Converter={StaticResource IneqCConverter}, ConverterParameter={StaticResource 0}}" Name="radioEmailWithoutProvider" nixxis:WizardControl.NextStep="EmailSettings2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Email'}"></RadioButton>
+
+                        <RadioButton Name="radioSearch"  nixxis:WizardControl.NextStep="SearchSettings" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Search mode'}"></RadioButton>
+
+                        <CheckBox IsTabStop="False" Height="0" Width="0" Name="hiddenHelper" nixxis:WizardControl.Required="True">
+                            <CheckBox.IsChecked>
+                                <MultiBinding Converter="{StaticResource booleanMultiOrConverter}">
+                                    <Binding ElementName="radioInbound" Path="IsChecked"></Binding>
+                                    <Binding ElementName="radioOutbound" Path="IsChecked"></Binding>
+                                    <Binding ElementName="radioChatWithProviders" Path="IsChecked"></Binding>
+                                    <Binding ElementName="radioChatWithoutProvider" Path="IsChecked"></Binding>
+                                    <Binding ElementName="radioEmailWithProviders" Path="IsChecked"></Binding>
+                                    <Binding ElementName="radioEmailWithoutProvider" Path="IsChecked"></Binding>
+                                    <Binding ElementName="radioSearch" Path="IsChecked"></Binding>
+                                </MultiBinding>
+                            </CheckBox.IsChecked>
+                        </CheckBox>
+                    </StackPanel>
+                </GroupBox>
+
+            </Grid>
+            <!-- EndRegion -->
+            
+            <!--Region QualSettings -->
+            <Grid Name="QualSettings">
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify qualification settings...'}"></Label>
+
+                <ScrollViewer Grid.Row="1" CanContentScroll="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+
+                    <StackPanel>
+                            
+                        <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Description:'}"></Label>
+
+                        <TextBox Grid.Row="1" Text="{Binding ElementName=WizControl, Path=Context.NewQualification.Description}" nixxis:WizardControl.Required="True"></TextBox>
+
+                        <ContentControl Grid.Row="2" Content="{Binding ElementName=WizControl, Path=Context.NewQualification}" ContentTemplate="{StaticResource LeafQualification}"></ContentControl>
+
+                        <CheckBox Margin="3" Visibility="{Binding ElementName=WizControl, Path=Context.Campaign.Advanced, Converter={StaticResource VisWithCollapseConverter}}"  IsChecked="false" Grid.Row="3" Name="chkSpecifyQualificationsAffectation" nixxis:WizardControl.NextStep="QualificationsExclusions" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Specify activities affectation'}"></CheckBox>
+                    </StackPanel>
+                        
+                </ScrollViewer>
+
+            </Grid>
+            <!-- EndRegion-->
+
+            <!--Region FilterSettings-->
+            <Grid Name="FilterSettings">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the new filter settings...'}"></Label>
+
+
+                <nixxis:NixxisStackPanel Grid.Row="1">
+
+                    <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Name:'}"></Label>
+                    <ComboBox Name="cboNewFilter" nixxis:WizardControl.Required="true" ItemsSource="{Binding ElementName=WizControl, Path=Context.Campaign.Fields}"  DisplayMemberPath="TypedDisplayText" SelectedValuePath="Id" ></ComboBox>
+
+                    <Label Visibility="{Binding ElementName=cboNewFilter, Path=SelectedItem.FieldMeaning, Converter={StaticResource IneqCConverter}, ConverterParameter={x:Static adminlink:UserFieldMeanings.Quota}, FallbackValue=Collapsed}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Aggregate:'}"></Label>
+                    <ComboBox nixxis:WizardControl.Required="true" Name="cboAggregator" IsSynchronizedWithCurrentItem="False" Visibility="{Binding ElementName=cboNewFilter, Path=SelectedItem.FieldMeaning, Converter={StaticResource IneqCConverter}, ConverterParameter={x:Static adminlink:UserFieldMeanings.Quota}, FallbackValue=Collapsed}" ItemsSource="{Binding Source={StaticResource aggregators}}" SelectedValuePath="EnumValue" DisplayMemberPath="Description"></ComboBox>
+
+
+                    <Label Visibility="{Binding ElementName=cboNewFilter, Path=SelectedItem, Converter={StaticResource EqCConverter}}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Operator:'}"></Label>
+                    
+                    <ComboBox nixxis:WizardControl.Required="true" Name="cboOperatorString" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Source={StaticResource stringOperators}}" SelectedValuePath="EnumValue" DisplayMemberPath="Description">
+                        <ComboBox.Visibility>
+                            <MultiBinding Converter="{StaticResource aggregatorConverter}" ConverterParameter="{x:Static adminlink:DBTypes.String}">
+                                <Binding ElementName="cboNewFilter" Path="SelectedItem.DBType"></Binding>                               
+                                <Binding ElementName="cboAggregator" Path="SelectedValue"></Binding>
+                            </MultiBinding>
+                        </ComboBox.Visibility>
+                    </ComboBox>
+                    
+                    <ComboBox nixxis:WizardControl.Required="true" Name="cboOperatorAnsiString" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Source={StaticResource stringOperators}}" SelectedValuePath="EnumValue" DisplayMemberPath="Description">
+                        <ComboBox.Visibility>
+                            <MultiBinding Converter="{StaticResource aggregatorConverter}" ConverterParameter="{x:Static adminlink:DBTypes.Char}">
+                                <Binding ElementName="cboNewFilter" Path="SelectedItem.DBType" ></Binding>
+                                <Binding ElementName="cboAggregator" Path="SelectedValue"></Binding>
+                            </MultiBinding>
+                        </ComboBox.Visibility>
+                    </ComboBox>
+                    
+                    <ComboBox nixxis:WizardControl.Required="true" Name="cboOperatorInt" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Source={StaticResource intOperators}}" SelectedValuePath="EnumValue" DisplayMemberPath="Description">
+                        <ComboBox.Visibility>
+                            <MultiBinding Converter="{StaticResource aggregatorConverter}" ConverterParameter="{x:Static adminlink:DBTypes.Integer}">
+                                <Binding ElementName="cboNewFilter" Path="SelectedItem.DBType"></Binding>
+                                <Binding ElementName="cboAggregator" Path="SelectedValue" ></Binding>
+                            </MultiBinding>
+                        </ComboBox.Visibility>
+                    </ComboBox>
+                    
+                    <ComboBox nixxis:WizardControl.Required="true" Name="cboOperatorSingle" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Source={StaticResource intOperators}}" SelectedValuePath="EnumValue" DisplayMemberPath="Description">
+                        <ComboBox.Visibility>
+                            <MultiBinding Converter="{StaticResource aggregatorConverter}" ConverterParameter="{x:Static adminlink:DBTypes.Float}">
+                                <Binding ElementName="cboNewFilter" Path="SelectedItem.DBType"></Binding>
+                                <Binding ElementName="cboAggregator" Path="SelectedValue" ></Binding>
+                            </MultiBinding>
+                        </ComboBox.Visibility>
+                    </ComboBox>
+                    
+                    <ComboBox nixxis:WizardControl.Required="true" Name="cboOperatorDatetime" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Source={StaticResource datetimeOperators}}" SelectedValuePath="EnumValue" DisplayMemberPath="Description">
+                        <ComboBox.Visibility>
+                            <MultiBinding Converter="{StaticResource aggregatorConverter}" ConverterParameter="{x:Static adminlink:DBTypes.Datetime}">
+                                <Binding ElementName="cboNewFilter" Path="SelectedItem.DBType"></Binding>
+                                <Binding ElementName="cboAggregator" Path="SelectedValue"></Binding>
+                            </MultiBinding>
+                        </ComboBox.Visibility>
+                    </ComboBox>
+                    
+                    <ComboBox nixxis:WizardControl.Required="true" Name="cboOperatorBoolean" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Source={StaticResource boolOperators}}" SelectedValuePath="EnumValue" DisplayMemberPath="Description">
+                        <ComboBox.Visibility>
+                            <MultiBinding Converter="{StaticResource aggregatorConverter}" ConverterParameter="{x:Static adminlink:DBTypes.Boolean}">
+                                <Binding ElementName="cboNewFilter" Path="SelectedItem.DBType" ></Binding>
+                                <Binding ElementName="cboAggregator" Path="SelectedValue" ></Binding>
+                            </MultiBinding>
+                        </ComboBox.Visibility>
+
+                    </ComboBox>
+
+                    <Label>Operand:
+                        <Label.Visibility>
+                            <MultiBinding Converter="{StaticResource OperatorTypeConverter}">
+                                <Binding ElementName="cboNewFilter" Path="SelectedItem.DBType"></Binding>
+                                <Binding ElementName="cboAggregator" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorAnsiString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorInt" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorSingle" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorDatetime" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorBoolean" Path="SelectedValue"></Binding>
+                            </MultiBinding>
+                        </Label.Visibility>
+                    </Label>
+                    <ComboBox nixxis:WizardControl.Required="true" Name="cboStrOperand" IsEditable="True" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Source={StaticResource stringOperands}}" DisplayMemberPath="TypedDisplayText" SelectedValuePath="Id">
+                        <ComboBox.Visibility>
+                            <MultiBinding Converter="{StaticResource OperatorTypeConverter}" ConverterParameter="{x:Static adminlink:DBTypes.String}">
+                                <Binding ElementName="cboNewFilter" Path="SelectedItem.DBType"></Binding>
+                                <Binding ElementName="cboAggregator" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorAnsiString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorInt" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorSingle" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorDatetime" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorBoolean" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboNewFilter" Path="SelectedItem.Lookup"></Binding>
+                            </MultiBinding>
+                        </ComboBox.Visibility>
+                    </ComboBox>
+                    <ComboBox nixxis:WizardControl.Required="true" Name="cboStrAgentsOperand" IsEditable="True" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Source={StaticResource stringAgentsOperands}}" DisplayMemberPath="TypedDisplayText" SelectedValuePath="Id">
+                        <ComboBox.Visibility>
+                            <MultiBinding Converter="{StaticResource OperatorTypeConverter}" ConverterParameter="{x:Static adminlink:DBTypes.AgentString}">
+                                <Binding ElementName="cboNewFilter" Path="SelectedItem.DBType"></Binding>
+                                <Binding ElementName="cboAggregator" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorAnsiString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorInt" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorSingle" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorDatetime" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorBoolean" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboNewFilter" Path="SelectedItem.Lookup"></Binding>
+                            </MultiBinding>
+                        </ComboBox.Visibility>
+                    </ComboBox>
+                    <ComboBox nixxis:WizardControl.Required="true" Name="cboStrActivitiessOperand" IsEditable="True" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Source={StaticResource stringActivitiesOperands}}" DisplayMemberPath="TypedDisplayText" SelectedValuePath="Id">
+                        <ComboBox.Visibility>
+                            <MultiBinding Converter="{StaticResource OperatorTypeConverter}" ConverterParameter="{x:Static adminlink:DBTypes.ActivityString}">
+                                <Binding ElementName="cboNewFilter" Path="SelectedItem.DBType"></Binding>
+                                <Binding ElementName="cboAggregator" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorAnsiString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorInt" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorSingle" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorDatetime" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorBoolean" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboNewFilter" Path="SelectedItem.Lookup"></Binding>
+                            </MultiBinding>
+                        </ComboBox.Visibility>
+                    </ComboBox>
+                    <ComboBox nixxis:WizardControl.Required="true" Name="cboStrAreasOperand" IsEditable="True" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Source={StaticResource stringAreasOperands}}" DisplayMemberPath="TypedDisplayText" SelectedValuePath="Id">
+                        <ComboBox.Visibility>
+                            <MultiBinding Converter="{StaticResource OperatorTypeConverter}" ConverterParameter="{x:Static adminlink:DBTypes.AreaString}">
+                                <Binding ElementName="cboNewFilter" Path="SelectedItem.DBType"></Binding>
+                                <Binding ElementName="cboAggregator" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorAnsiString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorInt" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorSingle" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorDatetime" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorBoolean" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboNewFilter" Path="SelectedItem.Lookup"></Binding>
+                            </MultiBinding>
+                        </ComboBox.Visibility>
+                    </ComboBox>
+                    <ComboBox nixxis:WizardControl.Required="true" Name="cboStrQualificationsOperand" IsEditable="True" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Source={StaticResource stringQualificationsOperands}}" DisplayMemberPath="TypedDisplayText" SelectedValuePath="Id">
+                        <ComboBox.Visibility>
+                            <MultiBinding Converter="{StaticResource OperatorTypeConverter}" ConverterParameter="{x:Static adminlink:DBTypes.QualificationString}">
+                                <Binding ElementName="cboNewFilter" Path="SelectedItem.DBType"></Binding>
+                                <Binding ElementName="cboAggregator" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorAnsiString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorInt" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorSingle" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorDatetime" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorBoolean" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboNewFilter" Path="SelectedItem.Lookup"></Binding>
+                            </MultiBinding>
+                        </ComboBox.Visibility>
+                    </ComboBox>
+
+                    <ComboBox nixxis:WizardControl.Required="true" Name="cboAnsiStrOperand" IsEditable="True" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Source={StaticResource stringOperands}}" DisplayMemberPath="TypedDisplayText" SelectedValuePath="Id">
+                        <ComboBox.Visibility>
+                            <MultiBinding Converter="{StaticResource OperatorTypeConverter}" ConverterParameter="{x:Static adminlink:DBTypes.Char}">
+                                <Binding ElementName="cboNewFilter" Path="SelectedItem.DBType"></Binding>
+                                <Binding ElementName="cboAggregator" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorAnsiString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorInt" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorSingle" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorDatetime" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorBoolean" Path="SelectedValue"></Binding>
+                            </MultiBinding>
+                        </ComboBox.Visibility>
+                    </ComboBox>
+                    <ComboBox nixxis:WizardControl.Required="true" Name="cboIntOperand" IsEditable="True" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Source={StaticResource intOperands}}" DisplayMemberPath="TypedDisplayText" SelectedValuePath="Id">
+                        <ComboBox.Visibility>
+                            <MultiBinding Converter="{StaticResource OperatorTypeConverter}" ConverterParameter="{x:Static adminlink:DBTypes.Integer}">
+                                <Binding ElementName="cboNewFilter" Path="SelectedItem.DBType"></Binding>
+                                <Binding ElementName="cboAggregator" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorAnsiString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorInt" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorSingle" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorDatetime" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorBoolean" Path="SelectedValue"></Binding>
+                            </MultiBinding>
+                        </ComboBox.Visibility>
+                    </ComboBox>
+                    <ComboBox nixxis:WizardControl.Required="true" Name="cboSingleOperand" IsEditable="True" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Source={StaticResource intOperands}}"  DisplayMemberPath="TypedDisplayText" SelectedValuePath="Id">
+                        <ComboBox.Visibility>
+                            <MultiBinding Converter="{StaticResource OperatorTypeConverter}" ConverterParameter="{x:Static adminlink:DBTypes.Float}">
+                                <Binding ElementName="cboNewFilter" Path="SelectedItem.DBType"></Binding>
+                                <Binding ElementName="cboAggregator" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorAnsiString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorInt" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorSingle" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorDatetime" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorBoolean" Path="SelectedValue"></Binding>
+                            </MultiBinding>
+                        </ComboBox.Visibility>
+                    </ComboBox>
+                    <ComboBox nixxis:WizardControl.Required="true" Name="cboDateTimeOperand"  IsEditable="True" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Source={StaticResource datetimeOperands}}" DisplayMemberPath="TypedDisplayText" SelectedValuePath="Id">
+                        <ComboBox.Visibility>
+                            <MultiBinding Converter="{StaticResource OperatorTypeConverter}" ConverterParameter="{x:Static adminlink:DBTypes.Datetime}">
+                                <Binding ElementName="cboNewFilter" Path="SelectedItem.DBType"></Binding>
+                                <Binding ElementName="cboAggregator" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorAnsiString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorInt" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorSingle" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorDatetime" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorBoolean" Path="SelectedValue"></Binding>
+                            </MultiBinding>
+                        </ComboBox.Visibility>
+                    </ComboBox>
+                    <ComboBox nixxis:WizardControl.Required="true" Name="cboBoolOperand"  IsEditable="True" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Source={StaticResource boolOperands}}" DisplayMemberPath="TypedDisplayText" SelectedValuePath="Id">
+                        <ComboBox.Visibility>
+                            <MultiBinding Converter="{StaticResource OperatorTypeConverter}" ConverterParameter="{x:Static adminlink:DBTypes.Boolean}">
+                                <Binding ElementName="cboNewFilter" Path="SelectedItem.DBType"></Binding>
+                                <Binding ElementName="cboAggregator" Path="cboAggregator"></Binding>
+                                <Binding ElementName="cboOperatorString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorAnsiString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorInt" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorSingle" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorDatetime" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorBoolean" Path="SelectedValue"></Binding>
+                            </MultiBinding>
+                        </ComboBox.Visibility>
+                    </ComboBox>
+                    <nixxis:DurationPicker Name="durationPickerOperand"  ShowSeconds="False">
+                        <nixxis:DurationPicker.Visibility>
+                            <MultiBinding Converter="{StaticResource OperatorTypeConverter}" ConverterParameter="{x:Static adminlink:DBTypes.Time}">
+                                <Binding ElementName="cboNewFilter" Path="SelectedItem.DBType"></Binding>
+                                <Binding ElementName="cboAggregator" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorAnsiString" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorInt" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorSingle" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorDatetime" Path="SelectedValue"></Binding>
+                                <Binding ElementName="cboOperatorBoolean" Path="SelectedValue"></Binding>
+                            </MultiBinding>
+                        </nixxis:DurationPicker.Visibility>
+                    </nixxis:DurationPicker>
+
+                </nixxis:NixxisStackPanel>
+
+            </Grid>
+            <!-- Endregion -->
+            
+            <!--Region PromptSettings-->
+            <Grid Name="PromptSettings">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the sound file you want to use...'}"></Label>
+                <Label  Name="lblFileInfo" Grid.Row="1" Visibility="Hidden"  >
+                    <TextBlock TextWrapping="Wrap"></TextBlock>
+                </Label>
+
+
+                <nixxis:NixxisStackPanel Grid.Row="2">
+                    <Label Name="lbl" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='File path:'}"></Label>
+                    <TextBox IsReadOnly="True" Name="txtFilePath" nixxis:WizardControl.Required="True" nixxis:NixxisStackPanel.KeepNextAttached="True" ></TextBox>
+
+                    <nixxis:NixxisPlayback nixxis:NixxisStackPanel.KeepNextAttached="True" Path="{Binding ElementName=txtFilePath, Path=Text}"></nixxis:NixxisPlayback>
+
+                    <Button Click="BrowseForFile">
+                        <Border Height="20" Width="20">
+                            <Path HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{x:Null}" Data="M0.5,0.5 L5.5,3 0.5,5.5" Stroke="{DynamicResource GlyphBrush}" Margin="6,0,6,0" Height="11" StrokeThickness="2" Stretch="Fill" />
+                        </Border>
+                    </Button>
+
+                    <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Description:'}"></Label>
+                    <TextBox Name="txtPromptDescription" nixxis:WizardControl.Required="True" ></TextBox>
+
+                    <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Language:'}"></Label>
+                    <ComboBox Name="cboPromptLan" ItemsSource="{Binding Languages, Converter={StaticResource cboConverter}}" 
+                            SelectedValuePath="Id" 
+                              SelectedIndex="0"
+                            DisplayMemberPath="DisplayText" 
+                            ></ComboBox>
+
+                </nixxis:NixxisStackPanel>
+
+            </Grid>
+            <!-- EndRegion -->
+
+            <!--Region SortFieldSettings-->
+            <Grid Name="SortFieldSettings">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the field you want to use in sort order...'}"></Label>
+
+
+                <nixxis:NixxisStackPanel Grid.Row="1">
+
+
+
+                    <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Name:'}"></Label>
+                    <ComboBox Name="cboNewSort" nixxis:WizardControl.Required="true" ItemsSource="{Binding ElementName=WizControl, Path=Context.Campaign.Fields}"  DisplayMemberPath="TypedDisplayText" SelectedValuePath="Id" ></ComboBox>
+
+                    <Label Visibility="{Binding ElementName=cboNewSort, Path=SelectedItem.FieldMeaning, Converter={StaticResource IneqCConverter}, ConverterParameter={x:Static adminlink:UserFieldMeanings.Quota}, FallbackValue=Collapsed}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Aggregate:'}"></Label>
+                    <ComboBox nixxis:WizardControl.Required="true" Name="cboSortAggregator" IsSynchronizedWithCurrentItem="False" Visibility="{Binding ElementName=cboNewSort, Path=SelectedItem.FieldMeaning, Converter={StaticResource IneqCConverter}, ConverterParameter={x:Static adminlink:UserFieldMeanings.Quota}, FallbackValue=Collapsed}" ItemsSource="{Binding Source={StaticResource aggregators}}" SelectedValuePath="EnumValue" DisplayMemberPath="Description"></ComboBox>
+
+                    <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Sort order:'}"></Label>
+                    <ComboBox IsSynchronizedWithCurrentItem="False" SelectedValue="{x:Static adminlink:SortOrder.Ascending}" Name="cboNewSortOrder" ItemsSource="{Binding Source={StaticResource SortOrders}}"  DisplayMemberPath="Description" SelectedValuePath="EnumValue"  ></ComboBox>
+
+                </nixxis:NixxisStackPanel>
+
+            </Grid>
+            <!-- EndRegion -->
+            
+            <!--Region FieldSettings-->
+            <Grid Name="FieldSettings">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the settings for new field...'}"></Label>
+
+                <ScrollViewer Grid.Row="1" CanContentScroll="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+
+                    <nixxis:NixxisStackPanel>
+
+                        <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Name:'}"></Label>
+                        <TextBox Text="{Binding ElementName=WizControl, Path=Context.NewField.Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" nixxis:WizardControl.Required="True"></TextBox>
+
+                        <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Initial name:'}"></Label>
+                        <TextBox Text="{Binding ElementName=WizControl, Path=Context.NewField.InitialName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+
+                        <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Database type:'}"></Label>
+                        <ComboBox IsSynchronizedWithCurrentItem="False" SelectedValue="{Binding ElementName=WizControl, Path=Context.NewField.DBType, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={StaticResource DBTypes}}"  DisplayMemberPath="Description"  SelectedValuePath="EnumValue"></ComboBox>
+
+                        <Label Visibility="{Binding ElementName=WizControl, Path=Context.NewField.DBType, Converter={StaticResource IneqCConverter}, ConverterParameter={x:Static adminlink:DBTypes.String}}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Length:'}"></Label>
+                        <nixxis:NumericUpDown Visibility="{Binding ElementName=WizControl, Path=Context.NewField.DBType, Converter={StaticResource IneqCConverter}, ConverterParameter={x:Static adminlink:DBTypes.String}}" MinimumValue="-1" Increment="1" NumberFormat="0" Value="{Binding ElementName=WizControl, Path=Context.NewField.Length, UpdateSourceTrigger=PropertyChanged}" ></nixxis:NumericUpDown>
+
+                        <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Field meaning:'}"></Label>
+                        <!--ComboBox IsSynchronizedWithCurrentItem="False" SelectedValue="{Binding ElementName=WizControl, Path=Context.NewField.FieldMeaning, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={StaticResource UserMeanings}}"  DisplayMemberPath="Description"  SelectedValuePath="EnumValue"></ComboBox-->
+
+                        <ComboBox IsSynchronizedWithCurrentItem="False" Visibility="{Binding ElementName=WizControl, Path=Context.NewField.DBType, Converter={StaticResource IneqCConverter}, ConverterParameter={x:Static adminlink:DBTypes.String}}" ItemsSource="{Binding Source={StaticResource UserMeaningsNoQuotas}}" SelectedValuePath="EnumValue" SelectedValue="{Binding ElementName=WizControl, Path=Context.NewField.FieldMeaning, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Description"></ComboBox>
+                        <ComboBox IsSynchronizedWithCurrentItem="False" Visibility="{Binding ElementName=WizControl, Path=Context.NewField.DBType, Converter={StaticResource IneqCConverter}, ConverterParameter={x:Static adminlink:DBTypes.Char}}" ItemsSource="{Binding Source={StaticResource UserMeaningsNoQuotas}}" SelectedValuePath="EnumValue" SelectedValue="{Binding ElementName=WizControl, Path=Context.NewField.FieldMeaning, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Description"></ComboBox>
+                        <ComboBox IsSynchronizedWithCurrentItem="False" Visibility="{Binding ElementName=WizControl, Path=Context.NewField.DBType, Converter={StaticResource IneqCConverter}, ConverterParameter={x:Static adminlink:DBTypes.Integer}}" ItemsSource="{Binding Source={StaticResource UserMeanings}}" SelectedValuePath="EnumValue" SelectedValue="{Binding ElementName=WizControl, Path=Context.NewField.FieldMeaning, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Description"></ComboBox>
+                        <ComboBox IsSynchronizedWithCurrentItem="False" Visibility="{Binding ElementName=WizControl, Path=Context.NewField.DBType, Converter={StaticResource IneqCConverter}, ConverterParameter={x:Static adminlink:DBTypes.Float}}" ItemsSource="{Binding Source={StaticResource UserMeaningsNoQuotas}}" SelectedValuePath="EnumValue" SelectedValue="{Binding ElementName=WizControl, Path=Context.NewField.FieldMeaning, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Description"></ComboBox>
+                        <ComboBox IsSynchronizedWithCurrentItem="False" Visibility="{Binding ElementName=WizControl, Path=Context.NewField.DBType, Converter={StaticResource IneqCConverter}, ConverterParameter={x:Static adminlink:DBTypes.Datetime}}" ItemsSource="{Binding Source={StaticResource UserMeaningsNoQuotas}}" SelectedValuePath="EnumValue" SelectedValue="{Binding ElementName=WizControl, Path=Context.NewField.FieldMeaning, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Description"></ComboBox>
+                        <ComboBox IsSynchronizedWithCurrentItem="False" Visibility="{Binding ElementName=WizControl, Path=Context.NewField.DBType, Converter={StaticResource IneqCConverter}, ConverterParameter={x:Static adminlink:DBTypes.Boolean}}" ItemsSource="{Binding Source={StaticResource UserMeanings}}" SelectedValuePath="EnumValue" SelectedValue="{Binding ElementName=WizControl, Path=Context.NewField.FieldMeaning, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Description"></ComboBox>
+
+
+                        <CheckBox Name="ChkUniqueConstraint" IsChecked="{Binding ElementName=WizControl, Path=Context.NewField.IsUniqueConstraint, UpdateSourceTrigger=PropertyChanged}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Unique constraint'}"
+                                  IsEnabledChanged="ChkUniqueConstraint_IsEnabledChanged"
+                                  >
+                            <CheckBox.IsEnabled>
+                                <MultiBinding Converter="{StaticResource BoolMultiOrConverter}">
+                                    <Binding ElementName="WizControl" Path="Context.NewField.DBType" Converter="{StaticResource IneqConverter}" ConverterParameter="{x:Static adminlink:DBTypes.String}"></Binding>
+                                    <Binding ElementName="WizControl" Path="Context.NewField.Length" Converter="{StaticResource IneqConverter}" ConverterParameter="{StaticResource -1}"></Binding>
+                                </MultiBinding>
+                            </CheckBox.IsEnabled>    
+                            
+                        </CheckBox>
+
+                        <CheckBox IsChecked="{Binding ElementName=WizControl, Path=Context.NewField.IsIndexed, UpdateSourceTrigger=PropertyChanged}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Indexed'}"
+                                  IsEnabledChanged="ChkIndexed_IsEnabledChanged">
+                            <CheckBox.IsEnabled>
+                                <MultiBinding Converter="{StaticResource BoolMultiAndConverter}">
+                                    <Binding ElementName="ChkUniqueConstraint" Path="IsEnabled"></Binding>
+                                    <Binding ElementName="WizControl" Path="Context.NewField.IsUniqueConstraint" Converter="{StaticResource BoolInverter}"  UpdateSourceTrigger="PropertyChanged"></Binding>
+                                </MultiBinding>
+                            </CheckBox.IsEnabled>
+
+                        </CheckBox>
+
+
+                    </nixxis:NixxisStackPanel>
+
+                </ScrollViewer>
+
+            </Grid>
+            <!--EndRegion-->
+
+            <!--Region CampSettings-->
+            <Grid Name="CampSettings" nixxis:WizardControl.NextStep="AgentsSettings">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the settings for new campaign...'}"></Label>
+
+                <Label Grid.Row="1" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Description:'}"></Label>
+                <TextBox Margin="0,0,0,10" Name="txtCamp" Grid.Row="2" nixxis:WizardControl.Required="True"></TextBox>
+
+                <CheckBox Margin="3" Grid.Row="3" Name="chkInbound" nixxis:WizardControl.NextStep="InboundSettings" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Inbound is active'}"></CheckBox>
+
+                <CheckBox Margin="3" Grid.Row="4" Name="chkOutbound"  nixxis:WizardControl.NextStep="OutboundSettings" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Outbound is active'}"></CheckBox>
+
+                <!--CheckBox Margin="3" Visibility="{Binding Source={x:Static local:AdminFrameSet.Settings}, Path=IsFullVersion, Converter={StaticResource VisWithCollapseConverter} }" Grid.Row="5" Name="chkChat" nixxis:WizardControl.NextStep="ChatSettings" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Chat is active'}"></CheckBox-->
+
+
+
+
+
+                <CheckBox Margin="3" Grid.Row="5" Name="chkChatWithProviders" nixxis:WizardControl.NextStep="ChatSettings" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Chat is active'}">
+                    <CheckBox.Visibility>
+                        <MultiBinding Converter="{StaticResource VisWithCollapseMultiConverter}">
+                            <Binding Source="{x:Static local:AdminFrameSet.Settings}" Path="IsFullVersion"></Binding>
+                            <Binding Source="{StaticResource ChatMediaProviders}" Path="Count" Converter="{StaticResource IneqCConverter}" ConverterParameter="{StaticResource 0}"></Binding>
+                        </MultiBinding>
+                    </CheckBox.Visibility>
+                </CheckBox>
+
+                <CheckBox Margin="3" Grid.Row="6" Name="chkChatWithoutProvider" nixxis:WizardControl.NextStep="ChatSettings2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Chat is active'}">
+                    <CheckBox.Visibility>
+                        <MultiBinding Converter="{StaticResource VisWithCollapseMultiConverter}">
+                            <Binding Source="{x:Static local:AdminFrameSet.Settings}" Path="IsFullVersion"></Binding>
+                            <Binding Source="{StaticResource ChatMediaProviders}" Path="Count" Converter="{StaticResource EqCConverter}" ConverterParameter="{StaticResource 0}"></Binding>
+                        </MultiBinding>
+                    </CheckBox.Visibility>
+                </CheckBox>
+
+
+
+
+
+
+                <CheckBox Margin="3" Grid.Row="7" Name="chkEmailWithProviders" nixxis:WizardControl.NextStep="EmailSettings" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Email is active'}">
+                    <CheckBox.Visibility>
+                        <MultiBinding Converter="{StaticResource VisWithCollapseMultiConverter}">
+                            <Binding Source="{x:Static local:AdminFrameSet.Settings}" Path="IsFullVersion"></Binding>
+                            <Binding Source="{StaticResource EmailMediaProviders}" Path="Count" Converter="{StaticResource IneqCConverter}" ConverterParameter="{StaticResource 0}"></Binding>
+                        </MultiBinding>
+                    </CheckBox.Visibility>
+                </CheckBox>
+                
+                <CheckBox Margin="3" Grid.Row="8" Name="chkEmailWithoutProvider" nixxis:WizardControl.NextStep="EmailSettings2" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Email is active'}">
+                    <CheckBox.Visibility>
+                        <MultiBinding Converter="{StaticResource VisWithCollapseMultiConverter}">
+                            <Binding Source="{x:Static local:AdminFrameSet.Settings}" Path="IsFullVersion"></Binding>
+                            <Binding Source="{StaticResource EmailMediaProviders}" Path="Count" Converter="{StaticResource EqCConverter}" ConverterParameter="{StaticResource 0}"></Binding>
+                        </MultiBinding>
+                    </CheckBox.Visibility>
+                </CheckBox>
+
+
+                <CheckBox Margin="3" Grid.Row="9" Name="chkSearch" nixxis:WizardControl.NextStep="SearchSettings" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Search mode is active'}"></CheckBox>
+            </Grid>
+            <!-- EndRegion -->
+
+            <!--Region InboundSettings-->
+            <Grid Name="InboundSettings">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the inbound settings...'}"></Label>
+
+                <Label Grid.Row="1" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Destination:'}"></Label>
+                <!--TextBox Grid.Row="2" Name="txtDestination" nixxis:WizardControl.Required="True"></TextBox-->
+
+                <ComboBox IsTabStop="True" Grid.Row="2" Name="cboDestination" nixxis:WizardControl.Required="True" IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Source={StaticResource NumberingPlanEntries}}" DisplayMemberPath="DisplayText" SelectedValuePath="Id">
+                    <!-- This should be editable only if SuperUser or NotCloud -->
+                    <ComboBox.IsEditable>
+                        <Binding Source="{x:Static local:AdminFrameSet.Settings}" Path="IsNotCloudOrSuperUser"></Binding>
+                    </ComboBox.IsEditable>
+                </ComboBox>
+
+                <Label Grid.Row="3"  Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Preprocessor:'}"></Label>
+                <ComboBox IsSynchronizedWithCurrentItem="False" Name="cboPreprocessor" Grid.Row="4" ItemsSource="{Binding Source={StaticResource VoicePreprocessors}}" DisplayMemberPath="DisplayText" SelectedValuePath="Id"></ComboBox>
+
+                <Label Grid.Row="5"  Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Script:'}"></Label>
+                <ComboBox IsSynchronizedWithCurrentItem="False" Name="cboScripts" Grid.Row="6" ItemsSource="{Binding Source={StaticResource Scripts}}" DisplayMemberPath="DisplayText" SelectedValuePath="Id" IsEditable="True"></ComboBox>
+
+                <CheckBox Margin="0,5,0,0" IsChecked="{x:Null}" IsThreeState="True" Grid.Row="7" Name="chkInAutoRecord" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Record all this activity conversations automatically'}"></CheckBox>
+
+            </Grid>
+            <!--EndRegion-->
+
+            <!--Region OutboundSettings-->
+            <Grid Name="OutboundSettings" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the outbound settings...'}"></Label>
+
+                <Label Grid.Row="1" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Originator:'}"></Label>
+                <TextBox Grid.Row="2" Name="txtOriginator"></TextBox>
+
+                <Label Grid.Row="3"  Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Outbound mode:'}"></Label>
+                <ComboBox IsSynchronizedWithCurrentItem="False" Name="cboDialingMode" Grid.Row="4"  DisplayMemberPath="Description" SelectedValuePath="EnumValue" SelectedValue="{Binding Source={x:Static adminlink:DialingMode.Preview}, Mode=OneTime}">
+                    <ComboBox.ItemsSource>
+                        <MultiBinding Converter="{StaticResource srcChooser}">
+                            <Binding Source="{x:Static local:AdminFrameSet.Settings}" Path="IsFullVersion"></Binding>
+                            <Binding Source="{StaticResource restrictedDialingModeHelper}"></Binding>
+                            <Binding Source="{StaticResource expressRestrictedDialingModeHelper}"></Binding>
+                        </MultiBinding>
+                    </ComboBox.ItemsSource>
+
+                </ComboBox>
+
+                <Label Grid.Row="5"  Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Script:'}"></Label>
+                <ComboBox IsSynchronizedWithCurrentItem="False" Name="cboScriptOuts" Grid.Row="6" ItemsSource="{Binding Source={StaticResource Scripts}}" DisplayMemberPath="DisplayText" SelectedValuePath="Id" IsEditable="True"></ComboBox>
+
+                <CheckBox Margin="0,5,0,0" Grid.Row="7" Name="chkOutAutoRecord" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Record all this activity conversations automatically'}"></CheckBox>
+
+            </Grid>
+            <!--EndRegion-->
+            
+            <!--region ChatSettings -->
+            <Grid Name="ChatSettings" nixxis:WizardControl.NextStep="ChatSettings2" >
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the chat provider...'}"></Label>
+
+                <GroupBox Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Provider type'}" Grid.Row="1" >
+
+                    <ListBox SelectionMode="Single" Name="ChatProviders" Style="{StaticResource VerticalRadioButtonList}" ItemsSource="{Binding Source={StaticResource ChatMediaProviders}}" DisplayMemberPath="Description">
+                    </ListBox>
+
+                </GroupBox>
+
+            </Grid>
+            <!--EndRegion-->
+            
+            <!--Region ChatSettings2-->
+            <Grid Name="ChatSettings2" >
+
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the chat settings...'}"></Label>
+
+                <Label Grid.Row="1" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Destination:'}"></Label>
+                <TextBox Grid.Row="2" Name="txtChatDestination" nixxis:WizardControl.Required="True"></TextBox>
+
+                <Label Grid.Row="3"  Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Preprocessor:'}"></Label>
+                <ComboBox IsSynchronizedWithCurrentItem="False" Name="cboChatPreprocessor" Grid.Row="4" ItemsSource="{Binding Source={StaticResource ChatPreprocessors}}" DisplayMemberPath="DisplayText" SelectedValuePath="Id"></ComboBox>
+
+                <Label Grid.Row="5"  Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Script:'}"></Label>
+                <ComboBox IsSynchronizedWithCurrentItem="False" Name="cboChatScripts" Grid.Row="6" ItemsSource="{Binding Source={StaticResource Scripts}}" DisplayMemberPath="DisplayText" SelectedValuePath="Id" IsEditable="True"></ComboBox>
+                
+            </Grid>
+            <!--EndRegion-->
+
+            <!--Region EmailSettings-->
+            <Grid Name="EmailSettings" nixxis:WizardControl.NextStep="EmailSettings2" >
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the email provider...'}"></Label>
+
+                <GroupBox Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Provider type'}" Grid.Row="1" >
+
+                    <ListBox SelectionMode="Single" Name="EmailProviders" Style="{StaticResource VerticalRadioButtonList}" ItemsSource="{Binding Source={StaticResource EmailMediaProviders}}" DisplayMemberPath="Description">
+                    </ListBox>
+                                 
+                </GroupBox>
+
+            </Grid>   
+            <!--EndRegion-->
+            
+            <!--Region EmailSettings-->
+            <Grid Name="EmailSettings2" >
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the email settings...'}"></Label>
+
+                <Label Grid.Row="1" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Destination:'}"></Label>
+                <TextBox Grid.Row="2" Name="txtMailDestination" nixxis:WizardControl.Required="True" IsReadOnly="{Binding Source={StaticResource EmailMediaProviders}, Path=Count, Converter={StaticResource IneqCConverter}, ConverterParameter={StaticResource 0}}"></TextBox>
+
+                <Label Grid.Row="3"  Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Preprocessor:'}"></Label>
+                <ComboBox IsSynchronizedWithCurrentItem="False" Name="cboMailPreprocessor" Grid.Row="4" ItemsSource="{Binding Source={StaticResource MailPreprocessors}}" DisplayMemberPath="DisplayText" SelectedValuePath="Id"></ComboBox>
+
+                <Label Grid.Row="5"  Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Script:'}"></Label>
+                <ComboBox IsSynchronizedWithCurrentItem="False" Name="cboMailScripts" Grid.Row="6" ItemsSource="{Binding Source={StaticResource Scripts}}" DisplayMemberPath="DisplayText" SelectedValuePath="Id" IsEditable="True"></ComboBox>
+
+            </Grid>
+            <!--EndRegion-->
+
+            <!--Region SearchSettings-->
+            <Grid Name="SearchSettings" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the search mode settings...'}"></Label>
+                
+                <Label Grid.Row="1"  Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Script:'}"></Label>
+                <ComboBox  nixxis:WizardControl.Required="True" IsSynchronizedWithCurrentItem="False" Name="cboScriptSearch" Grid.Row="2" ItemsSource="{Binding Source={StaticResource Scripts}}" DisplayMemberPath="DisplayText" SelectedValuePath="Id" IsEditable="True"></ComboBox>
+
+                <CheckBox Margin="0,5,0,0" Grid.Row="3" Name="chkSearchAutoRecord" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Record all this activity conversations automatically'}"></CheckBox>
+
+            </Grid>
+            <!--EndRegion -->
+
+            <!--Region AgentsSettings-->
+            <Grid Name="AgentsSettings" >
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the associated agents'}"></Label>
+
+                <nixxiscommon:NixxisAdvListBox SelectionMode="Multiple" Margin="2" Grid.Row="1" Name="listAgents" ItemSourceList="{Binding Source={StaticResource sortedAgents}}" DisplayMemberPath="DisplayText"></nixxiscommon:NixxisAdvListBox>
+
+            </Grid>
+            <!--EndRegion-->
+
+            <!--Region QualificationsExclusionsSettings-->
+            <Grid Name="QualificationsExclusions" >
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Qualification affectation:'}"></Label>
+
+                <nixxiscommon:NixxisAdvListBox SelectionMode="Multiple" Margin="2" Grid.Row="1" Name="listQualificationsExclusion" ItemSourceList="{Binding Source={StaticResource sortedActivities}}" DisplayMemberPath="DisplayText"></nixxiscommon:NixxisAdvListBox>
+
+            </Grid>
+            <!--EndRegion-->
+
+            <!--Region PredefinedTextSettings-->
+            <Grid Name="PredefinedTextSettings" nixxis:WizardControl.NextStep="PredefinedTextContent">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the predefined text to add...'}"></Label>
+
+
+                <nixxis:NixxisStackPanel Grid.Row="1">
+                    <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Description:'}"></Label>
+                    <TextBox Name="txtPredefinedTextDesc" nixxis:WizardControl.Required="True"></TextBox>
+
+                    <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Language:'}"></Label>
+                    <ComboBox Name="cboPredefinedTextLan" ItemsSource="{Binding Languages, Converter={StaticResource cboConverter}}" 
+                            SelectedValuePath="Id" 
+                            SelectedIndex="0"
+                            DisplayMemberPath="DisplayText" 
+                            ></ComboBox>
+
+                </nixxis:NixxisStackPanel>
+
+            </Grid>
+            <!--EndRegion-->
+
+            <!--Region PredefinedTextContent-->
+            <Grid Name="PredefinedTextContent">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the predefined text content...'}"></Label>
+
+
+                <TextBox Grid.Row="1" Name="txtPredefinedTextContent" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"></TextBox>
+
+            </Grid>
+
+            <!--Attachment-->
+            <Grid Name="AttachmentSettings" nixxis:WizardControl.NextStep="AttachmentContent" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify attachment properties...'}"></Label>
+
+
+                <nixxis:NixxisStackPanel Grid.Row="1">
+                    <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Description:'}"></Label>
+                    <TextBox Name="txtAttachmentDesc" nixxis:WizardControl.Required="True"></TextBox>
+
+                    <Label Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Language:'}"></Label>
+                    <ComboBox Name="cboAttachmentLan" ItemsSource="{Binding Languages, Converter={StaticResource cboConverter}}" 
+                            SelectedValuePath="Id" 
+                            SelectedIndex="0"
+                            DisplayMemberPath="DisplayText" 
+                            ></ComboBox>
+
+                </nixxis:NixxisStackPanel>
+
+            </Grid>
+            <!--EndRegion-->
+
+            <!--Region AttachmentContent-->
+            <Grid Name="AttachmentContent" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Style="{StaticResource DlgHeaderLabel}" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Please specify the attachment to add...'}"></Label>
+
+
+                <nixxis:NixxisStackPanel Grid.Row="1">
+
+                    <RadioButton IsChecked="True" Name="radioAttPublicUrl" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Attachment refers to a public location'}"></RadioButton>
+
+                    <TextBox Name="txtAttUrl" Margin="20,0,0,0" IsEnabled="{Binding ElementName=radioAttPublicUrl, Path=IsChecked}"></TextBox>
+
+                    <RadioButton Name="radioAttUpload" Content="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Attachment is a local file I will updload'}"></RadioButton>
+
+                    <TextBox Name="txtAttPath" Margin="20,0,0,0" IsEnabled="{Binding ElementName=radioAttUpload, Path=IsChecked}" IsReadOnly="True" nixxis:NixxisStackPanel.KeepNextAttached="True" ></TextBox>
+                    <Button IsEnabled="{Binding ElementName=radioAttUpload, Path=IsChecked}" Click="BrowseForAttachment">
+                        <Border Height="20" Width="20">
+                            <Path HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{x:Null}" Data="M0.5,0.5 L5.5,3 0.5,5.5" Stroke="{DynamicResource GlyphBrush}" Margin="6,0,6,0" Height="11" StrokeThickness="2" Stretch="Fill" />
+                        </Border>
+                    </Button>
+                    
+                </nixxis:NixxisStackPanel>
+
+            </Grid>
+            <!--EndRegion-->
+            
+            <!--Region End-->
+            <Grid Name="End" >
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource DlgHeaderLabel}">   
+                    <Grid>
+                        <TextBlock Visibility="{Binding ElementName=RadioAddCamp, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}}" Text="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Please click on finish to complete the creation of campaign {0}',BindTo={Binding ElementName=txtCamp, Path=Text}}" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Visibility="{Binding ElementName=RadioAddAct, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}}" Text="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Please click on finish to complete the creation of activity {0}',BindTo={Binding ElementName=txtAct, Path=Text}}" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Visibility="{Binding ElementName=RadioAddQualif, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}}" Text="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Please click on finish to complete the creation of qualification {0}',BindTo={Binding ElementName=WizControl, Path=Context.NewQualification.Description}}" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Visibility="{Binding ElementName=RadioAddQualifUnder, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}}" Text="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Please click on finish to complete the creation of qualification {0}',BindTo={Binding ElementName=WizControl, Path=Context.NewQualification.Description}}" TextWrapping="Wrap"></TextBlock>
+
+                        <TextBlock Visibility="{Binding ElementName=RadioAddQualifSister, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}}" Text="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Please click on finish to complete the creation of qualification {0}',BindTo={Binding ElementName=WizControl, Path=Context.NewQualification.Description}}" TextWrapping="Wrap"></TextBlock>
+
+                        <TextBlock Visibility="{Binding ElementName=RadioAddField, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}}" Text="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Please click on finish to complete the creation of field {0}',BindTo={Binding ElementName=WizControl, Path=Context.NewField.Name}}" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Visibility="{Binding ElementName=RadioAddSortField, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}}" Text="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Please click on finish to complete the creation of sort order based on {0}',BindTo={Binding ElementName=cboNewSort, Path=SelectedItem.DisplayText}}" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Visibility="{Binding ElementName=RadioAddFilter, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}}" Text="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Please click on finish to complete the creation of filter based on {0}',BindTo={Binding ElementName=cboNewFilter, Path=SelectedItem.DisplayText}}" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Visibility="{Binding ElementName=RadioAddPrompt, Path=IsChecked, Converter={StaticResource VisWithCollapseConverter}}" Text="{nixxis:FormatString TranslationContext={StaticResource tcx},FormatString='Please click on finish to complete the creation of prompt {0}',BindTo={Binding ElementName=txtPromptDescription, Path=Text}}" TextWrapping="Wrap"></TextBlock>
+                    </Grid>
+                </Label>
+
+                <GroupBox Margin="2" Grid.Row="1" Header="{Binding Source={StaticResource tcx}, Converter={StaticResource tcv}, ConverterParameter='Summary:'}">
+                    <!--<ScrollViewer CanContentScroll="False" >
+                        <Label>
+                            <TextBlock IsVisibleChanged="TextBlock_IsVisibleChanged" TextWrapping="Wrap"></TextBlock>
+                        </Label>
+                    </ScrollViewer>-->
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <ScrollViewer CanContentScroll="False" >
+                            <Label>
+                                <TextBlock IsVisibleChanged="TextBlock_IsVisibleChanged" TextWrapping="Wrap"></TextBlock>
+                            </Label>
+                        </ScrollViewer>
+                        <Label Grid.Row="1">
+                            <TextBlock  Name="txtWarning" Foreground="Red" TextWrapping="Wrap" Text=""></TextBlock>
+                        </Label>
+                    </Grid>
+                </GroupBox>
+
+            </Grid>
+            <!--EndRegion-->
+
+        </Grid>
+
+        <nixxis:WizardControl Grid.Row="2" Name="WizControl" WizardStepChanging="WizControl_WizardStepChanging" WizardGrid="{Binding ElementName=AddWizard}" EndStep="End" WizardFinished="WizControl_WizardFinished" ></nixxis:WizardControl>
+    </Grid>
+</Window>

@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<modules>
+  <module name="NixxisAgentControl">
+
+    <version build="2.0.2.42" date="26/04/2013">
+      <note type="Bug">Bug 75</note>
+    </version>
+
+    <version build="2.0.2.41" date="06/03/2013">
+      <note type="Improvement"> IMediaPanels</note>
+    </version>
+
+    <version build="2.0.2.37" date="05/03/2013">
+      <note type="Bug">(BUG-414)</note>
+    </version>
+
+    <version build="2.0.2.36" date="01/03/2013">
+      <note type="Bug">(BUG-412)</note>
+      <note type="Improvement">(FR-384)</note>
+    </version>
+
+    <version build="2.0.2.33" date="08/01/2013">
+      <note type="Bug">(BUG-329)</note>
+      <note type="Bug">(BUG-389)</note>
+    </version>
+
+    <version build="2.0.2.31" date="04/01/2013">
+      <note type="Bug">(BUG-329) Partial</note>
+    </version>
+
+    <version build="2.0.0.28" date="12/09/2012">
+      <note type="Improvement">(FR-396) Increased font size on coverflow elements</note>
+    </version>
+    
+    <version build="2.0.0.27" date="28/08/2012">
+      <note type="Bug">Occasional crash on new manual call without active contact</note>
+    </version>
+
+    <version build="2.0.0.26" date="27/08/2012">
+      <note type="Improvement">Added trace about manual call requests</note>
+    </version>
+
+    <version build="2.0.0.25" date="23/08/2012">
+      <note type="Bug">(BUG-306) Qualification is assigned to wrong contact if a new one came active while dialog is open</note>
+    </version>
+
+    <version build="2.0.0.24" date="08/08/2012">
+      <note type="Bug">(BUG-303) When clicking on ready, the ready dropdown list does not close automatically</note>
+    </version>
+    
+    <version build="2.0.0.23" date="06/08/2012">
+      <note type="Bug">(BUG-299) The session id is sent when loading wait and pause images to avoid useless sessions creation</note>
+    </version>
+
+    <version build="2.0.0.22" date="24/07/2012">
+      <note type="Bug">(BUG-288) The agent interface shows a useless second ready button</note>
+    </version>
+
+    <version build="2.0.0.20" date="12/07/2012">
+      <note type="Improvement">(FR-376) Language can be be read using window.external.GetSessionValue('@Language')</note>
+    </version>
+
+    <version build="2.0.0.19" date="22/06/2012">
+      <note type="Fix">(BUG-262) Adjusted focus and default button on manual call dialog.</note>
+    </version>
+
+    <version build="2.0.0.18" date="21/06/2012">
+      <note type="Fix">Agent messages are not broadcasted to every sup, only the one with the established chat.</note>
+    </version>
+    <version build="2.0.0.17" date="14/06/2012">
+      <note type="Fix">Handling parameter 11 in script url (Queueid).</note>
+    </version>
+
+    <version build="2.0.0.13" date="29/11/2011">
+      <note type="New">Sending dtmf tone impl</note>
+    </version>
+
+    <version build="2.0.0.12" date="28/11/2011">
+      <note type="New">Support for PriorityPickup</note>
+      <note type="New">Info panel to send DTMF tones (Sending not yet impl)</note>
+    </version>
+    
+    <version build="2.0.0.11" date="25/10/2011">
+      <note type="Improvement">Mail pre def text are now inserted using a dubble click</note>
+      <note type="Improvement">mailforward window layout</note>
+      <note type="Improvement">All button layouts in the popups have been updated</note>
+      <note type="Improvement">Using the function 'UrlInsertSessionId' to build the original mail url</note>
+      <note type="Improvement">In the mail screen the script row is now default using 40% of the space (old value was 30%)</note>
+    </version>
+    
+    <version build="2.0.0.10" date="24/10/2011">
+      <note type="Fix">sometimes there is a 403 when the original mail is displayed</note>
+    </version>
+    
+    <version build="2.0.0.9" date="24/10/2011">
+      <note type="New">Queue is added to browserexternal</note>
+      <note type="Improvement">layout change of the buttons of the mailforward</note>
+    </version>
+    
+    <version build="2.0.0.8" date="24/10/2011">
+      <note type="New">"mailInsertText" to browserexternal funtcions: to insert a text from the script</note>
+      <note type="New">"mailForward" to browserexternal funtcions: to forward a mail in the script</note>
+    </version>
+    
+    <version build="2.0.0.7" date="20/10/2011">
+      <note type="New">contact history now for chat and mail</note>
+      <note type="Fix">Image in contact hisory for mail is incorrect</note>
+    </version>
+    
+    <version build="2.0.0.6" date="19/10/2011">
+      <note type="New">Well known destination is now used for mail to</note>
+      <note type="Improvement">Mail forward window redo</note>
+      <note type="Improvement">Known destination for manuel call is sorted</note>
+      <note type="Fix">Spam button for the mail forward wasn't working</note>
+    </version>
+    
+    <version build="2.0.0.5" date="22/09/2011">
+      <note type="Improvement">USe Microsoft.JScript.GlobalObject.unescape instead of Uri.UnescapeDataString</note>
+      <note type="Fix">Application crash when chat window is still open</note>
+      <note type="New">Qualification button can now be authorized per activity</note>
+    </version>
+    
+    <version build="2.0.0.4" date="22/09/2011">
+      <note type="Fix">Chat opens multiple windows</note>
+    </version>
+    
+    <version build="2.0.0.3" date="20/09/2011">
+      <note type="Improvement">Show history command is only enabled when the activity allows it</note>
+    </version>
+    
+    <version build="2.0.0.2" date="20/09/2011">
+      <note type="New">On the recording playback panel the volume control is working now.</note>
+      <note type="Improvement">Translation context is updated</note>
+    </version>
+    
+    <version build="2.0.0.1" date="20/09/2011">
+      <note type="">First release</note>
+    </version>
+  </module>
+</modules>

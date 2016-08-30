@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="Nixxis.Client.Controls.NixxisDetailedToggle"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             xmlns:nixxis="clr-namespace:Nixxis.Client.Controls"
+             d:DesignHeight="300" d:DesignWidth="300"
+             Name="MySelf">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Name="MainCheckbox" Text="{Binding ElementName=MySelf, Path=Content}"></TextBlock>
+        <ToggleButton Cursor="Hand" Margin="5,0,0,0" Name="DetailToggle" Grid.Column="1" Content="{Binding ElementName=MySelf, Path=DetailContent}" IsChecked="{Binding ElementName=MySelf, Path=IsChecked, Mode=TwoWay}"></ToggleButton>
+    </Grid>
+</UserControl>

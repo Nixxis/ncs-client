@@ -1,0 +1,475 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AdminLink</name>
+    </assembly>
+    <members>
+        <member name="T:Nixxis.Client.Admin.BasePreprocessorConfig">
+            <summary>
+            Base class defining the <see cref="T:Nixxis.Client.Admin.AdminObject"/> specifying the configuration of a processor.
+            </summary>
+        </member>
+        <member name="M:Nixxis.Client.Admin.BasePreprocessorConfig.#ctor(Nixxis.Client.Admin.AdminCore)">
+            <summary>
+            Create a new <see cref="T:Nixxis.Client.Admin.BasePreprocessorConfig"/> object.
+            </summary>
+            <param name="core">The <see cref="T:Nixxis.Client.Admin.AdminCore"/> instance.</param>
+        </member>
+        <member name="M:Nixxis.Client.Admin.BasePreprocessorConfig.#ctor(Nixxis.Client.Admin.AdminObject)">
+            <summary>
+            Create a new <see cref="T:Nixxis.Client.Admin.BasePreprocessorConfig"/> object as a logical children of another <see cref="T:Nixxis.Client.Admin.AdminObject"/> object.
+            </summary>
+            <param name="parent">The <see cref="T:Nixxis.Client.Admin.AdminObject"/> parent object.</param>
+        </member>
+        <member name="M:Nixxis.Client.Admin.BasePreprocessorConfig.DeserializeFromText(System.String)">
+            <summary>
+            Called by the framework when loading the configuration. 
+            </summary>
+            <param name="text">The text containing the serialization of the configuration.</param>
+        </member>
+        <member name="M:Nixxis.Client.Admin.BasePreprocessorConfig.SerializeToText">
+            <summary>
+            Called by the framework when the configuration must be saved to a text storage.
+            </summary>
+            <returns>The text containing the serialization of the configuration.</returns>
+        </member>
+        <member name="M:Nixxis.Client.Admin.BasePreprocessorConfig.Save">
+            <summary>
+            Called by the framework when the configuration needs to be saved. The way the configuration is serialized is controlled by the <see cref="M:Nixxis.Client.Admin.BasePreprocessorConfig.SerializeToText"/> method while the storage itself will be specified by <see cref="P:Nixxis.Client.Admin.BasePreprocessorConfig.saveToTextStorage"/> delegate.
+            </summary>
+        </member>
+        <member name="P:Nixxis.Client.Admin.BasePreprocessorConfig.saveToTextStorage">
+            <summary>
+            Delegate allowing the user to specify the way the configuration will be stored. A call to method <see cref="M:Nixxis.Client.Admin.BasePreprocessorConfig.Save"/> is triggering the call to this delegate.
+            </summary>
+        </member>
+        <member name="T:Nixxis.Client.Admin.BasePreprocessorConfig.SaveToTextStorageDelegate">
+            <summary>
+            Defines the delegate called when saving the configuration.
+            </summary>
+            <param name="text"></param>
+        </member>
+        <member name="F:Nixxis.Client.Admin.AppointmentRule.None">
+            <summary>
+            No strategy defined.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.AppointmentRule.FirstFreeSlot">
+            <summary>
+            The fisrt free slot is used to determine the area to use.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.AppointmentRule.FillFactor">
+            <summary>
+            Try to fill the area having the smallest fill factor for a specific number of days.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.AppointmentRule.RestrictedFillFactor">
+            <summary>
+            Try to fill the area having the smallest fill factor for a specific number of days and a specific fill factor target. 
+            </summary>
+        </member>
+        <member name="T:Nixxis.Client.Admin.LoginEncryption">
+            <summary>
+            Enable encryption of agents passwords.
+            </summary>
+        </member>
+        <member name="M:Nixxis.Client.Admin.LoginEncryption.#ctor(System.Byte[])">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="blob">The byte array that will be used to initialize the RSA provider.</param>
+        </member>
+        <member name="M:Nixxis.Client.Admin.LoginEncryption.Finalize">
+            <summary>
+            Destructor.
+            </summary>
+        </member>
+        <member name="M:Nixxis.Client.Admin.LoginEncryption.EncryptPassword(System.String,Nixxis.Client.Admin.LoginEncryption.Purpose)">
+            <summary>
+            Allow password encryption.
+            </summary>
+            <param name="password">The string that must be encrypted.</param>
+            <param name="purpose">Indicates if the purpose of this method call is to authenticate a user or to store the encryption.</param>
+            <returns>The encrypted password.</returns>
+            <example>
+            This example shows the code used to update an agent password with the value entered in the "txtPass".
+            <code lang="C#">
+            ContactRoute.Admin.Agent agt = new ContactRoute.Admin.Agent();
+            agt.PassKey = m_AdminAccessor.LoginEncrypter.EncryptPassword(txtPass.Text, ContactRoute.Admin.LoginEncryption.Purpose.Storage);
+            </code>
+            </example>
+        </member>
+        <member name="M:Nixxis.Client.Admin.LoginEncryption.DecryptPassword(System.String)">
+            <summary>
+            Allow encrpted password decryption.
+            </summary>
+            <param name="password">The encrypted password to decrypt.</param>
+            <returns>The decrypted result.</returns>
+        </member>
+        <member name="M:Nixxis.Client.Admin.LoginEncryption.VerifyPassword(System.String,System.String,System.Boolean)">
+            <summary>
+            Allow password verification.
+            </summary>
+            <param name="password">The encrypted password to be verified.</param>
+            <param name="storage">The stored password to compare with.</param>
+            <param name="compatibleStorage">Indicates if backward compatibility must be supported.</param>
+            <returns>True if the password is valid.</returns>
+        </member>
+        <member name="M:Nixxis.Client.Admin.LoginEncryption.VerifyPassword(System.String,System.String,System.Boolean,System.Object,Nixxis.Client.Admin.LoginEncryption.NewStorageDelegate)">
+            <summary>
+            Allow password verification.
+            </summary>
+            <param name="password">The encrypted password to be verified.</param>
+            <param name="storage">The stored password to compare with.</param>
+            <param name="compatibleStorage">Indicates if backward compatibility must be supported.</param>
+            <param name="newStorage">The method that will be called when new storage is needed.</param>
+            <param name="state">The object that will be passed to the <paramref name="newStorage"/> delegate.</param>
+            <returns>True if the password is valid.</returns>
+        </member>
+        <member name="M:Nixxis.Client.Admin.LoginEncryption.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="T:Nixxis.Client.Admin.LoginEncryption.LoginProvider">
+            <summary>
+            Helper class providing basing cryptography capabilities.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.LoginEncryption.LoginProvider.m_RSA">
+            <summary>
+            The <see cref="T:System.Security.Cryptography.RSACryptoServiceProvider"/> instance.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.LoginEncryption.LoginProvider.m_MD5">
+            <summary>
+            Ths <see cref="T:System.Security.Cryptography.MD5CryptoServiceProvider"/> instance.
+            </summary>
+        </member>
+        <member name="M:Nixxis.Client.Admin.LoginEncryption.LoginProvider.#ctor(System.Byte[])">
+            <summary>
+            Constructor. <see cref="F:Nixxis.Client.Admin.LoginEncryption.LoginProvider.m_RSA"/> and <see cref="F:Nixxis.Client.Admin.LoginEncryption.LoginProvider.m_MD5"/> are initialized and ready to be used. <see cref="F:Nixxis.Client.Admin.LoginEncryption.LoginProvider.m_RSA"/> is initialized by the provided byte array.
+            </summary>
+            <param name="blob">The byte array used to initialize <see cref="F:Nixxis.Client.Admin.LoginEncryption.LoginProvider.m_RSA"/>.</param>
+        </member>
+        <member name="M:Nixxis.Client.Admin.LoginEncryption.LoginProvider.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="T:Nixxis.Client.Admin.LoginEncryption.Purpose">
+            <summary>
+            Defines goals of encryption.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.LoginEncryption.Purpose.Authentication">
+            <summary>
+            Specify that encryption request is done for authentication purpose.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.LoginEncryption.Purpose.Storage">
+            <summary>
+            Specify that encryption request is done for storage purpose.
+            </summary>
+        </member>
+        <member name="T:Nixxis.Client.Admin.LoginEncryption.NewStorageDelegate">
+            <summary>
+            Represents the method that can be used when encrypted password needs storage. This method is used in the context of calls to the <see cref="M:Nixxis.Client.Admin.LoginEncryption.VerifyPassword(System.String,System.String,System.Boolean,System.Object,Nixxis.Client.Admin.LoginEncryption.NewStorageDelegate)"/> method.
+            </summary>
+            <param name="state">The object that has been passed when calling <see cref="M:Nixxis.Client.Admin.LoginEncryption.VerifyPassword(System.String,System.String,System.Boolean,System.Object,Nixxis.Client.Admin.LoginEncryption.NewStorageDelegate)"/>.</param>
+            <param name="storage">The encrypted password to be stored.</param>
+        </member>
+        <member name="F:Nixxis.Client.Admin.Operator.IsNotNull">
+            <summary>
+            Check if the field value is not null.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.Operator.IsNull">
+            <summary>
+            Check if the field value is null.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.Operator.IsTrue">
+            <summary>
+            Check if the field value is true.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.Operator.IsFalse">
+            <summary>
+            Check if the field value is false.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.Operator.Equal">
+            <summary>
+            Check for equality.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.Operator.NotEqual">
+            <summary>
+            Check for inequality.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.Operator.Inferior">
+            <summary>
+            Check if a value is inferior to another. 
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.Operator.InferiorOrEqual">
+            <summary>
+            Check if a value is inferior or equal to another.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.Operator.Superior">
+            <summary>
+            Check if a value is superior to another.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.Operator.SuperiorOrEqual">
+            <summary>
+            Check if a value is superior or equal to another.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.Operator.Like">
+            <summary>
+            Check if a value is like another.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.Operator.IsBefore">
+            <summary>
+            Check if a datetime value is before another.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.Operator.IsAfter">
+            <summary>
+            Check if a datetime value is after another.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.Operator.IsInThePast">
+            <summary>
+            Check if a value is in the past.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.Operator.IsInTheFuture">
+            <summary>
+            Check if a value is in the future.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.Operator.IsXMinutesInThePast">
+            <summary>
+            Check if a value is in the past while some delay expressed in minutes.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.Operator.IsXMinutesInTheFuture">
+            <summary>
+            Check if a value is in the future for some duration expressed in minutes.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.None">
+            <summary>
+            The field has no meaning.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.CustomerId">
+            <summary>
+            The field is considered as a customer identification.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.ContactDescription">
+            <summary>
+            The field represents a contact description.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.PotentialProfit">
+            <summary>
+            The field is considered as potential profit.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.HomePhoneNumber">
+            <summary>
+            The field is considered as an home phone number.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.BusinessPhoneNumber">
+            <summary>
+            The field is considered as a business phone number.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.HomeMobileNumber">
+            <summary>
+            The field is considered as a private mobile phone number.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.BusinessMobileNumber">
+            <summary>
+            The field is consisered as a business mobile phone number.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.HomeEmail">
+            <summary>
+            The field is considered as a private email address.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.BusinessEmail">
+            <summary>
+            The field will be interpreted as a business email address.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.HomeChat">
+            <summary>
+            The field will be considered as a private chat address.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.BusinessChat">
+            <summary>
+            The field is considered as a business chat address.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.HomeFax">
+            <summary>
+            The field is considered as a private fax number.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.BusinessFax">
+            <summary>
+            The field is considered as a business fax number.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.MaxDial">
+            <summary>
+            The field contains the maximum number of dial attempts.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.AppointmentId">
+            <summary>
+            The field contains an appointment identifier.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.AppointmentArea">
+            <summary>
+            The field contains an apointement area.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.AppointmentDateTime">
+            <summary>
+            The field contains an appointment datetime.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.Address1">
+            <summary>
+            The field contains an address (part 1).
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.Address2">
+            <summary>
+            The field contains an address (part 2).
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.PostalCode">
+            <summary>
+            The field contains a postal code.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.Country">
+            <summary>
+            The field represents a country name.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.City">
+            <summary>
+            The field represents a city.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.Region">
+            <summary>
+            The field represents a region.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.Latitude">
+            <summary>
+            The field contains latitude value.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.UserFieldMeanings.Longitude">
+            <summary>
+            The field contains longitude value.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.DBTypes.Unknown">
+            <summary>
+            Unknown type.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.DBTypes.Boolean">
+            <summary>
+            Boolean type.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.DBTypes.Integer">
+            <summary>
+            Integer type.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.DBTypes.Datetime">
+            <summary>
+            Datetime type.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.DBTypes.Float">
+            <summary>
+            Float type.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.DBTypes.Char">
+            <summary>
+            Char type.
+            </summary>
+        </member>
+        <member name="F:Nixxis.Client.Admin.DBTypes.String">
+            <summary>
+            String type.
+            </summary>
+        </member>
+        <member name="T:Nixxis.Client.Admin.PostWrapupOptionHelper">
+             <summary>
+             Provide methods for handling encoding of PostWrapupOption values. Each option can have 3 state: inherited, allowed, denied. 
+            
+             </summary>
+        </member>
+        <member name="M:Nixxis.Client.Admin.PostWrapupOptionHelper.AllowedOptions(System.Int32)">
+            <summary>
+            Returns the allowed part of an encoded PostWrapupOption
+            </summary>
+            <param name="val"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Nixxis.Client.Admin.PostWrapupOptionHelper.DeniedOptions(System.Int32)">
+            <summary>
+            Returns the denied part of an encoded PostWrapupOption
+            </summary>
+            <param name="val"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Nixxis.Client.Admin.PostWrapupOptionHelper.ComputeEncodedForm(Nixxis.Client.Admin.PostWrapupOption,Nixxis.Client.Admin.PostWrapupOption)">
+            <summary>
+            Compute the encoded form of PostWrapupOption, given the allowed part and the denied part.
+            </summary>
+            <param name="allowed"></param>
+            <param name="denied"></param>
+            <returns></returns>
+            <remarks>Denied part is having priority over allowed part</remarks>
+        </member>
+        <member name="M:Nixxis.Client.Admin.PostWrapupOptionHelper.ComputeEncodedForm(System.Int32,Nixxis.Client.Admin.PostWrapupOption,Nixxis.Client.Admin.PostWrapupOption)">
+            <summary>
+            Compute the encoded form of PostWrapupOption, given an initial encoded value, the allowed part and the denied part.
+            </summary>
+            <param name="initialValue"></param>
+            <param name="toAllow"></param>
+            <param name="toDeny"></param>
+            <returns>Denied part is having priority over allowed part</returns>
+        </member>
+        <member name="M:Nixxis.Client.Admin.PostWrapupOptionHelper.ComputeEncodedForm(System.Int32,Nixxis.Client.Admin.PostWrapupOption)">
+            <summary>
+            Compute the encoded form of PostWrapupOption, given an initial encoded value and the part that must be inherited.
+            </summary>
+            <param name="initialValue"></param>
+            <param name="toInherit"></param>
+        </member>
+    </members>
+</doc>
